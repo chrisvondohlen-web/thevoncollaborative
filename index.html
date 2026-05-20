@@ -1,0 +1,1507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Von Collaborative | Growth at Every Level</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700;1,900&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<script async src="https://js.stripe.com/v3/buy-button.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --cyan: #15E0FB;
+    --dark: #070a10;
+    --dark2: #0d1220;
+    --dark3: #141927;
+    --text: #e8edf7;
+    --muted: #8a95aa;
+    --border: rgba(21,224,251,0.18);
+    --accent: #15E0FB;
+    --accent-border: rgba(21,224,251,0.22);
+  }
+
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Jost', sans-serif; background: var(--dark); color: var(--text); overflow-x: hidden; }
+
+  /* NAV */
+  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 1.1rem 4rem; background: rgba(7,10,16,0.92); backdrop-filter: blur(14px); border-bottom: 1px solid var(--border); }
+  .logo { text-decoration: none; cursor: pointer; display: flex; align-items: center; }
+  .logo svg { display: block; }
+  .nav-links { display: flex; gap: 0.1rem; list-style: none; }
+  .nav-links a { color: var(--muted); text-decoration: none; font-size: 0.8rem; letter-spacing: 0.03em; padding: 0.4rem 0.85rem; transition: color 0.2s; cursor: pointer; position: relative; }
+  .nav-links a:hover { color: var(--text); }
+  .nav-links a.active { color: var(--text); }
+  .nav-links a.active::after { content: ''; position: absolute; bottom: -1px; left: 0.85rem; right: 0.85rem; height: 1px; background: var(--cyan); }
+  .nav-cta { border: 1px solid var(--cyan); color: var(--cyan); padding: 0.45rem 1.3rem; font-family: 'Jost', sans-serif; font-size: 0.8rem; letter-spacing: 0.05em; text-decoration: none; cursor: pointer; transition: background 0.2s, color 0.2s; }
+  .nav-cta:hover { background: var(--cyan); color: var(--dark); }
+
+  /* PAGE ACCENT VARS */
+  #page-org  { --accent: #9F8FE8; --accent-border: rgba(159,143,232,0.25); }
+  #page-team { --accent: #F07A5A; --accent-border: rgba(240,122,90,0.25); }
+  #page-ind  { --accent: #EFB827; --accent-border: rgba(239,184,39,0.25); }
+  #page-cust { --accent: #5BA8E8; --accent-border: rgba(91,168,232,0.25); }
+
+  /* SHARED */
+  .section { padding: 5rem 4rem; }
+  .section-label { font-size: 0.67rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.75rem; }
+  .section-title { font-family: 'Playfair Display', serif; font-size: clamp(1.9rem, 3.8vw, 2.9rem); font-weight: 800; line-height: 1.18; letter-spacing: -0.01em; margin-bottom: 1.4rem; }
+  .section-desc { font-size: 0.975rem; line-height: 1.82; color: var(--muted); max-width: 580px; font-weight: 300; }
+  .divider { width: 48px; height: 2px; background: var(--accent); margin-bottom: 2.5rem; }
+  .bg-alt { background: var(--dark2); }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+  .three-col { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: rgba(255,255,255,0.055); margin-top: 2.5rem; }
+  .col-card { background: var(--dark2); padding: 2rem 1.75rem; }
+  .col-card h4 { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--accent); }
+  .col-card p { font-size: 0.855rem; line-height: 1.75; color: var(--muted); font-weight: 300; }
+
+  /* HERO */
+  .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; padding: 8rem 4rem 6rem; position: relative; }
+  .grid-lines { position: absolute; inset: 0; z-index: 0; background-image: linear-gradient(rgba(21,224,251,0.032) 1px, transparent 1px), linear-gradient(90deg, rgba(21,224,251,0.032) 1px, transparent 1px); background-size: 60px 60px; -webkit-mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 0%, transparent 100%); mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 0%, transparent 100%); pointer-events: none; }
+  .hero-content { position: relative; z-index: 1; max-width: 880px; }
+  .hero-tag { display: inline-block; font-size: 0.67rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); border: 1px solid var(--accent-border); padding: 0.28rem 0.9rem; margin-bottom: 1.8rem; }
+  .hero-h1 { font-family: 'Playfair Display', serif; font-size: clamp(2.4rem, 5.5vw, 5rem); font-weight: 900; line-height: 1.18; letter-spacing: -0.01em; margin-bottom: 1.8rem; padding-bottom: 0.2em; }
+  .hero-h1 em { font-style: italic; color: var(--accent); }
+  .hero-sub { font-size: 1.05rem; line-height: 1.82; color: var(--muted); max-width: 580px; margin-bottom: 2.8rem; font-weight: 300; }
+  .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+  /* BUTTONS */
+  .btn-primary { background: var(--accent); color: var(--dark); padding: 0.78rem 2.2rem; font-family: 'Jost', sans-serif; font-weight: 500; font-size: 0.875rem; letter-spacing: 0.03em; border: none; cursor: pointer; text-decoration: none; display: inline-block; transition: opacity 0.2s; }
+  .btn-primary:hover { opacity: 0.85; }
+  .btn-outline { background: transparent; color: var(--text); padding: 0.78rem 2.2rem; font-family: 'Jost', sans-serif; font-size: 0.875rem; letter-spacing: 0.03em; border: 1px solid rgba(255,255,255,0.18); cursor: pointer; text-decoration: none; display: inline-block; transition: border-color 0.2s, color 0.2s; }
+  .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* LAYER CARDS */
+  .layer-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 1px; background: rgba(255,255,255,0.055); margin-top: 3rem; }
+  .layer-card { background: var(--dark2); padding: 2.5rem 2rem; cursor: pointer; transition: background 0.22s; position: relative; overflow: hidden; }
+  .layer-card:hover { background: var(--dark3); }
+  .layer-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--card-accent); }
+  .layer-level { font-size: 0.64rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--card-accent); margin-bottom: 0.55rem; }
+  .layer-card h3 { font-family: 'Playfair Display', serif; font-size: 1.35rem; font-weight: 800; margin-bottom: 0.7rem; }
+  .layer-card p { font-size: 0.865rem; line-height: 1.75; color: var(--muted); margin-bottom: 1.5rem; font-weight: 300; }
+  .layer-arrow { font-size: 0.78rem; color: var(--card-accent); letter-spacing: 0.08em; }
+
+  /* PROCESS STEPS */
+  .process-steps { display: flex; flex-direction: column; margin-top: 2rem; }
+  .process-step { display: flex; gap: 2rem; padding: 1.5rem 0; border-bottom: 1px solid rgba(255,255,255,0.055); align-items: flex-start; }
+  .process-step:last-child { border-bottom: none; }
+  .step-num { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 900; color: var(--accent); opacity: 0.38; min-width: 52px; line-height: 1; }
+  .step-body h4 { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; margin-bottom: 0.4rem; }
+  .step-body p { font-size: 0.875rem; line-height: 1.75; color: var(--muted); font-weight: 300; }
+
+  /* DETAIL STACK */
+  .detail-stack { display: flex; flex-direction: column; gap: 1px; background: rgba(255,255,255,0.055); }
+  .detail-item { background: var(--dark2); padding: 1.4rem 1.5rem; }
+  .detail-item.on-dark { background: var(--dark); }
+  .detail-label { font-size: 0.64rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.35rem; }
+  .detail-item p { font-size: 0.855rem; color: var(--muted); line-height: 1.7; font-weight: 300; }
+
+  /* STAT ROW */
+  .stat-row { display: flex; gap: 3rem; flex-wrap: wrap; margin-bottom: 2rem; }
+  .stat-num { font-family: 'Playfair Display', serif; font-size: 2.5rem; font-weight: 900; color: var(--accent); }
+  .stat-label { font-size: 0.76rem; color: var(--muted); margin-top: 0.15rem; letter-spacing: 0.04em; }
+
+  /* CONNECTOR ROW */
+  .connector-row { display: flex; gap: 1rem; align-items: flex-start; margin-bottom: 1.4rem; }
+  .connector-badge { min-width: 36px; height: 36px; border: 1px solid var(--accent-border); display: flex; align-items: center; justify-content: center; font-size: 0.64rem; color: var(--accent); letter-spacing: 0.08em; flex-shrink: 0; }
+  .connector-row p { font-size: 0.875rem; color: var(--muted); line-height: 1.75; font-weight: 300; padding-top: 0.4rem; }
+
+  /* QUOTE BAND */
+  .quote-band { background: var(--dark3); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 4.5rem 4rem; text-align: center; }
+  .quote-text { font-family: 'Playfair Display', serif; font-size: clamp(1.25rem, 2.4vw, 1.9rem); font-weight: 700; line-height: 1.55; max-width: 780px; margin: 0 auto; font-style: italic; }
+  .quote-text em { font-style: normal; color: var(--cyan); }
+
+  /* CTA BAND */
+  .cta-band { padding: 4rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 2rem; }
+  .cta-band h2 { font-family: 'Playfair Display', serif; font-size: clamp(1.4rem, 3vw, 2.2rem); font-weight: 900; color: var(--dark); line-height: 1.2; }
+  .btn-dark { background: var(--dark); padding: 0.8rem 2.2rem; font-family: 'Jost', sans-serif; font-weight: 500; font-size: 0.875rem; letter-spacing: 0.03em; border: none; cursor: pointer; text-decoration: none; display: inline-block; }
+
+  /* FOOTER */
+  footer { background: var(--dark); border-top: 1px solid var(--border); padding: 2rem 4rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+  .footer-brand { display: flex; align-items: center; }
+  .footer-brand svg { display: block; }
+  .footer-meta { font-size: 0.74rem; color: var(--muted); }
+  .footer-links { display: flex; gap: 1.5rem; }
+  .footer-links a { color: var(--muted); text-decoration: none; font-size: 0.74rem; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--cyan); }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+  .anim-tag     { animation: fadeUp 0.5s ease both; }
+  .anim-h1      { animation: fadeUp 0.6s 0.08s ease both; }
+  .anim-sub     { animation: fadeUp 0.6s 0.18s ease both; }
+  .anim-actions { animation: fadeUp 0.6s 0.28s ease both; }
+  #hero-headline { transition: opacity 0.5s ease, transform 0.5s ease; overflow: hidden; }
+
+  /* RESPONSIVE */
+  /* QUIZ PAGE */
+  .quiz-page { background: #F7F5F2; min-height: 100vh; padding: 5rem 1rem 4rem; }
+  .quiz-page .page-header { text-align: center; margin-bottom: 2rem; }
+  .quiz-page .brand-name { font-size: 12px; font-weight: 500; letter-spacing: .1em; text-transform: uppercase; color: #888; margin-bottom: .35rem; }
+  .quiz-page .page-title { font-family: 'DM Serif Display', Georgia, serif; font-size: clamp(22px, 5vw, 30px); color: #1A1A1A; line-height: 1.2; }
+  .quiz-page .card { background: #fff; border: 1px solid #E8E4DE; border-radius: 16px; padding: 2rem; max-width: 580px; margin: 0 auto 1rem; }
+  .quiz-page .screen { display: none; }
+  .quiz-page .screen.active { display: block; }
+  .quiz-page .prog-wrap { margin-bottom: 1.75rem; }
+  .quiz-page .prog-meta { display: flex; justify-content: space-between; font-size: 12px; color: #888; margin-bottom: .5rem; }
+  .quiz-page .prog-track { height: 4px; background: #EDE9E3; border-radius: 2px; overflow: hidden; }
+  .quiz-page .prog-fill { height: 4px; background: #1D9E75; border-radius: 2px; transition: width .4s ease; }
+  .quiz-page .q-label { font-size: 11px; font-weight: 500; color: #1D9E75; text-transform: uppercase; letter-spacing: .09em; margin-bottom: .5rem; }
+  .quiz-page .q-text { font-size: 17px; font-weight: 500; line-height: 1.45; color: #1A1A1A; margin-bottom: 1.5rem; }
+  .quiz-page .opts { display: flex; flex-direction: column; gap: 10px; margin-bottom: 1.5rem; }
+  .quiz-page .opt { border: 1.5px solid #E8E4DE; border-radius: 10px; padding: .85rem 1rem; font-family: 'DM Sans', system-ui, sans-serif; font-size: 14px; color: #1A1A1A; line-height: 1.5; cursor: pointer; text-align: left; background: #fff; transition: border-color .15s, background .15s; width: 100%; }
+  .quiz-page .opt:hover { border-color: #1D9E75; background: #F0FAF6; }
+  .quiz-page .opt.selected { border-color: #1D9E75; background: #F0FAF6; color: #085041; }
+  .quiz-page .q-footer { display: flex; justify-content: space-between; align-items: center; }
+  .quiz-page .q-hint { font-size: 12px; color: #aaa; }
+  .quiz-page .qbtn { font-family: 'DM Sans', system-ui, sans-serif; font-size: 14px; font-weight: 500; padding: .65rem 1.4rem; border-radius: 8px; border: 1.5px solid #ccc; background: #fff; color: #1A1A1A; cursor: pointer; transition: background .15s, border-color .15s; }
+  .quiz-page .qbtn:hover { background: #F7F5F2; }
+  .quiz-page .qbtn.primary { background: #1D9E75; border-color: #1D9E75; color: #fff; }
+  .quiz-page .qbtn.primary:hover { background: #158A63; }
+  .quiz-page .intro-eyebrow { font-size: 11px; font-weight: 500; color: #1D9E75; text-transform: uppercase; letter-spacing: .09em; margin-bottom: .5rem; }
+  .quiz-page .intro-title { font-family: 'DM Serif Display', Georgia, serif; font-size: 26px; line-height: 1.25; margin-bottom: .75rem; color: #1A1A1A; }
+  .quiz-page .intro-desc { font-size: 15px; color: #555; line-height: 1.7; margin-bottom: 1.25rem; }
+  .quiz-page .intro-note { font-size: 13px; color: #888; background: #F7F5F2; border-radius: 8px; padding: .75rem 1rem; margin-bottom: 1.5rem; line-height: 1.6; }
+  .quiz-page .gate-title { font-family: 'DM Serif Display', Georgia, serif; font-size: 22px; line-height: 1.3; margin-bottom: .6rem; color: #1A1A1A; }
+  .quiz-page .gate-desc { font-size: 14px; color: #555; line-height: 1.65; margin-bottom: 1.5rem; }
+  .quiz-page .field { margin-bottom: 1rem; }
+  .quiz-page .field label { display: block; font-size: 13px; font-weight: 500; color: #444; margin-bottom: .35rem; }
+  .quiz-page .field input { width: 100%; padding: .65rem .85rem; border: 1.5px solid #E8E4DE; border-radius: 8px; font-family: 'DM Sans', system-ui, sans-serif; font-size: 14px; color: #1A1A1A; background: #fff; transition: border-color .15s; outline: none; }
+  .quiz-page .field input:focus { border-color: #1D9E75; }
+  .quiz-page .field-hint { font-size: 12px; color: #aaa; margin-top: .3rem; }
+  .quiz-page .gate-privacy { font-size: 12px; color: #aaa; margin-top: .75rem; line-height: 1.5; }
+  .quiz-page .gate-error { font-size: 13px; color: #C0392B; margin-top: .5rem; display: none; }
+  .quiz-page .res-eyebrow { font-size: 11px; font-weight: 500; color: #888; text-transform: uppercase; letter-spacing: .09em; margin-bottom: .35rem; }
+  .quiz-page .res-archetype-name { font-family: 'DM Serif Display', Georgia, serif; font-size: 26px; line-height: 1.2; margin-bottom: .6rem; }
+  .quiz-page .res-traits { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: .9rem; }
+  .quiz-page .trait-pill { font-size: 11px; font-weight: 500; padding: 3px 10px; border-radius: 20px; color: #fff; }
+  .quiz-page .res-desc { font-size: 14px; color: #444; line-height: 1.7; margin-bottom: 1rem; }
+  .quiz-page .res-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .quiz-page .res-cell { background: #F7F5F2; border-radius: 8px; padding: .75rem; }
+  .quiz-page .res-cell-label { font-size: 10px; font-weight: 500; color: #888; text-transform: uppercase; letter-spacing: .07em; margin-bottom: 3px; }
+  .quiz-page .res-cell-val { font-size: 13px; color: #1A1A1A; line-height: 1.45; }
+  .quiz-page .res-divider { font-size: 11px; font-weight: 500; color: #aaa; text-transform: uppercase; letter-spacing: .08em; border-top: 1px solid #EDE9E3; padding-top: .75rem; margin: 1.25rem 0 .75rem; }
+  .quiz-page .workshop-card { background: #F0FAF6; border: 1px solid #9FE1CB; border-radius: 12px; padding: 1.25rem; margin-top: 1rem; }
+  .quiz-page .workshop-card h3 { font-size: 14px; font-weight: 500; color: #085041; margin-bottom: .4rem; }
+  .quiz-page .workshop-card p { font-size: 13px; color: #0F6E56; line-height: 1.6; }
+  .quiz-page .score-row { display: flex; align-items: center; gap: 10px; margin-bottom: 7px; }
+  .quiz-page .score-name { font-size: 12px; color: #555; width: 115px; flex-shrink: 0; }
+  .quiz-page .score-track { flex: 1; height: 6px; background: #EDE9E3; border-radius: 3px; overflow: hidden; }
+  .quiz-page .score-fill { height: 6px; border-radius: 3px; transition: width .6s ease; }
+  .quiz-page .score-val { font-size: 11px; color: #aaa; width: 14px; text-align: right; }
+  .quiz-page .res-actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 1.25rem; }
+  @media (max-width: 480px) {
+    .quiz-page .card { padding: 1.5rem; }
+    .quiz-page .res-grid { grid-template-columns: 1fr; }
+  }
+
+  /* MATURITY ASSESSMENT PAGE */
+  .maturity-page { background: #F4F8F6; min-height: 100vh; padding: 5rem 1rem 4rem; display: flex; flex-direction: column; align-items: center; }
+  .maturity-page .mat-header { text-align: center; margin-bottom: 2rem; width: 100%; max-width: 640px; }
+  .maturity-page .card { background: #ffffff; border-radius: 20px; padding: 3rem; max-width: 640px; width: 100%; border: 1px solid #d0e8df; }
+  .maturity-page .brand { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: #5DCAA5; margin-bottom: 1rem; font-weight: 500; }
+  .maturity-page .phase-bar { display: flex; gap: 6px; margin-bottom: 2.5rem; }
+  .maturity-page .phase-dot { flex: 1; height: 4px; border-radius: 2px; background: #d0e8df; transition: background 0.3s; }
+  .maturity-page .phase-dot.done { background: #1D9E75; }
+  .maturity-page .phase-dot.active { background: #5DCAA5; }
+  .maturity-page .cat-label { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: #5DCAA5; margin-bottom: 0.5rem; font-weight: 500; }
+  .maturity-page .intro-title, .maturity-page .result-title { font-family: 'DM Serif Display', serif; font-size: 28px; color: #0F3D2B; line-height: 1.25; margin-bottom: 1rem; }
+  .maturity-page .q-text { font-size: 18px; font-weight: 500; color: #0F3D2B; line-height: 1.5; margin-bottom: 1.5rem; }
+  .maturity-page .intro-sub, .maturity-page .result-desc { font-size: 15px; color: #4a7060; line-height: 1.75; margin-bottom: 2rem; }
+  .maturity-page .pill-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 2.5rem; }
+  .maturity-page .pill { font-size: 12px; padding: 5px 14px; border-radius: 20px; background: #E1F5EE; color: #085041; border: 1px solid #9FE1CB; font-weight: 500; }
+  .maturity-page .option-btn { display: block; width: 100%; text-align: left; padding: 15px 18px; margin-bottom: 10px; border: 1px solid #d0e8df; border-radius: 12px; background: #fff; color: #1a2e27; font-size: 14px; font-family: 'DM Sans', sans-serif; line-height: 1.6; cursor: pointer; transition: border-color 0.15s, background 0.15s, color 0.15s; }
+  .maturity-page .option-btn:hover { border-color: #1D9E75; background: #E1F5EE; color: #085041; }
+  .maturity-page .option-btn.selected { border-color: #1D9E75; border-width: 2px; background: #E1F5EE; color: #085041; }
+  .maturity-page .nav-row { display: flex; justify-content: space-between; align-items: center; margin-top: 2rem; }
+  .maturity-page .step-count { font-size: 13px; color: #7aaa96; }
+  .maturity-page .nav-btn { padding: 11px 28px; border-radius: 10px; border: 1px solid #d0e8df; background: transparent; color: #1a2e27; font-size: 14px; font-family: 'DM Sans', sans-serif; cursor: pointer; transition: background 0.15s; }
+  .maturity-page .nav-btn:hover { background: #E1F5EE; }
+  .maturity-page .nav-btn.primary { background: #1D9E75; color: #fff; border-color: #1D9E75; font-weight: 500; }
+  .maturity-page .nav-btn.primary:hover { background: #0F6E56; border-color: #0F6E56; }
+  .maturity-page .nav-btn:disabled { opacity: 0.35; cursor: default; }
+  .maturity-page .result-phase { font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: #1D9E75; margin-bottom: 0.5rem; font-weight: 500; }
+  .maturity-page .breakdown-section { margin-top: 0.5rem; }
+  .maturity-page .breakdown-row { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+  .maturity-page .bd-label { font-size: 13px; color: #4a7060; width: 120px; flex-shrink: 0; }
+  .maturity-page .bd-track { flex: 1; height: 8px; background: #E1F5EE; border-radius: 4px; overflow: hidden; }
+  .maturity-page .bd-fill { height: 100%; border-radius: 4px; background: #1D9E75; transition: width 0.6s ease; }
+  .maturity-page .bd-val { font-size: 13px; color: #0F3D2B; font-weight: 500; width: 76px; flex-shrink: 0; text-align: right; }
+  .maturity-page .mat-divider { border: none; border-top: 1px solid #d0e8df; margin: 2rem 0; }
+  .maturity-page .restart-btn { margin-top: 2rem; padding: 11px 28px; border-radius: 10px; border: 1px solid #d0e8df; background: transparent; color: #1a2e27; font-size: 14px; font-family: 'DM Sans', sans-serif; cursor: pointer; }
+  .maturity-page .restart-btn:hover { background: #E1F5EE; }
+  @media (max-width: 480px) {
+    .maturity-page .card { padding: 2rem 1.25rem; }
+    .maturity-page .intro-title, .maturity-page .result-title { font-size: 22px; }
+    .maturity-page .bd-label { width: 90px; }
+    .maturity-page .bd-val { width: 60px; }
+  }
+
+  /* SHOP */
+  #page-shop { --accent: #15E0FB; --accent-border: rgba(21,224,251,0.22); }
+  .shop-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: rgba(255,255,255,0.055); margin-top: 3rem; }
+  .product-card { background: var(--dark2); padding: 2.5rem 2rem; position: relative; overflow: hidden; }
+  .product-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--product-accent, var(--cyan)); }
+  .product-label { font-size: 0.64rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--product-accent, var(--cyan)); margin-bottom: 0.55rem; }
+  .product-card h3 { font-family: 'Playfair Display', serif; font-size: 1.35rem; font-weight: 800; margin-bottom: 0.7rem; }
+  .product-card > p { font-size: 0.865rem; line-height: 1.75; color: var(--muted); margin-bottom: 0.5rem; font-weight: 300; }
+  .product-option { display: flex; align-items: center; gap: 1.25rem; padding: 1.1rem 0; border-top: 1px solid rgba(255,255,255,0.055); flex-wrap: wrap; }
+  .option-meta { flex: 1; min-width: 120px; }
+  .option-format { font-size: 0.82rem; font-weight: 500; color: var(--text); display: block; }
+  .option-desc { font-size: 0.72rem; color: var(--muted); margin-top: 0.1rem; }
+  .option-price { font-family: 'Playfair Display', serif; font-size: 1.45rem; font-weight: 900; color: var(--product-accent, var(--cyan)); white-space: nowrap; min-width: 52px; text-align: right; }
+  .option-action stripe-buy-button { display: block; }
+  .btn-shop-email { background: transparent; border: 1px solid var(--product-accent, var(--cyan)); color: var(--product-accent, var(--cyan)); padding: 0.55rem 1.2rem; font-family: 'Jost', sans-serif; font-size: 0.78rem; letter-spacing: 0.04em; text-decoration: none; display: inline-block; white-space: nowrap; transition: background 0.2s, color 0.2s; cursor: pointer; }
+  .btn-shop-email:hover { background: var(--product-accent, var(--cyan)); color: var(--dark); }
+  .coming-soon-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: rgba(255,255,255,0.055); margin-top: 1.5rem; }
+  .coming-card { background: var(--dark2); padding: 2rem 1.75rem; opacity: 0.6; }
+  .coming-badge { display: inline-block; font-size: 0.58rem; letter-spacing: 0.14em; text-transform: uppercase; border: 1px solid rgba(255,255,255,0.18); padding: 0.18rem 0.65rem; color: var(--muted); margin-bottom: 0.75rem; }
+  .coming-card h4 { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 700; margin-bottom: 0.4rem; }
+  .coming-card p { font-size: 0.855rem; color: var(--muted); line-height: 1.7; font-weight: 300; }
+  .stripe-note { font-size: 0.72rem; color: var(--muted); margin-top: 2.5rem; padding: 1rem 1.25rem; border: 1px solid var(--border); line-height: 1.7; }
+  .stripe-note a { color: var(--cyan); text-decoration: none; }
+  .stripe-note a:hover { text-decoration: underline; }
+
+  @media (max-width: 820px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    .section { padding: 3.5rem 1.5rem; }
+    .hero { padding: 7rem 1.5rem 4rem; }
+    .layer-grid, .three-col, .two-col, .shop-grid, .coming-soon-grid { grid-template-columns: 1fr; }
+    .cta-band, .quote-band { padding: 2.5rem 1.5rem; }
+    footer { padding: 1.5rem; flex-direction: column; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="logo" onclick="navigate('home')">
+    <svg viewBox="38 38 306 96" height="46" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="nav-logo-grad" x1="42.51" y1="84.16" x2="338.14" y2="84.16" gradientUnits="userSpaceOnUse">
+          <stop offset="0" stop-color="#00a1c8"/>
+          <stop offset="1" stop-color="#2a3990"/>
+        </linearGradient>
+      </defs>
+      <g fill="url(#nav-logo-grad)">
+        <path d="M48.87,78.34c-1.26-1.31-1.89-3.19-1.89-5.63v-11.92h-4.48l1.41-5.33h3.17v-5.08l6.44-2.97v8.05h6.54l-1.31,5.33h-5.13v12.07c0,.77.17,1.33.5,1.66.33.34.86.5,1.56.5.84,0,1.59-.17,2.26-.5l1.56,4.78c-.57.27-1.35.5-2.34.7-.99.2-1.94.3-2.84.3-2.38,0-4.2-.65-5.46-1.96Z"/>
+        <path d="M80.11,77.21c-.25-1.09-.38-2.32-.38-3.7v-8.1c0-3.39-1.41-5.08-4.23-5.08-1.68,0-3.03.65-4.05,1.96-1.02,1.31-1.53,2.97-1.53,4.98v12.58h-6.64v-36.92h6.64v15.19c.97-.97,2.08-1.74,3.32-2.31,1.24-.57,2.57-.86,3.97-.86,6.1,0,9.16,3.49,9.16,10.46v7.95c0,1.84.33,3.44,1.01,4.78l-6.04,2.21c-.57-1.01-.98-2.05-1.23-3.14Z"/>
+        <path d="M94.34,76.98c-2.33-2.25-3.5-5.3-3.5-9.16,0-2.52.47-4.75,1.41-6.69.94-1.94,2.33-3.46,4.17-4.55,1.84-1.09,4.07-1.63,6.69-1.63s4.76.53,6.64,1.58c1.88,1.06,3.3,2.5,4.28,4.33.97,1.83,1.46,3.87,1.46,6.11,0,1.11-.36,1.95-1.08,2.54-.72.59-1.72.88-2.99.88h-13.98c0,1.38.6,2.48,1.79,3.32,1.19.84,2.74,1.26,4.65,1.26,1.58,0,2.91-.23,4-.68s2.05-1.1,2.89-1.94l3.32,3.52c-1.11,1.41-2.53,2.51-4.28,3.29-1.74.79-3.72,1.18-5.94,1.18-4.02,0-7.2-1.12-9.53-3.37ZM108.91,65.21c0-1.48-.55-2.67-1.63-3.6-1.09-.92-2.47-1.38-4.15-1.38s-2.96.46-4.05,1.38c-1.09.92-1.63,2.12-1.63,3.6h11.47Z"/>
+        <path d="M141.63,79.7c-.59-.44-.88-.99-.88-1.66,0-.33.03-.59.1-.75l.1-.3-9.05-21.53h6.94l5.73,15.65,5.68-15.65h6.94l-9.61,23.04c-.27.64-.69,1.11-1.26,1.41-.57.3-1.39.45-2.46.45-.91,0-1.65-.22-2.24-.65Z"/>
+        <path d="M163.31,78.82c-1.9-1.06-3.35-2.55-4.38-4.48-1.02-1.93-1.53-4.15-1.53-6.67s.51-4.74,1.53-6.67c1.02-1.93,2.48-3.42,4.38-4.48,1.89-1.06,4.1-1.58,6.62-1.58s4.72.53,6.61,1.58c1.89,1.06,3.35,2.55,4.38,4.48,1.02,1.93,1.53,4.15,1.53,6.67s-.51,4.74-1.53,6.67c-1.02,1.93-2.48,3.42-4.38,4.48-1.9,1.06-4.1,1.58-6.61,1.58s-4.72-.53-6.62-1.58ZM174.25,73.08c.97-1.29,1.46-3.09,1.46-5.41s-.49-4.12-1.46-5.41c-.97-1.29-2.41-1.94-4.33-1.94s-3.35.65-4.33,1.94c-.97,1.29-1.46,3.09-1.46,5.41s.49,4.12,1.46,5.41c.97,1.29,2.41,1.94,4.33,1.94s3.35-.65,4.33-1.94Z"/>
+        <path d="M203.86,77.21c-.25-1.09-.38-2.32-.38-3.7v-8.1c0-3.39-1.41-5.08-4.23-5.08-1.68,0-3.03.65-4.05,1.96-1.02,1.31-1.54,2.97-1.54,4.98v12.58h-6.64v-17.56c0-1.01-.08-1.88-.23-2.62-.15-.74-.44-1.56-.88-2.46l5.88-2.26c.3.54.58,1.17.83,1.91.25.74.39,1.38.43,1.91.97-1.14,2.17-2.06,3.6-2.77,1.42-.7,2.94-1.06,4.55-1.06,3.12,0,5.38.9,6.79,2.69,1.41,1.79,2.11,4.39,2.11,7.77v7.95c0,1.84.34,3.44,1.01,4.78l-6.04,2.21c-.57-1.01-.98-2.05-1.23-3.14Z"/>
+        <path d="M46.58,121.98c-2.38-2.25-3.57-5.35-3.57-9.31s1.17-7.11,3.52-9.36c2.35-2.25,5.58-3.37,9.71-3.37,1.91,0,3.69.31,5.33.93,1.64.62,2.97,1.43,3.97,2.44l-2.26,4.38c-1.95-1.58-4.19-2.36-6.74-2.36-2.11,0-3.77.6-4.98,1.81-1.21,1.21-1.81,3.05-1.81,5.53s.61,4.28,1.84,5.48c1.22,1.21,2.93,1.81,5.11,1.81,1.24,0,2.36-.19,3.35-.58.99-.38,1.94-1.01,2.84-1.89l3.47,3.62c-1.11,1.31-2.53,2.34-4.28,3.09-1.74.75-3.61,1.13-5.58,1.13-4.23,0-7.53-1.12-9.91-3.37Z"/>
+        <path d="M74.48,123.82c-1.9-1.06-3.35-2.55-4.38-4.48-1.02-1.93-1.53-4.15-1.53-6.67s.51-4.74,1.53-6.66c1.02-1.93,2.48-3.42,4.38-4.48,1.89-1.06,4.1-1.58,6.62-1.58s4.72.53,6.61,1.58c1.89,1.06,3.35,2.55,4.38,4.48,1.02,1.93,1.53,4.15,1.53,6.66s-.51,4.74-1.53,6.67c-1.02,1.93-2.48,3.42-4.38,4.48-1.9,1.06-4.1,1.58-6.61,1.58s-4.72-.53-6.62-1.58ZM85.42,118.08c.97-1.29,1.46-3.09,1.46-5.41s-.49-4.12-1.46-5.41c-.97-1.29-2.41-1.94-4.33-1.94s-3.35.65-4.33,1.94c-.97,1.29-1.46,3.09-1.46,5.41s.49,4.12,1.46,5.41c.97,1.29,2.41,1.94,4.33,1.94s3.35-.65,4.33-1.94Z"/>
+        <path d="M97.59,87.92h6.64v36.92h-6.64v-36.92Z"/>
+        <path d="M108.71,87.92h6.64v36.92h-6.64v-36.92Z"/>
+        <path d="M124.6,123.89c-1.64-.97-2.93-2.38-3.87-4.23-.94-1.84-1.41-4.04-1.41-6.59,0-2.72.48-5.06,1.43-7.04.96-1.98,2.3-3.49,4.02-4.53,1.73-1.04,3.75-1.56,6.06-1.56,2.72,0,4.98,1.02,6.79,3.07v-2.57h6.39v17.56c0,1.17.1,2.15.3,2.92.2.77.52,1.54.96,2.31l-5.38,2.11c-1.01-1.11-1.58-2.36-1.71-3.77h-.1c-.94,1.21-2.09,2.14-3.45,2.79-1.36.65-2.84.98-4.45.98-2.08,0-3.94-.49-5.58-1.46ZM135.97,118.18c1.01-1.26,1.51-2.94,1.51-5.06v-.91c0-1.95-.5-3.6-1.48-4.96-.99-1.36-2.41-2.04-4.25-2.04s-3.31.67-4.3,2.01c-.99,1.34-1.48,3.29-1.48,5.83,0,2.28.48,4.02,1.43,5.21.96,1.19,2.34,1.79,4.15,1.79,1.94,0,3.42-.63,4.43-1.89Z"/>
+        <path d="M148.75,123.29c.44-.77.75-1.55.96-2.34.2-.79.3-1.77.3-2.94v-30.08h6.64v14.94c.91-.87,1.99-1.58,3.27-2.11,1.27-.54,2.63-.81,4.07-.81,3.32,0,5.97,1.11,7.95,3.32,1.98,2.21,2.97,5.33,2.97,9.36,0,2.51-.5,4.74-1.48,6.67-.99,1.93-2.35,3.42-4.07,4.48-1.73,1.06-3.63,1.58-5.71,1.58-3.25,0-5.85-1.26-7.8-3.77-.17,1.48-.74,2.75-1.71,3.82l-5.38-2.11ZM166.81,118.13c.97-1.29,1.46-3.13,1.46-5.51,0-4.93-1.96-7.39-5.89-7.39-1.88,0-3.32.68-4.33,2.04-1.01,1.36-1.51,3.01-1.51,4.96v.91c0,2.11.51,3.8,1.53,5.06,1.02,1.26,2.52,1.89,4.5,1.89,1.84,0,3.25-.65,4.23-1.94Z"/>
+        <path d="M184.29,123.82c-1.9-1.06-3.35-2.55-4.38-4.48-1.02-1.93-1.53-4.15-1.53-6.67s.51-4.74,1.53-6.66c1.02-1.93,2.48-3.42,4.38-4.48,1.89-1.06,4.1-1.58,6.61-1.58s4.72.53,6.61,1.58c1.89,1.06,3.35,2.55,4.38,4.48,1.02,1.93,1.53,4.15,1.53,6.66s-.51,4.74-1.53,6.67c-1.02,1.93-2.48,3.42-4.38,4.48-1.89,1.06-4.1,1.58-6.61,1.58s-4.72-.53-6.61-1.58ZM195.23,118.08c.97-1.29,1.46-3.09,1.46-5.41s-.49-4.12-1.46-5.41c-.97-1.29-2.41-1.94-4.33-1.94s-3.35.65-4.33,1.94c-.97,1.29-1.46,3.09-1.46,5.41s.49,4.12,1.46,5.41c.97,1.29,2.41,1.94,4.33,1.94s3.35-.65,4.33-1.94Z"/>
+        <path d="M208.01,107.29c0-1.01-.08-1.88-.23-2.62-.15-.74-.44-1.56-.88-2.46l5.89-2.26c.3.54.58,1.17.83,1.91.25.74.39,1.38.43,1.91.91-1.27,1.85-2.23,2.84-2.87.99-.64,2.12-.96,3.4-.96,1.01,0,1.89.13,2.64.4.75.27,1.55.72,2.39,1.36l-2.46,4.58c-.57-.33-1.09-.58-1.56-.73s-.99-.23-1.56-.23c-1.74,0-3.03.54-3.85,1.61-.82,1.07-1.23,2.7-1.23,4.88v13.03h-6.64v-17.56Z"/>
+        <path d="M229.79,123.89c-1.64-.97-2.94-2.38-3.87-4.23-.94-1.84-1.41-4.04-1.41-6.59,0-2.72.48-5.06,1.43-7.04.96-1.98,2.3-3.49,4.02-4.53,1.73-1.04,3.75-1.56,6.06-1.56,2.72,0,4.98,1.02,6.79,3.07v-2.57h6.39v17.56c0,1.17.1,2.15.3,2.92.2.77.52,1.54.96,2.31l-5.38,2.11c-1.01-1.11-1.58-2.36-1.71-3.77h-.1c-.94,1.21-2.09,2.14-3.45,2.79s-2.84.98-4.45.98c-2.08,0-3.94-.49-5.58-1.46ZM241.16,118.18c1.01-1.26,1.51-2.94,1.51-5.06v-.91c0-1.95-.5-3.6-1.48-4.96s-2.41-2.04-4.25-2.04-3.31.67-4.3,2.01-1.48,3.29-1.48,5.83c0,2.28.48,4.02,1.43,5.21.96,1.19,2.34,1.79,4.15,1.79,1.95,0,3.42-.63,4.43-1.89Z"/>
+        <path d="M259.79,123.34c-1.26-1.31-1.89-3.19-1.89-5.63v-11.92h-4.48l1.41-5.33h3.17v-5.08l6.44-2.97v8.05h6.54l-1.31,5.33h-5.13v12.07c0,.77.17,1.33.5,1.66.33.34.86.5,1.56.5.84,0,1.59-.17,2.26-.5l1.56,4.78c-.57.27-1.35.5-2.34.7-.99.2-1.94.3-2.84.3-2.38,0-4.2-.65-5.46-1.96Z"/>
+        <path d="M275.99,96.48c-.86-.8-1.28-1.83-1.28-3.07s.43-2.26,1.28-3.07c.86-.81,1.94-1.21,3.25-1.21s2.39.4,3.24,1.21c.86.8,1.28,1.83,1.28,3.07s-.43,2.26-1.28,3.07c-.86.81-1.94,1.21-3.24,1.21s-2.39-.4-3.25-1.21ZM275.92,100.45h6.64v24.4h-6.64v-24.4Z"/>
+        <path d="M296.47,124.7c-.59-.44-.88-.99-.88-1.66,0-.33.03-.59.1-.75l.1-.3-9.05-21.53h6.94l5.73,15.64,5.68-15.64h6.94l-9.61,23.04c-.27.64-.69,1.11-1.26,1.41-.57.3-1.39.45-2.46.45-.91,0-1.65-.22-2.24-.65Z"/>
+        <path d="M316.99,121.98c-2.33-2.25-3.5-5.3-3.5-9.16,0-2.52.47-4.75,1.41-6.69.94-1.94,2.33-3.46,4.18-4.55,1.84-1.09,4.07-1.63,6.69-1.63s4.76.53,6.64,1.58c1.88,1.06,3.3,2.5,4.28,4.33.97,1.83,1.46,3.87,1.46,6.11,0,1.11-.36,1.95-1.08,2.54-.72.59-1.72.88-2.99.88h-13.98c0,1.38.59,2.48,1.79,3.32,1.19.84,2.74,1.26,4.65,1.26,1.58,0,2.91-.23,4-.68,1.09-.45,2.05-1.1,2.89-1.94l3.32,3.52c-1.11,1.41-2.53,2.51-4.28,3.29-1.74.79-3.72,1.18-5.94,1.18-4.02,0-7.2-1.12-9.53-3.37ZM331.55,110.21c0-1.47-.55-2.67-1.63-3.6-1.09-.92-2.47-1.38-4.15-1.38s-2.96.46-4.05,1.38c-1.09.92-1.63,2.12-1.63,3.6h11.47Z"/>
+      </g>
+    </svg>
+  </a>
+  <ul class="nav-links">
+    <li><a id="nav-org"  onclick="navigate('org')">Organizations</a></li>
+    <li><a id="nav-team" onclick="navigate('team')">Teams</a></li>
+    <li><a id="nav-ind"  onclick="navigate('ind')">Individuals</a></li>
+    <li><a id="nav-cust" onclick="navigate('cust')">Customers</a></li>
+    <li><a id="nav-shop" onclick="navigate('shop')">Shop</a></li>
+  </ul>
+  <a class="nav-cta" href="https://calendly.com/thevoncollab" target="_blank">Book Time</a>
+</nav>
+
+
+<!-- ==================== HOME ==================== -->
+<div id="page-home" class="page">
+  <section class="hero" style="background:radial-gradient(ellipse 80% 55% at 62% 42%, rgba(21,224,251,0.055) 0%, transparent 68%)">
+    <div class="grid-lines"></div>
+    <div class="hero-content">
+      <div class="hero-tag anim-tag">The Complete Growth System</div>
+      <h1 class="hero-h1 anim-h1" id="hero-headline">Innovation <em>exposes barriers</em> to your growth.</h1>
+      <p class="hero-sub anim-sub">We build the engine that makes it consistent, repeatable, and human — at every level of the organization.</p>
+      <div class="hero-actions anim-actions">
+        <a class="btn-primary" onclick="navigate('org')">Explore the System</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section bg-alt">
+    <div class="section-label">The System</div>
+    <div class="section-title">Growth at every level</div>
+    <p class="section-desc">The Von Collaborative is a complete growth system that works at every level — from the organization's strategy to the individual's identity. Each layer connects, reinforces, and amplifies the others. This isn't a collection of tools. It's one coherent system.</p>
+    <div class="layer-grid">
+      <div class="layer-card" style="--card-accent:#9F8FE8" onclick="navigate('org')">
+        <div class="layer-level">Organization</div>
+        <h3>Innovation Operating Model</h3>
+        <p>An operating model that makes innovation impactful, repeatable, and embedded into the way your organization works — not just a one-time effort.</p>
+        <div class="layer-arrow">Explore &rarr;</div>
+      </div>
+      <div class="layer-card" style="--card-accent:#F07A5A" onclick="navigate('team')">
+        <div class="layer-level">Team</div>
+        <h3>Innovation Breaks Toolkit</h3>
+        <p>A human-centered process and activity toolkit that gives teams the methods, mindset, and momentum to move from challenge to solution.</p>
+        <div class="layer-arrow">Explore &rarr;</div>
+      </div>
+      <div class="layer-card" style="--card-accent:#EFB827" onclick="navigate('ind')">
+        <div class="layer-level">Individual</div>
+        <h3>The Story of Growth Toolkit</h3>
+        <p>A personal growth framework rooted in the Hero's Journey — helping individuals understand their strengths, navigate growth, and contribute at their highest level.</p>
+        <div class="layer-arrow">Explore &rarr;</div>
+      </div>
+      <div class="layer-card" style="--card-accent:#5BA8E8" onclick="navigate('cust')">
+        <div class="layer-level">Customer</div>
+        <h3>Converci</h3>
+        <p>A community-based insights engine that keeps your organization continuously connected to what your customers actually think, feel, and need.</p>
+        <div class="layer-arrow">Explore &rarr;</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="quote-band">
+    <p class="quote-text">"The same conceptual DNA runs from the organization down to the person. <em>That's not a coincidence.</em> It's the system."</p>
+  </div>
+
+  <section class="section">
+    <div class="two-col">
+      <div>
+        <div class="section-label">Why it works</div>
+        <div class="section-title">Innovation as a capability,<br>not a project</div>
+        <div class="divider"></div>
+        <p class="section-desc">Most organizations treat innovation as a project — something you launch and then wait for results. The Von Collaborative builds innovation as a capability: something your people can do, your teams can execute, and your organization can sustain.</p>
+        <p class="section-desc" style="margin-top:1.1rem">The same core philosophy, tools, and structure apply from the C-suite to the individual contributor. When every level speaks the same language of growth, real change becomes possible.</p>
+      </div>
+      <div class="detail-stack" style="margin-top:0.5rem">
+        <div class="detail-item"><div class="detail-label" style="color:#9F8FE8">Human-centered</div><p>Deep understanding of customers, stakeholders, and the people building — before any solution is created.</p></div>
+        <div class="detail-item"><div class="detail-label" style="color:#F07A5A">Repeatable</div><p>Innovation built as a capability, not a campaign. The process is documented, teachable, and designed to last.</p></div>
+        <div class="detail-item"><div class="detail-label" style="color:#EFB827">Integrated</div><p>The same philosophy and tools work across every level — from organizational strategy to individual growth.</p></div>
+        <div class="detail-item"><div class="detail-label" style="color:#5BA8E8">Impactful</div><p>Everything connects back to real growth: products people want, experiences that resonate, brands that lead.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="cta-band" style="background:var(--cyan)">
+    <h2>Ready to build the engine?</h2>
+    <a href="https://calendly.com/thevoncollab" target="_blank" class="btn-dark" style="color:var(--cyan)">Book a conversation &rarr;</a>
+  </div>
+</div>
+
+
+<!-- ==================== ORGANIZATIONS ==================== -->
+<div id="page-org" class="page" style="display:none">
+  <section class="hero" style="background:radial-gradient(ellipse 80% 55% at 62% 42%, rgba(159,143,232,0.08) 0%, transparent 68%)">
+    <div class="grid-lines"></div>
+    <div class="hero-content">
+      <div class="hero-tag anim-tag">For Organizations</div>
+      <h1 class="hero-h1 anim-h1">The <em>Innovation Operating Model</em><br>for lasting growth.</h1>
+      <p class="hero-sub anim-sub">Most organizations know they need to innovate. What they lack is a model that makes innovation consistent, measurable, and connected to how the business actually runs. That's what the Innovation Operating Model builds.</p>
+      <div class="hero-actions anim-actions">
+        <a class="btn-primary" href="https://calendly.com/thevoncollab" target="_blank">Book a Strategy Session</a>
+        <a class="btn-outline" onclick="navigate('home')">Back to the System</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section bg-alt">
+    <div class="two-col">
+      <div>
+        <div class="section-label">The problem</div>
+        <div class="section-title">Growth keeps stalling.<br>Innovation stays siloed.</div>
+        <div class="divider"></div>
+        <p class="section-desc">Companies invest in innovation initiatives but rarely see lasting results. Ideas get generated but don't get built. Progress stalls when there's no structure to move from insight to action. The challenge isn't creativity — it's the absence of an operating model that makes innovation part of how the organization works every day.</p>
+        <p class="section-desc" style="margin-top:1.1rem">The Innovation Operating Model addresses the four dimensions where organizations most often stall: strategy, culture, leadership, and structure.</p>
+      </div>
+      <div>
+        <div class="stat-row">
+          <div><div class="stat-num">3</div><div class="stat-label">Innovation types</div></div>
+          <div><div class="stat-num">4</div><div class="stat-label">Capability dimensions</div></div>
+        </div>
+        <div class="detail-stack">
+          <div class="detail-item"><div class="detail-label">Strategy</div><p>Innovation is intentional and connected to business goals. The IOM defines what types of innovation to pursue and how to prioritize them.</p></div>
+          <div class="detail-item"><div class="detail-label">Culture</div><p>Organizations that innovate consistently have cultures where curiosity is rewarded, risk is managed, and learning from failure is expected.</p></div>
+          <div class="detail-item"><div class="detail-label">Leadership</div><p>Innovation requires champions who can protect it, resource it, and communicate its importance across the organization.</p></div>
+          <div class="detail-item"><div class="detail-label">Structure</div><p>The right processes, teams, and governance ensure that ideas move efficiently from exploration to execution.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-label">Our approach</div>
+    <div class="section-title">Three types of innovation.<br>One operating system.</div>
+    <p class="section-desc">Not all innovation is the same. The IOM helps organizations identify and balance three distinct types — so they can build new capabilities while strengthening their core.</p>
+    <div class="three-col">
+      <div class="col-card"><h4>Incremental</h4><p>Improving what already exists — optimizing products, services, and processes to deliver more value with less friction.</p></div>
+      <div class="col-card"><h4>Evolutionary</h4><p>Adapting to change by developing adjacent capabilities, entering new markets, or creating new offerings for current customers.</p></div>
+      <div class="col-card"><h4>Revolutionary</h4><p>Transformative innovation that creates entirely new categories, disrupts existing markets, or redefines how your organization operates.</p></div>
+    </div>
+  </section>
+
+  <section class="section bg-alt">
+    <div class="section-label">How we work</div>
+    <div class="section-title">The process</div>
+    <div class="divider"></div>
+    <div class="process-steps">
+      <div class="process-step"><div class="step-num">01</div><div class="step-body"><h4>Diagnose</h4><p>We assess your organization's current innovation maturity across five dimensions — skills, leader support, organizational structure, strategy, and culture — to understand where you are and where the gaps are.</p></div></div>
+      <div class="process-step"><div class="step-num">02</div><div class="step-body"><h4>Define</h4><p>Together, we define the right innovation model for your organization: which types of innovation to pursue, how to structure the team, and what processes will make it sustainable.</p></div></div>
+      <div class="process-step"><div class="step-num">03</div><div class="step-body"><h4>Design</h4><p>We design the operating model — the tools, workflows, governance structures, and culture shifts — that will make innovation a repeatable capability, not a one-time push.</p></div></div>
+      <div class="process-step"><div class="step-num">04</div><div class="step-body"><h4>Deploy</h4><p>We help you activate the model with your team: onboarding leaders, facilitating workshops, and building the habits and structures that ensure innovation takes hold.</p></div></div>
+    </div>
+    <div style="margin-top:2.5rem">
+      <a class="btn-primary" onclick="navigate('maturity')">Assess your innovation maturity &rarr;</a>
+    </div>
+  </section>
+
+  <div class="cta-band" style="background:#9F8FE8">
+    <h2>Ready to diagnose<br>your growth barriers?</h2>
+    <a href="https://calendly.com/thevoncollab" target="_blank" class="btn-dark" style="color:#9F8FE8">Book a Strategy Session &rarr;</a>
+  </div>
+</div>
+
+
+<!-- ==================== TEAMS ==================== -->
+<div id="page-team" class="page" style="display:none">
+  <section class="hero" style="background:radial-gradient(ellipse 80% 55% at 62% 42%, rgba(240,122,90,0.08) 0%, transparent 68%)">
+    <div class="grid-lines"></div>
+    <div class="hero-content">
+      <div class="hero-tag anim-tag">For Teams</div>
+      <h1 class="hero-h1 anim-h1">Innovation in <em>everyone's</em> hands.<br>The Innovation Breaks Toolkit.</h1>
+      <p class="hero-sub anim-sub">The Innovation Breaks Toolkit puts a structured, human-centered innovation process into every team member's hands. Whether you're a startup or a Fortune 500, the 5D process makes innovation something your team can actually do — not just talk about.</p>
+      <div class="hero-actions anim-actions">
+        <a class="btn-primary" href="mailto:info@thevoncollaborative.com">Get the Toolkit</a>
+        <a class="btn-outline" onclick="navigate('home')">Back to the System</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section bg-alt">
+    <div class="section-label">The process</div>
+    <div class="section-title">Five phases. One human-centered flow.</div>
+    <p class="section-desc">The 5D framework guides teams through a complete innovation cycle — from understanding the challenge to delivering a tested solution. Each phase builds on the last, ensuring the right problem is solved the right way.</p>
+    <div class="process-steps">
+      <div class="process-step"><div class="step-num">D1</div><div class="step-body"><h4>Devise</h4><p>Align on the challenge worth solving. Teams define the strategic intent, clarify the innovation type, and establish the boundaries and success criteria for the work ahead.</p></div></div>
+      <div class="process-step"><div class="step-num">D2</div><div class="step-body"><h4>Discover</h4><p>Deeply understand the people at the center of the challenge. Research, observe, and listen to surface the real needs, behaviors, and motivations driving the opportunity.</p></div></div>
+      <div class="process-step"><div class="step-num">D3</div><div class="step-body"><h4>Define</h4><p>Synthesize what was learned into a clear, actionable problem statement. This phase ensures the team is solving the right problem — grounded in human insight, not assumption.</p></div></div>
+      <div class="process-step"><div class="step-num">D4</div><div class="step-body"><h4>Design</h4><p>Generate, develop, and refine ideas. Teams move from concepts to prototypes, testing their thinking quickly and iterating toward a solution that works in the real world.</p></div></div>
+      <div class="process-step"><div class="step-num">D5</div><div class="step-body"><h4>Deploy</h4><p>Bring the solution to life. Define the rollout plan, create the feedback loops, and ensure the innovation lands with the people it was built for.</p></div></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-label">The toolkit</div>
+    <div class="section-title">Activity cards and worksheets<br>for every phase.</div>
+    <p class="section-desc">Each card in the Innovation Breaks Toolkit is designed to activate a specific phase of the 5D process — with facilitation prompts, activities, and worksheets that any team can use with or without a trained facilitator.</p>
+    <p class="section-desc" style="margin-top:1.1rem">Whether you're running a half-day sprint or a multi-week program, the toolkit scales to fit your team's size, speed, and challenge.</p>
+    <div class="three-col">
+      <div class="col-card"><h4>Get unstuck</h4><p>When teams hit a wall, the Innovation Breaks Toolkit provides a structured way forward — breaking analysis paralysis and creating momentum.</p></div>
+      <div class="col-card"><h4>Spark inspiration</h4><p>Curated prompts and activities designed to ignite fresh thinking and challenge assumptions that keep teams stuck in familiar patterns.</p></div>
+      <div class="col-card"><h4>Build empathy</h4><p>Human-centered research activities that help teams deeply understand the people they're building for — before jumping to solutions.</p></div>
+      <div class="col-card"><h4>Ignite creativity</h4><p>Structured ideation methods that give every person on the team a voice, generating more ideas and more diverse perspectives.</p></div>
+      <div class="col-card"><h4>Take action</h4><p>Clear deployment frameworks that help teams move from idea to execution — with accountability, feedback loops, and a plan to make it real.</p></div>
+    </div>
+  </section>
+
+  <section class="section bg-alt">
+    <div class="section-label">Workshops</div>
+    <div class="section-title">Facilitated sessions<br>for your team.</div>
+    <div class="two-col">
+      <div>
+        <div class="divider"></div>
+        <p class="section-desc">The Innovation Breaks Toolkit is most powerful when facilitated. Von Collaborative workshops are designed to meet your team where they are — with formats that fit your schedule, your challenge, and your team's experience level.</p>
+        <p class="section-desc" style="margin-top:1.1rem">Every session is grounded in the 5D process and tailored to your specific innovation challenge — whether you're rethinking a product, exploring a new market, or building your team's creative capacity.</p>
+        <div style="margin-top:2rem;display:flex;gap:1rem;flex-wrap:wrap">
+          <a class="btn-primary" href="https://calendly.com/thevoncollab" target="_blank">Book a Workshop</a>
+          <a class="btn-outline" onclick="navigate('shop')">Get the Toolkit &rarr;</a>
+        </div>
+      </div>
+      <div class="detail-stack">
+        <div class="detail-item on-dark"><div class="detail-label">Half-day sprint</div><p>A focused, fast-moving session ideal for teams that need to make progress on a specific challenge. Typically covers Devise through Define in one sitting.</p></div>
+        <div class="detail-item on-dark"><div class="detail-label">Full-day workshop</div><p>A complete pass through the 5D process with deeper discovery, richer ideation, and time for prototyping. Best for cross-functional teams and complex challenges.</p></div>
+        <div class="detail-item on-dark"><div class="detail-label">Multi-session program</div><p>A structured innovation engagement over multiple sessions — building team capability while working through a real strategic challenge from Devise to Deploy.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="cta-band" style="background:#F07A5A">
+    <h2>Ready to activate<br>your team?</h2>
+    <a href="mailto:info@thevoncollaborative.com" class="btn-dark" style="color:#F07A5A">Get the Toolkit &rarr;</a>
+  </div>
+</div>
+
+
+<!-- ==================== INDIVIDUALS ==================== -->
+<div id="page-ind" class="page" style="display:none">
+  <section class="hero" style="background:radial-gradient(ellipse 80% 55% at 62% 42%, rgba(239,184,39,0.07) 0%, transparent 68%)">
+    <div class="grid-lines"></div>
+    <div class="hero-content">
+      <div class="hero-tag anim-tag">For Individuals</div>
+      <h1 class="hero-h1 anim-h1">Organizations don't grow<br>without <em>people</em> growing.</h1>
+      <p class="hero-sub anim-sub">The Story of Growth Toolkit helps individuals understand their natural strengths, navigate personal and professional transitions, and show up at their best — for themselves and for their teams.</p>
+      <div class="hero-actions anim-actions">
+        <a class="btn-primary" href="mailto:info@thevoncollaborative.com">Get the Toolkit</a>
+        <a class="btn-outline" onclick="navigate('home')">Back to the System</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section bg-alt">
+    <div class="section-label">The Story of Growth Toolkit</div>
+    <div class="section-title">The Hero's Journey<br>as a growth map.</div>
+    <div class="two-col" style="margin-top:2rem">
+      <div>
+        <div class="divider"></div>
+        <p class="section-desc">The Hero's Journey — Joseph Campbell's universal story of growth — isn't just a narrative framework. It's a map for anyone navigating meaningful change. The Story of Growth Toolkit applies this arc directly to personal and professional growth.</p>
+        <p class="section-desc" style="margin-top:1.1rem">Whether you're stepping into a new role, navigating uncertainty, or looking to contribute at a higher level, the five stages of the Hero's Journey give you a language for where you are — and a path forward.</p>
+      </div>
+      <div class="detail-stack">
+        <div class="detail-item"><div class="detail-label">The Call</div><p>A moment of disruption, opportunity, or invitation that asks you to grow beyond your current identity. It can feel exciting or terrifying — often both.</p></div>
+        <div class="detail-item"><div class="detail-label">The Threshold</div><p>The decision to step forward, even without certainty. This is where commitment begins and the familiar starts to fall away.</p></div>
+        <div class="detail-item"><div class="detail-label">The Trials</div><p>The challenges, failures, and breakthroughs that build capability and character. This is where most of the real growth happens.</p></div>
+        <div class="detail-item"><div class="detail-label">The Revelation</div><p>A moment of clarity — about who you are, what you're capable of, and what you're meant to bring. The core gift of the journey.</p></div>
+        <div class="detail-item"><div class="detail-label">The Return</div><p>Bringing what you've learned back to your team and organization. The hero's gift isn't just personal — it's shared.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-label">Archetypes</div>
+    <div class="section-title">Know your role<br>on the team.</div>
+    <p class="section-desc">Every person has a natural way of showing up — especially under pressure. The Story of Growth Toolkit uses 12 Jungian archetypes to help individuals identify their default patterns, leverage their natural strengths, and recognize which archetype they need to grow into next.</p>
+    <div class="three-col">
+      <div class="col-card"><h4>The Hero</h4><p>Driven to prove their worth through courage and action. Shows up with determination, resilience, and a willingness to take on challenges others avoid.</p></div>
+      <div class="col-card"><h4>The Revolutionary</h4><p>Compelled to challenge the status quo and break what isn't working. Brings disruptive energy, honest truth-telling, and a vision for what's possible.</p></div>
+      <div class="col-card"><h4>The Explorer</h4><p>Restlessly seeking new experiences, ideas, and possibilities. Brings fresh perspectives, an openness to the unknown, and a drive to discover what's next.</p></div>
+      <div class="col-card"><h4>The Creator</h4><p>Driven to build something meaningful and lasting. Brings imagination, originality, and the discipline to turn ideas into tangible reality.</p></div>
+      <div class="col-card"><h4>The Ruler</h4><p>Motivated to create order, stability, and a clear path forward. Brings vision, decisiveness, and the ability to build systems that endure.</p></div>
+      <div class="col-card"><h4>The Caregiver</h4><p>Compelled to support, nurture, and protect the people around them. Brings empathy, loyalty, and a deep commitment to the wellbeing of the team.</p></div>
+      <div class="col-card"><h4>The Sage</h4><p>Driven to find truth and share knowledge. Brings analytical depth, wisdom, and a commitment to making decisions grounded in evidence.</p></div>
+      <div class="col-card"><h4>The Idealist</h4><p>Motivated by a deep belief that things can be better. Brings optimism, moral clarity, and the energy to inspire others toward a higher vision.</p></div>
+      <div class="col-card"><h4>The Realist</h4><p>Grounded in what's practical and what actually works. Brings pragmatism, reliability, and the ability to make the best of any situation.</p></div>
+      <div class="col-card"><h4>The Jester</h4><p>Uses humor, play, and lightness to unlock creativity and connection. Brings energy, fun, and the ability to help teams break free from rigid thinking.</p></div>
+      <div class="col-card"><h4>The Lover</h4><p>Motivated by connection, beauty, and meaning. Brings passion, enthusiasm, and the ability to make people feel seen, valued, and inspired.</p></div>
+      <div class="col-card"><h4>The Magician</h4><p>Driven to transform reality by understanding what lies beneath the surface. Brings intuition, synthesis, and the ability to make the seemingly impossible possible.</p></div>
+    </div>
+    <div style="margin-top:2.5rem">
+      <a class="btn-primary" onclick="navigate('quiz')">Discover your archetype &rarr;</a>
+    </div>
+  </section>
+
+  <section class="section bg-alt">
+    <div class="section-label">The connection</div>
+    <div class="section-title">The same DNA.<br>Every level.</div>
+    <div class="two-col">
+      <div>
+        <div class="divider"></div>
+        <p class="section-desc">The Von Collaborative was built on a single insight: the philosophy, tools, and structure that help organizations innovate should work at every level — right down to the individual. Growth isn't just a business strategy. It's a personal one.</p>
+        <p class="section-desc" style="margin-top:1.1rem">When individuals understand their own growth arc and the archetypes they naturally embody, they bring more of themselves to the work — making teams stronger and organizations more resilient.</p>
+      </div>
+      <div style="padding-top:0.5rem">
+        <div class="connector-row"><div class="connector-badge">Org</div><p>The Innovation Operating Model gives the organization a structure for pursuing growth intentionally — with clear innovation types, capability dimensions, and a defined process.</p></div>
+        <div class="connector-row"><div class="connector-badge">Team</div><p>The Innovation Breaks Toolkit gives teams a shared language and method for working through challenges together — from divergent discovery to convergent action.</p></div>
+        <div class="connector-row"><div class="connector-badge">You</div><p>The Story of Growth Toolkit gives you a personal map — your archetype, your journey, your next step — so you can contribute at your highest level and grow alongside the work.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="cta-band" style="background:#EFB827">
+    <h2>Ready to map<br>your growth?</h2>
+    <div style="display:flex;gap:0.75rem;flex-wrap:wrap">
+      <a onclick="navigate('shop')" class="btn-dark" style="color:#EFB827;cursor:pointer">Get the Toolkit &rarr;</a>
+      <a href="https://calendly.com/thevoncollab" target="_blank" class="btn-dark" style="color:#EFB827;border:1px solid rgba(7,10,16,0.25)">Book a session</a>
+    </div>
+  </div>
+</div>
+
+
+<!-- ==================== CUSTOMERS ==================== -->
+<div id="page-cust" class="page" style="display:none">
+  <section class="hero" style="background:radial-gradient(ellipse 80% 55% at 62% 42%, rgba(91,168,232,0.08) 0%, transparent 68%)">
+    <div class="grid-lines"></div>
+    <div class="hero-content">
+      <div class="hero-tag anim-tag">For Customers</div>
+      <h1 class="hero-h1 anim-h1">Growth grounded in<br><em>real insight.</em> Not assumption.</h1>
+      <p class="hero-sub anim-sub">Converci is a community-based, always-on insights engine built for innovators. It keeps your organization continuously connected to what your customers actually think, feel, and need — so every growth decision is grounded in reality, not assumption.</p>
+      <div class="hero-actions anim-actions">
+        <a class="btn-primary" href="mailto:Info@converci.com">Request Access</a>
+        <a class="btn-outline" onclick="navigate('home')">Back to the System</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section bg-alt">
+    <div class="section-label">The problem</div>
+    <div class="section-title">Most growth decisions are made<br>without the customer in the room.</div>
+    <div class="two-col" style="margin-top:2rem">
+      <div>
+        <div class="divider"></div>
+        <p class="section-desc">Most organizations make their most important growth decisions — what to build, what to change, what to stop — with limited visibility into what their customers actually experience. Research happens in bursts. Surveys arrive late. Insights sit in decks no one reads.</p>
+        <p class="section-desc" style="margin-top:1.1rem">The result is a persistent gap between what organizations believe is true about their customers and what is actually true. Converci closes that gap.</p>
+      </div>
+      <div class="detail-stack">
+        <div class="detail-item"><div class="detail-label">The assumption trap</div><p>When teams don't have access to real customer input, they fill the gap with internal assumptions. Those assumptions accumulate until they become the foundation for major decisions — without anyone questioning them.</p></div>
+        <div class="detail-item"><div class="detail-label">The feedback lag</div><p>Traditional research moves slowly. By the time insights are gathered, synthesized, and shared, the window for action has often passed. Converci delivers ongoing, real-time visibility.</p></div>
+        <div class="detail-item"><div class="detail-label">The insight gap</div><p>Data without meaning is just noise. Converci doesn't just collect customer input — it processes it through the 4 i's framework: Information, Insights, Implications, and Impact.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-label">How it works</div>
+    <div class="section-title">The 4 i's of data:<br>from input to impact.</div>
+    <p class="section-desc">Converci replaces episodic research with a continuous, community-driven insights engine. The 4 i's framework turns raw customer input into strategic direction your team can actually act on.</p>
+    <div class="process-steps">
+      <div class="process-step"><div class="step-num">01</div><div class="step-body"><h4>Information</h4><p>Gather raw data directly from your customer community — behaviors, reactions, and unfiltered perspective on what's working and what's not.</p></div></div>
+      <div class="process-step"><div class="step-num">02</div><div class="step-body"><h4>Insights</h4><p>Distill the patterns that matter. Surface the deeper truths hidden in customer responses — the recurring themes, the surprises, and the signals worth acting on.</p></div></div>
+      <div class="process-step"><div class="step-num">03</div><div class="step-body"><h4>Implications</h4><p>Identify what the insights mean for the business. Translate customer reality into strategic direction — clarifying where to invest, what to change, and what to stop.</p></div></div>
+      <div class="process-step"><div class="step-num">04</div><div class="step-body"><h4>Impact</h4><p>Generate measurable growth. Apply the implications to product decisions, experience design, and brand strategy — and close the loop by measuring what changes.</p></div></div>
+    </div>
+  </section>
+
+  <section class="section bg-alt">
+    <div class="section-label">Use cases</div>
+    <div class="section-title">When Converci matters most.</div>
+    <div class="three-col">
+      <div class="col-card"><h4>Before you build</h4><p>Ground your team in what customers actually need before committing to a solution. Converci replaces internal assumptions with real customer signals — so you build things people genuinely want.</p></div>
+      <div class="col-card"><h4>When growth stalls</h4><p>When results plateau, the answer is rarely more effort — it's better understanding. Converci surfaces the gaps in customer connection that are blocking breakthroughs.</p></div>
+      <div class="col-card"><h4>After you launch</h4><p>Understand how your product or service actually performs in people's real lives — not just in controlled settings. Converci captures honest feedback from the people who matter most.</p></div>
+    </div>
+  </section>
+
+  <div class="cta-band" style="background:#5BA8E8">
+    <h2>Ready to close<br>the loop?</h2>
+    <a href="mailto:Info@converci.com" class="btn-dark" style="color:#5BA8E8">Request Access &rarr;</a>
+  </div>
+</div>
+
+
+<!-- ==================== SHOP ==================== -->
+<!--
+  STRIPE SETUP — complete these steps when ready to accept payments:
+  1. Create a Stripe account at stripe.com
+  2. Add each product + price in Products > Add product
+  3. For each product, go to Payment links > Create a buy button
+  4. Copy the buy-button-id and your publishable key (starts with pk_live_)
+  5. Replace STRIPE_BUY_BTN_* and STRIPE_PK below in the HTML
+
+  Until configured, customers are directed to email to order.
+  Set STRIPE_SHOP_LIVE = true (in the <script> at the bottom) to show buy buttons.
+-->
+<div id="page-shop" class="page" style="display:none">
+
+  <section class="hero" style="background:radial-gradient(ellipse 80% 55% at 62% 42%, rgba(21,224,251,0.055) 0%, transparent 68%)">
+    <div class="grid-lines"></div>
+    <div class="hero-content">
+      <div class="hero-tag anim-tag">Shop</div>
+      <h1 class="hero-h1 anim-h1">Tools built for <em>growth.</em></h1>
+      <p class="hero-sub anim-sub">Physical card decks and digital downloads designed to activate innovation at every level — in your hands, on your table, with your team.</p>
+      <div class="hero-actions anim-actions">
+        <a class="btn-outline" href="mailto:info@thevoncollaborative.com">Questions? Email us</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section bg-alt">
+    <div class="section-label">Toolkits</div>
+    <div class="section-title">The core collection</div>
+    <p class="section-desc">Each toolkit is available as a printed physical card deck or an instant digital download — choose what works best for your team.</p>
+
+    <div class="shop-grid">
+
+      <!-- ── Innovation Breaks Toolkit ── -->
+      <div class="product-card" style="--product-accent:#F07A5A">
+        <div class="product-label">Teams</div>
+        <h3>Innovation Breaks Toolkit</h3>
+        <p>Activity cards and worksheets that guide teams through the five-phase innovation process — from Devise to Deploy. Facilitates workshops of any size.</p>
+
+        <!-- Physical -->
+        <div class="product-option">
+          <div class="option-meta">
+            <span class="option-format">Physical</span>
+            <span class="option-desc">Printed card deck &middot; ships in 3&ndash;5 days</span>
+          </div>
+          <div class="option-price">$49</div>
+          <div class="option-action">
+            <!-- STRIPE: replace buy-button-id="STRIPE_BUY_BTN_IBT_PHYSICAL" and publishable-key="STRIPE_PK" -->
+            <stripe-buy-button id="stripe-ibt-physical"
+              buy-button-id="STRIPE_BUY_BTN_IBT_PHYSICAL"
+              publishable-key="STRIPE_PK"
+              style="display:none">
+            </stripe-buy-button>
+            <a class="btn-shop-email" id="email-ibt-physical"
+              href="mailto:info@thevoncollaborative.com?subject=Order%3A%20Innovation%20Breaks%20Toolkit%20%E2%80%94%20Physical&body=Hi%2C%20I%27d%20like%20to%20order%20the%20Innovation%20Breaks%20Toolkit%20(Physical).%0A%0AName%3A%0AShipping%20address%3A%0AQuantity%3A">
+              Order by email &rarr;
+            </a>
+          </div>
+        </div>
+
+        <!-- Digital -->
+        <div class="product-option">
+          <div class="option-meta">
+            <span class="option-format">Digital</span>
+            <span class="option-desc">PDF download &middot; instant access</span>
+          </div>
+          <div class="option-price">$29</div>
+          <div class="option-action">
+            <!-- STRIPE: replace buy-button-id="STRIPE_BUY_BTN_IBT_DIGITAL" and publishable-key="STRIPE_PK" -->
+            <stripe-buy-button id="stripe-ibt-digital"
+              buy-button-id="STRIPE_BUY_BTN_IBT_DIGITAL"
+              publishable-key="STRIPE_PK"
+              style="display:none">
+            </stripe-buy-button>
+            <a class="btn-shop-email" id="email-ibt-digital"
+              href="mailto:info@thevoncollaborative.com?subject=Order%3A%20Innovation%20Breaks%20Toolkit%20%E2%80%94%20Digital&body=Hi%2C%20I%27d%20like%20to%20purchase%20the%20Innovation%20Breaks%20Toolkit%20(Digital%20download).%0A%0AName%3A%0AEmail%3A">
+              Order by email &rarr;
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Story of Growth Toolkit ── -->
+      <div class="product-card" style="--product-accent:#EFB827">
+        <div class="product-label">Individuals</div>
+        <h3>The Story of Growth Toolkit</h3>
+        <p>A personal growth map rooted in the Hero's Journey. Helps individuals discover their archetypes, navigate transitions, and bring their best to the team.</p>
+
+        <!-- Physical -->
+        <div class="product-option">
+          <div class="option-meta">
+            <span class="option-format">Physical</span>
+            <span class="option-desc">Printed card deck &middot; ships in 3&ndash;5 days</span>
+          </div>
+          <div class="option-price">$49</div>
+          <div class="option-action">
+            <!-- STRIPE: replace buy-button-id="STRIPE_BUY_BTN_SOG_PHYSICAL" and publishable-key="STRIPE_PK" -->
+            <stripe-buy-button id="stripe-sog-physical"
+              buy-button-id="STRIPE_BUY_BTN_SOG_PHYSICAL"
+              publishable-key="STRIPE_PK"
+              style="display:none">
+            </stripe-buy-button>
+            <a class="btn-shop-email" id="email-sog-physical"
+              href="mailto:info@thevoncollaborative.com?subject=Order%3A%20Story%20of%20Growth%20Toolkit%20%E2%80%94%20Physical&body=Hi%2C%20I%27d%20like%20to%20order%20the%20Story%20of%20Growth%20Toolkit%20(Physical).%0A%0AName%3A%0AShipping%20address%3A%0AQuantity%3A">
+              Order by email &rarr;
+            </a>
+          </div>
+        </div>
+
+        <!-- Digital -->
+        <div class="product-option">
+          <div class="option-meta">
+            <span class="option-format">Digital</span>
+            <span class="option-desc">PDF download &middot; instant access</span>
+          </div>
+          <div class="option-price">$29</div>
+          <div class="option-action">
+            <!-- STRIPE: replace buy-button-id="STRIPE_BUY_BTN_SOG_DIGITAL" and publishable-key="STRIPE_PK" -->
+            <stripe-buy-button id="stripe-sog-digital"
+              buy-button-id="STRIPE_BUY_BTN_SOG_DIGITAL"
+              publishable-key="STRIPE_PK"
+              style="display:none">
+            </stripe-buy-button>
+            <a class="btn-shop-email" id="email-sog-digital"
+              href="mailto:info@thevoncollaborative.com?subject=Order%3A%20Story%20of%20Growth%20Toolkit%20%E2%80%94%20Digital&body=Hi%2C%20I%27d%20like%20to%20purchase%20the%20Story%20of%20Growth%20Toolkit%20(Digital%20download).%0A%0AName%3A%0AEmail%3A">
+              Order by email &rarr;
+            </a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Stripe setup note — shown until live -->
+    <div class="stripe-note" id="shop-stripe-note">
+      <strong style="color:var(--text)">Online checkout coming soon.</strong> To order now, use the email buttons above — we'll confirm your order within one business day. Questions? <a href="mailto:info@thevoncollaborative.com">info@thevoncollaborative.com</a>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-label">Coming soon</div>
+    <div class="section-title">More on the way</div>
+    <p class="section-desc">New tools and merchandise in development. Sign up below to be notified when they drop.</p>
+    <div class="coming-soon-grid">
+      <div class="coming-card">
+        <div class="coming-badge">Merchandise</div>
+        <h4>Von Collaborative Hat</h4>
+        <p>Classic structured cap with the Von Collaborative wordmark.</p>
+      </div>
+      <div class="coming-card">
+        <div class="coming-badge">Merchandise</div>
+        <h4>Von Collaborative Tee</h4>
+        <p>Clean, minimal tee for the people building something worth wearing.</p>
+      </div>
+      <div class="coming-card">
+        <div class="coming-badge">Growth Tools</div>
+        <h4>Additional Toolkits</h4>
+        <p>New tools covering specific dimensions of the Innovation Operating Model.</p>
+      </div>
+    </div>
+    <div style="margin-top:2.5rem">
+      <a class="btn-primary" href="mailto:info@thevoncollaborative.com?subject=Notify%20me%20when%20new%20products%20launch&body=Hi%2C%20please%20add%20me%20to%20the%20list%20to%20be%20notified%20when%20new%20shop%20items%20are%20available.%0A%0AName%3A%0AEmail%3A">Notify me when new items launch &rarr;</a>
+    </div>
+  </section>
+
+  <div class="cta-band" style="background:var(--cyan)">
+    <h2>Want to bring the tools<br>into your organization?</h2>
+    <a href="mailto:info@thevoncollaborative.com?subject=Bulk%20order%20inquiry" class="btn-dark" style="color:var(--cyan)">Ask about bulk orders &rarr;</a>
+  </div>
+
+</div>
+
+
+<!-- ==================== INNOVATION MATURITY ASSESSMENT ==================== -->
+<div id="page-maturity" class="page maturity-page" style="display:none">
+  <div class="mat-header">
+    <div class="brand">Innovation Operating Model</div>
+    <h2 style="font-family:'DM Serif Display',serif;font-size:clamp(22px,5vw,30px);color:#0F3D2B;line-height:1.2;margin-bottom:1rem">Innovation maturity assessment</h2>
+    <button class="nav-btn" onclick="navigate('org')" style="font-size:13px;padding:.45rem 1rem">&larr; Back to Organizations</button>
+  </div>
+
+  <div class="card">
+
+    <!-- Intro screen -->
+    <div id="mat-intro">
+      <p class="brand">The Von Collaborative</p>
+      <h2 class="intro-title">Innovation maturity assessment</h2>
+      <p class="intro-sub">Answer 5 short questions to discover where your organization stands across the five dimensions of innovation maturity — from Introduction to Expert.</p>
+      <div class="pill-row">
+        <span class="pill">Skills</span>
+        <span class="pill">Leader support</span>
+        <span class="pill">Organization</span>
+        <span class="pill">Strategy</span>
+        <span class="pill">Culture</span>
+      </div>
+      <button class="nav-btn primary" onclick="startMaturity()">Start assessment</button>
+    </div>
+
+    <!-- Quiz screen -->
+    <div id="mat-quiz" style="display:none">
+      <div class="phase-bar" id="mat-phase-bar"></div>
+      <p class="cat-label" id="mat-cat-label"></p>
+      <p class="q-text" id="mat-q-text"></p>
+      <div id="mat-options"></div>
+      <div class="nav-row">
+        <button class="nav-btn" id="mat-back-btn" onclick="maturityGoBack()">Back</button>
+        <span class="step-count" id="mat-step-count"></span>
+        <button class="nav-btn primary" id="mat-next-btn" onclick="maturityGoNext()" disabled>Next</button>
+      </div>
+    </div>
+
+    <!-- Result screen -->
+    <div id="mat-result" style="display:none">
+      <p class="brand">The Von Collaborative</p>
+      <p class="result-phase" id="mat-res-phase"></p>
+      <h2 class="result-title" id="mat-res-title"></h2>
+      <p class="result-desc" id="mat-res-desc"></p>
+      <hr class="mat-divider" />
+      <p class="cat-label" style="margin-bottom:1.25rem">Your breakdown by dimension</p>
+      <div class="breakdown-section" id="mat-breakdown"></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:2rem">
+        <button class="restart-btn" onclick="restartMaturity()">Retake assessment</button>
+        <button class="nav-btn primary" onclick="navigate('org')" style="margin-top:0">Back to Organizations</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ==================== ARCHETYPE QUIZ ==================== -->
+<div id="page-quiz" class="page quiz-page" style="display:none">
+  <div class="page-header">
+    <div class="brand-name">Story of Growth Toolkit</div>
+    <h2 class="page-title">Discover your default archetype</h2>
+    <div style="margin-top:1rem">
+      <button class="qbtn" onclick="navigate('ind')" style="font-size:13px;padding:.45rem 1rem">&larr; Back to Individuals</button>
+    </div>
+  </div>
+
+  <!-- INTRO -->
+  <div class="card screen active" id="s-intro">
+    <div class="intro-eyebrow">Growth Toolkit &middot; Pre-work</div>
+    <div class="intro-title">How do you naturally show up?</div>
+    <div class="intro-desc">Before your workshop, take a few minutes to explore your default patterns as a leader and collaborator. You'll identify your primary and secondary archetypes — the tendencies you naturally rely on when navigating growth.</div>
+    <div class="intro-note">12 questions &middot; about 5 minutes &middot; no right or wrong answers. Choose what feels most true, not most aspirational.</div>
+    <button class="qbtn primary" onclick="startQuiz()">Begin &rarr;</button>
+  </div>
+
+  <!-- QUESTION -->
+  <div class="card screen" id="s-question">
+    <div class="prog-wrap">
+      <div class="prog-meta">
+        <span id="prog-text">Question 1 of 12</span>
+        <span id="prog-pct">0%</span>
+      </div>
+      <div class="prog-track"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
+    </div>
+    <div class="q-label" id="q-label">Question 1</div>
+    <div class="q-text" id="q-text"></div>
+    <div class="opts" id="opts"></div>
+    <div class="q-footer">
+      <span class="q-hint" id="q-hint">Select an answer to continue</span>
+      <button class="qbtn primary" id="btn-next" onclick="nextQ()" style="display:none">Next &rarr;</button>
+    </div>
+  </div>
+
+  <!-- EMAIL GATE -->
+  <div class="card screen" id="s-gate">
+    <div class="gate-title">You're one step away from your results</div>
+    <div class="gate-desc">Enter your name and email below. We'll show your archetype results instantly and send you a copy to reference before your workshop.</div>
+    <div class="field">
+      <label for="f-name">First name <span style="color:#aaa;font-weight:400">(optional)</span></label>
+      <input type="text" id="f-name" placeholder="Your first name" autocomplete="given-name">
+    </div>
+    <div class="field">
+      <label for="f-email">Email address</label>
+      <input type="email" id="f-email" placeholder="you@example.com" autocomplete="email">
+      <div class="field-hint">Required to see your results</div>
+    </div>
+    <button class="qbtn primary" onclick="submitGate()" id="btn-gate">See my results &rarr;</button>
+    <div class="gate-error" id="gate-error">Please enter a valid email address to continue.</div>
+    <div class="gate-privacy">We respect your privacy. Your email will only be used to send your results and occasional workshop-related updates from The Von Collaborative.</div>
+  </div>
+
+  <!-- RESULTS -->
+  <div class="card screen" id="s-results">
+    <div id="res-primary"></div>
+    <div id="res-secondary"></div>
+
+    <div class="workshop-card">
+      <h3>Bring this to your workshop</h3>
+      <p>Your two default archetypes reveal how you naturally navigate growth. In the workshop, you'll explore whether these archetypes are helping or limiting you — and identify which archetype you need to adopt to conquer your next challenge.</p>
+    </div>
+
+    <div class="res-divider">Full score breakdown</div>
+    <div id="score-bars"></div>
+
+    <div class="res-actions">
+      <button class="qbtn" onclick="retake()">&#8635; Retake quiz</button>
+      <button class="qbtn primary" onclick="navigate('ind')">Back to Individuals</button>
+    </div>
+
+    <p style="font-size:12px;color:#aaa;margin-top:1.25rem;line-height:1.5;">
+      Source: Carol S. Pearson, <em>Awakening the Heroes Within</em> &amp; Carl Jung.<br>
+      Toolkit by The Von Collaborative.
+    </p>
+  </div>
+</div>
+
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">
+    <svg viewBox="38 38 306 96" height="34" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="footer-logo-grad" x1="42.51" y1="84.16" x2="338.14" y2="84.16" gradientUnits="userSpaceOnUse">
+          <stop offset="0" stop-color="#00a1c8"/>
+          <stop offset="1" stop-color="#2a3990"/>
+        </linearGradient>
+      </defs>
+      <g fill="url(#footer-logo-grad)">
+        <path d="M48.87,78.34c-1.26-1.31-1.89-3.19-1.89-5.63v-11.92h-4.48l1.41-5.33h3.17v-5.08l6.44-2.97v8.05h6.54l-1.31,5.33h-5.13v12.07c0,.77.17,1.33.5,1.66.33.34.86.5,1.56.5.84,0,1.59-.17,2.26-.5l1.56,4.78c-.57.27-1.35.5-2.34.7-.99.2-1.94.3-2.84.3-2.38,0-4.2-.65-5.46-1.96Z"/>
+        <path d="M80.11,77.21c-.25-1.09-.38-2.32-.38-3.7v-8.1c0-3.39-1.41-5.08-4.23-5.08-1.68,0-3.03.65-4.05,1.96-1.02,1.31-1.53,2.97-1.53,4.98v12.58h-6.64v-36.92h6.64v15.19c.97-.97,2.08-1.74,3.32-2.31,1.24-.57,2.57-.86,3.97-.86,6.1,0,9.16,3.49,9.16,10.46v7.95c0,1.84.33,3.44,1.01,4.78l-6.04,2.21c-.57-1.01-.98-2.05-1.23-3.14Z"/>
+        <path d="M94.34,76.98c-2.33-2.25-3.5-5.3-3.5-9.16,0-2.52.47-4.75,1.41-6.69.94-1.94,2.33-3.46,4.17-4.55,1.84-1.09,4.07-1.63,6.69-1.63s4.76.53,6.64,1.58c1.88,1.06,3.3,2.5,4.28,4.33.97,1.83,1.46,3.87,1.46,6.11,0,1.11-.36,1.95-1.08,2.54-.72.59-1.72.88-2.99.88h-13.98c0,1.38.6,2.48,1.79,3.32,1.19.84,2.74,1.26,4.65,1.26,1.58,0,2.91-.23,4-.68s2.05-1.1,2.89-1.94l3.32,3.52c-1.11,1.41-2.53,2.51-4.28,3.29-1.74.79-3.72,1.18-5.94,1.18-4.02,0-7.2-1.12-9.53-3.37ZM108.91,65.21c0-1.48-.55-2.67-1.63-3.6-1.09-.92-2.47-1.38-4.15-1.38s-2.96.46-4.05,1.38c-1.09.92-1.63,2.12-1.63,3.6h11.47Z"/>
+        <path d="M141.63,79.7c-.59-.44-.88-.99-.88-1.66,0-.33.03-.59.1-.75l.1-.3-9.05-21.53h6.94l5.73,15.65,5.68-15.65h6.94l-9.61,23.04c-.27.64-.69,1.11-1.26,1.41-.57.3-1.39.45-2.46.45-.91,0-1.65-.22-2.24-.65Z"/>
+        <path d="M163.31,78.82c-1.9-1.06-3.35-2.55-4.38-4.48-1.02-1.93-1.53-4.15-1.53-6.67s.51-4.74,1.53-6.67c1.02-1.93,2.48-3.42,4.38-4.48,1.89-1.06,4.1-1.58,6.62-1.58s4.72.53,6.61,1.58c1.89,1.06,3.35,2.55,4.38,4.48,1.02,1.93,1.53,4.15,1.53,6.67s-.51,4.74-1.53,6.67c-1.02,1.93-2.48,3.42-4.38,4.48-1.9,1.06-4.1,1.58-6.61,1.58s-4.72-.53-6.62-1.58ZM174.25,73.08c.97-1.29,1.46-3.09,1.46-5.41s-.49-4.12-1.46-5.41c-.97-1.29-2.41-1.94-4.33-1.94s-3.35.65-4.33,1.94c-.97,1.29-1.46,3.09-1.46,5.41s.49,4.12,1.46,5.41c.97,1.29,2.41,1.94,4.33,1.94s3.35-.65,4.33-1.94Z"/>
+        <path d="M203.86,77.21c-.25-1.09-.38-2.32-.38-3.7v-8.1c0-3.39-1.41-5.08-4.23-5.08-1.68,0-3.03.65-4.05,1.96-1.02,1.31-1.54,2.97-1.54,4.98v12.58h-6.64v-17.56c0-1.01-.08-1.88-.23-2.62-.15-.74-.44-1.56-.88-2.46l5.88-2.26c.3.54.58,1.17.83,1.91.25.74.39,1.38.43,1.91.97-1.14,2.17-2.06,3.6-2.77,1.42-.7,2.94-1.06,4.55-1.06,3.12,0,5.38.9,6.79,2.69,1.41,1.79,2.11,4.39,2.11,7.77v7.95c0,1.84.34,3.44,1.01,4.78l-6.04,2.21c-.57-1.01-.98-2.05-1.23-3.14Z"/>
+        <path d="M46.58,121.98c-2.38-2.25-3.57-5.35-3.57-9.31s1.17-7.11,3.52-9.36c2.35-2.25,5.58-3.37,9.71-3.37,1.91,0,3.69.31,5.33.93,1.64.62,2.97,1.43,3.97,2.44l-2.26,4.38c-1.95-1.58-4.19-2.36-6.74-2.36-2.11,0-3.77.6-4.98,1.81-1.21,1.21-1.81,3.05-1.81,5.53s.61,4.28,1.84,5.48c1.22,1.21,2.93,1.81,5.11,1.81,1.24,0,2.36-.19,3.35-.58.99-.38,1.94-1.01,2.84-1.89l3.47,3.62c-1.11,1.31-2.53,2.34-4.28,3.09-1.74.75-3.61,1.13-5.58,1.13-4.23,0-7.53-1.12-9.91-3.37Z"/>
+        <path d="M74.48,123.82c-1.9-1.06-3.35-2.55-4.38-4.48-1.02-1.93-1.53-4.15-1.53-6.67s.51-4.74,1.53-6.66c1.02-1.93,2.48-3.42,4.38-4.48,1.89-1.06,4.1-1.58,6.62-1.58s4.72.53,6.61,1.58c1.89,1.06,3.35,2.55,4.38,4.48,1.02,1.93,1.53,4.15,1.53,6.66s-.51,4.74-1.53,6.67c-1.02,1.93-2.48,3.42-4.38,4.48-1.9,1.06-4.1,1.58-6.61,1.58s-4.72-.53-6.62-1.58ZM85.42,118.08c.97-1.29,1.46-3.09,1.46-5.41s-.49-4.12-1.46-5.41c-.97-1.29-2.41-1.94-4.33-1.94s-3.35.65-4.33,1.94c-.97,1.29-1.46,3.09-1.46,5.41s.49,4.12,1.46,5.41c.97,1.29,2.41,1.94,4.33,1.94s3.35-.65,4.33-1.94Z"/>
+        <path d="M97.59,87.92h6.64v36.92h-6.64v-36.92Z"/>
+        <path d="M108.71,87.92h6.64v36.92h-6.64v-36.92Z"/>
+        <path d="M124.6,123.89c-1.64-.97-2.93-2.38-3.87-4.23-.94-1.84-1.41-4.04-1.41-6.59,0-2.72.48-5.06,1.43-7.04.96-1.98,2.3-3.49,4.02-4.53,1.73-1.04,3.75-1.56,6.06-1.56,2.72,0,4.98,1.02,6.79,3.07v-2.57h6.39v17.56c0,1.17.1,2.15.3,2.92.2.77.52,1.54.96,2.31l-5.38,2.11c-1.01-1.11-1.58-2.36-1.71-3.77h-.1c-.94,1.21-2.09,2.14-3.45,2.79-1.36.65-2.84.98-4.45.98-2.08,0-3.94-.49-5.58-1.46ZM135.97,118.18c1.01-1.26,1.51-2.94,1.51-5.06v-.91c0-1.95-.5-3.6-1.48-4.96-.99-1.36-2.41-2.04-4.25-2.04s-3.31.67-4.3,2.01c-.99,1.34-1.48,3.29-1.48,5.83,0,2.28.48,4.02,1.43,5.21.96,1.19,2.34,1.79,4.15,1.79,1.94,0,3.42-.63,4.43-1.89Z"/>
+        <path d="M148.75,123.29c.44-.77.75-1.55.96-2.34.2-.79.3-1.77.3-2.94v-30.08h6.64v14.94c.91-.87,1.99-1.58,3.27-2.11,1.27-.54,2.63-.81,4.07-.81,3.32,0,5.97,1.11,7.95,3.32,1.98,2.21,2.97,5.33,2.97,9.36,0,2.51-.5,4.74-1.48,6.67-.99,1.93-2.35,3.42-4.07,4.48-1.73,1.06-3.63,1.58-5.71,1.58-3.25,0-5.85-1.26-7.8-3.77-.17,1.48-.74,2.75-1.71,3.82l-5.38-2.11ZM166.81,118.13c.97-1.29,1.46-3.13,1.46-5.51,0-4.93-1.96-7.39-5.89-7.39-1.88,0-3.32.68-4.33,2.04-1.01,1.36-1.51,3.01-1.51,4.96v.91c0,2.11.51,3.8,1.53,5.06,1.02,1.26,2.52,1.89,4.5,1.89,1.84,0,3.25-.65,4.23-1.94Z"/>
+        <path d="M184.29,123.82c-1.9-1.06-3.35-2.55-4.38-4.48-1.02-1.93-1.53-4.15-1.53-6.67s.51-4.74,1.53-6.66c1.02-1.93,2.48-3.42,4.38-4.48,1.89-1.06,4.1-1.58,6.61-1.58s4.72.53,6.61,1.58c1.89,1.06,3.35,2.55,4.38,4.48,1.02,1.93,1.53,4.15,1.53,6.66s-.51,4.74-1.53,6.67c-1.02,1.93-2.48,3.42-4.38,4.48-1.89,1.06-4.1,1.58-6.61,1.58s-4.72-.53-6.61-1.58ZM195.23,118.08c.97-1.29,1.46-3.09,1.46-5.41s-.49-4.12-1.46-5.41c-.97-1.29-2.41-1.94-4.33-1.94s-3.35.65-4.33,1.94c-.97,1.29-1.46,3.09-1.46,5.41s.49,4.12,1.46,5.41c.97,1.29,2.41,1.94,4.33,1.94s3.35-.65,4.33-1.94Z"/>
+        <path d="M208.01,107.29c0-1.01-.08-1.88-.23-2.62-.15-.74-.44-1.56-.88-2.46l5.89-2.26c.3.54.58,1.17.83,1.91.25.74.39,1.38.43,1.91.91-1.27,1.85-2.23,2.84-2.87.99-.64,2.12-.96,3.4-.96,1.01,0,1.89.13,2.64.4.75.27,1.55.72,2.39,1.36l-2.46,4.58c-.57-.33-1.09-.58-1.56-.73s-.99-.23-1.56-.23c-1.74,0-3.03.54-3.85,1.61-.82,1.07-1.23,2.7-1.23,4.88v13.03h-6.64v-17.56Z"/>
+        <path d="M229.79,123.89c-1.64-.97-2.94-2.38-3.87-4.23-.94-1.84-1.41-4.04-1.41-6.59,0-2.72.48-5.06,1.43-7.04.96-1.98,2.3-3.49,4.02-4.53,1.73-1.04,3.75-1.56,6.06-1.56,2.72,0,4.98,1.02,6.79,3.07v-2.57h6.39v17.56c0,1.17.1,2.15.3,2.92.2.77.52,1.54.96,2.31l-5.38,2.11c-1.01-1.11-1.58-2.36-1.71-3.77h-.1c-.94,1.21-2.09,2.14-3.45,2.79s-2.84.98-4.45.98c-2.08,0-3.94-.49-5.58-1.46ZM241.16,118.18c1.01-1.26,1.51-2.94,1.51-5.06v-.91c0-1.95-.5-3.6-1.48-4.96s-2.41-2.04-4.25-2.04-3.31.67-4.3,2.01-1.48,3.29-1.48,5.83c0,2.28.48,4.02,1.43,5.21.96,1.19,2.34,1.79,4.15,1.79,1.95,0,3.42-.63,4.43-1.89Z"/>
+        <path d="M259.79,123.34c-1.26-1.31-1.89-3.19-1.89-5.63v-11.92h-4.48l1.41-5.33h3.17v-5.08l6.44-2.97v8.05h6.54l-1.31,5.33h-5.13v12.07c0,.77.17,1.33.5,1.66.33.34.86.5,1.56.5.84,0,1.59-.17,2.26-.5l1.56,4.78c-.57.27-1.35.5-2.34.7-.99.2-1.94.3-2.84.3-2.38,0-4.2-.65-5.46-1.96Z"/>
+        <path d="M275.99,96.48c-.86-.8-1.28-1.83-1.28-3.07s.43-2.26,1.28-3.07c.86-.81,1.94-1.21,3.25-1.21s2.39.4,3.24,1.21c.86.8,1.28,1.83,1.28,3.07s-.43,2.26-1.28,3.07c-.86.81-1.94,1.21-3.24,1.21s-2.39-.4-3.25-1.21ZM275.92,100.45h6.64v24.4h-6.64v-24.4Z"/>
+        <path d="M296.47,124.7c-.59-.44-.88-.99-.88-1.66,0-.33.03-.59.1-.75l.1-.3-9.05-21.53h6.94l5.73,15.64,5.68-15.64h6.94l-9.61,23.04c-.27.64-.69,1.11-1.26,1.41-.57.3-1.39.45-2.46.45-.91,0-1.65-.22-2.24-.65Z"/>
+        <path d="M316.99,121.98c-2.33-2.25-3.5-5.3-3.5-9.16,0-2.52.47-4.75,1.41-6.69.94-1.94,2.33-3.46,4.18-4.55,1.84-1.09,4.07-1.63,6.69-1.63s4.76.53,6.64,1.58c1.88,1.06,3.3,2.5,4.28,4.33.97,1.83,1.46,3.87,1.46,6.11,0,1.11-.36,1.95-1.08,2.54-.72.59-1.72.88-2.99.88h-13.98c0,1.38.59,2.48,1.79,3.32,1.19.84,2.74,1.26,4.65,1.26,1.58,0,2.91-.23,4-.68,1.09-.45,2.05-1.1,2.89-1.94l3.32,3.52c-1.11,1.41-2.53,2.51-4.28,3.29-1.74.79-3.72,1.18-5.94,1.18-4.02,0-7.2-1.12-9.53-3.37ZM331.55,110.21c0-1.47-.55-2.67-1.63-3.6-1.09-.92-2.47-1.38-4.15-1.38s-2.96.46-4.05,1.38c-1.09.92-1.63,2.12-1.63,3.6h11.47Z"/>
+      </g>
+    </svg>
+  </div>
+  <div class="footer-meta">info@thevoncollaborative.com</div>
+  <div class="footer-links">
+    <a href="https://www.linkedin.com/company/the-von-collaborative/about" target="_blank">LinkedIn</a>
+    <a href="https://www.instagram.com/thevoncollaborative" target="_blank">Instagram</a>
+  </div>
+  <div class="footer-meta">&copy;2024 The Von Collaborative</div>
+</footer>
+
+<script>
+  const PAGES = ['home','org','team','ind','cust','shop','quiz','maturity'];
+  const NAV   = { org:'nav-org', team:'nav-team', ind:'nav-ind', cust:'nav-cust', shop:'nav-shop' };
+
+  // ============================================================
+  // STRIPE SHOP — set to true after replacing buy-button IDs
+  // in the shop HTML (search for STRIPE_BUY_BTN_ and STRIPE_PK)
+  // ============================================================
+  const STRIPE_SHOP_LIVE = false;
+
+  (function initShop() {
+    if (STRIPE_SHOP_LIVE) {
+      const ids = ['ibt-physical','ibt-digital','sog-physical','sog-digital'];
+      ids.forEach(id => {
+        const btn = document.getElementById('stripe-' + id);
+        const em  = document.getElementById('email-'  + id);
+        if (btn) btn.style.display = 'block';
+        if (em)  em.style.display  = 'none';
+      });
+      const note = document.getElementById('shop-stripe-note');
+      if (note) note.style.display = 'none';
+    }
+  })();
+
+  function navigate(page) {
+    PAGES.forEach(p => {
+      const el = document.getElementById('page-' + p);
+      if (el) el.style.display = (p === page) ? 'block' : 'none';
+    });
+    Object.keys(NAV).forEach(p => {
+      const el = document.getElementById(NAV[p]);
+      if (el) el.classList.toggle('active', p === page);
+    });
+    window.scrollTo({ top: 0, behavior: 'instant' });
+    history.replaceState(null, '', page === 'home' ? '#' : '#' + page);
+  }
+
+  const hash = location.hash.replace('#', '');
+  if (hash && PAGES.includes(hash)) navigate(hash);
+
+  // ============================================================
+  // HERO HEADLINE ROTATION
+  // ============================================================
+  const heroHeadlines = [
+    'Innovation <em>exposes barriers</em> to your growth.',
+    'Innovation <em>breaks the status quo</em> to become the company you\'re meant to be.',
+    'Innovation challenges <em>the way things have always been done.</em>'
+  ];
+  let headlineIndex = 0;
+
+  function cycleHeadline() {
+    const el = document.getElementById('hero-headline');
+    if (!el) return;
+
+    // Fade out + slide up
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(-14px)';
+
+    setTimeout(() => {
+      headlineIndex = (headlineIndex + 1) % heroHeadlines.length;
+      el.innerHTML = heroHeadlines[headlineIndex];
+
+      // Snap to bottom (no transition) then slide up into place
+      el.style.transition = 'none';
+      el.style.transform = 'translateY(14px)';
+      el.style.opacity = '0';
+      el.offsetHeight; // force reflow
+
+      el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+      el.style.opacity = '1';
+      el.style.transform = 'translateY(0)';
+    }, 520);
+  }
+
+  setInterval(cycleHeadline, 5000);
+
+  function lockHeadlineHeight() {
+    const el = document.getElementById('hero-headline');
+    if (!el) return;
+    // Suspend transitions and reset position so measurement is clean
+    el.style.transition = 'none';
+    el.style.opacity   = '1';
+    el.style.transform = 'translateY(0)';
+    el.style.height    = 'auto';
+    // Measure every phrase, keep the tallest
+    let maxH = 0;
+    heroHeadlines.forEach(phrase => {
+      el.innerHTML = phrase;
+      maxH = Math.max(maxH, el.offsetHeight);
+    });
+    // Restore current phrase and lock height
+    el.innerHTML = heroHeadlines[headlineIndex];
+    el.style.height = maxH + 'px';
+    // Re-enable transitions on the next frame
+    requestAnimationFrame(() => {
+      el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+    });
+  }
+
+  window.addEventListener('load',   lockHeadlineHeight);
+  window.addEventListener('resize', lockHeadlineHeight);
+
+  // ============================================================
+  // ARCHETYPE QUIZ
+  // Replace FORMSPREE_ENDPOINT with your formspree.io endpoint
+  // to enable email capture (e.g. 'https://formspree.io/f/xxxxxxxx')
+  // ============================================================
+  const FORMSPREE_ENDPOINT = 'YOUR_FORMSPREE_ENDPOINT';
+
+  const archetypes = {
+    hero:         { name:'The Hero',         color:'#D95A30', traits:['Brave','Ambitious','Disciplined','Strength'],          goal:'Exert mastery to improve the world',             gift:'Competence and courage',           desire:'Prove worth through courageous action',            desc:'Heroes are most fulfilled when they can rise to and overcome a challenge. Naturally determined and achievement-oriented, they enjoy demonstrating a winning attitude and motivating others to achieve their goals.' },
+    revolutionary:{ name:'The Revolutionary',color:'#7B3F9E', traits:['Rebellious','Candid','Unconventional','Liberation'],   goal:'Destroy what is not working',                   gift:'Outrageousness and radical freedom', desire:'Liberation',                                        desc:'Revolutionaries are most fulfilled when they can change something that needs to be changed. Often unconventional thinkers, they enjoy challenging the status quo and motivating others to think differently.' },
+    explorer:     { name:'The Explorer',     color:'#5B3EA5', traits:['Curious','Ambitious','Independent','Freedom'],         goal:'Experience a better, more authentic life',        gift:'Autonomy, ambition, authenticity',  desire:'Self-discovery through exploration',                desc:'Explorers are most fulfilled when they can seek out new approaches and perspectives. Naturally independent and curious, they blaze new trails and motivate others to explore uncharted territory.' },
+    creator:      { name:'The Creator',      color:'#3AADA8', traits:['Creative','Unique','Original','Innovation'],           goal:'Give form to a vision',                          gift:'Creativity and imagination',        desire:'Create something of enduring value',                desc:'Creators are most fulfilled by seeing new ideas take shape. Naturally expressive and imaginative, they demonstrate inventiveness and motivate creative thinking in others.' },
+    ruler:        { name:'The Ruler',        color:'#3AAA35', traits:['Refined','Responsible','Proud','Control'],             goal:'Create prosperity and success',                  gift:'Responsibility',                    desire:'Authority',                                         desc:'Rulers are most fulfilled when they can demonstrate leadership and orchestrate complex situations. Naturally confident and responsible, they motivate others to maintain high standards.' },
+    caregiver:    { name:'The Caregiver',    color:'#6DC443', traits:['Compassionate','Familial','Helpful','Service'],        goal:'Help others succeed',                            gift:'Compassion and generosity',         desire:'Protect people from harm',                          desc:'Caregivers are most fulfilled when they can make a difference for someone else. Naturally nurturing and dedicated, they motivate others to provide better service and genuine care.' },
+    sage:         { name:'The Sage',         color:'#3476C0', traits:['Intelligent','Analytical','Trustworthy','Wisdom'],     goal:'Use intelligence to understand the world',        gift:'Knowledge and intelligence',        desire:'Discovery of truth',                                desc:'Sages are most fulfilled by finding answers to great questions. Naturally reflective and knowledgeable, they demonstrate the value of thinking things through and motivate others to seek truth.' },
+    idealist:     { name:'The Idealist',     color:'#4DA6E0', traits:['Optimistic','Honest','Good','Wonder'],                 goal:'Live by deeply held values',                     gift:'Faith and optimism',                desire:'A life aligned with values',                        desc:'Idealists are most fulfilled when their lives reflect their deeply held values. Naturally hopeful, they demonstrate perseverance and motivate others to trust in good outcomes.' },
+    realist:      { name:'The Realist',      color:'#9A9B00', traits:['Humble','Honest','Down-to-earth','Belonging'],         goal:'Belong and contribute to the team',              gift:'Realism, empathy, lack of pretense', desire:'Connection with others',                            desc:'Realists prioritize facing reality. Naturally empathetic and unpretentious, they demonstrate their common touch and motivate others to pitch in and solve problems together.' },
+    jester:       { name:'The Jester',       color:'#D49B00', traits:['Joyful','Humorous','Self-deprecating','Fun'],          goal:'Lighten the mood and have a great time',          gift:'Joy',                               desire:'Live in the moment with full enjoyment',            desc:'Jesters are most fulfilled when they can use their ingenuity and wit. Naturally playful and humorous, they see the value of fun and can lighten the energy in stressful situations.' },
+    lover:        { name:'The Lover',        color:'#E8921A', traits:['Passionate','Magnetic','Beautiful','Intimacy'],        goal:'Be in relationship with things they love',        gift:'Passion, appreciation, commitment', desire:'Attain intimacy and experience pleasure',            desc:'Lovers are most fulfilled by building relationships. Naturally appreciative and committed, they create consensus and motivate others to see and utilize their own special gifts.' },
+    magician:     { name:'The Magician',     color:'#E63B2E', traits:['Imaginative','Whimsical','Inspiring','Power'],         goal:'Make dreams come true',                          gift:'Finding win-win outcomes',          desire:'Knowledge of fundamental laws of the world',       desc:'Magicians are most fulfilled when they can see a vision realized. Naturally intuitive and inspiring, they perceive multiple perspectives and motivate others to believe anything is possible.' }
+  };
+
+  const questions = [
+    { q:"When I face a significant growth challenge, my first instinct is to:", opts:[
+      {t:"Rise up and prove I have what it takes",                        a:'hero'},
+      {t:"Challenge the status quo and find a radical new way through",   a:'revolutionary'},
+      {t:"Explore new paths and trust my curiosity to guide me",          a:'explorer'},
+      {t:"Invent a fresh approach no one has tried before",               a:'creator'}
+    ]},
+    { q:"When my team is lost or uncertain, I naturally:", opts:[
+      {t:"Take charge and bring order to the situation",                  a:'ruler'},
+      {t:"Put others' needs first and offer genuine support",             a:'caregiver'},
+      {t:"Research and analyze until I understand the root cause",        a:'sage'},
+      {t:"Stay optimistic and remind everyone it will work out",          a:'idealist'}
+    ]},
+    { q:"In collaboration, I am most naturally drawn to:", opts:[
+      {t:"Keeping things light and finding the humor in hard moments",    a:'jester'},
+      {t:"Building deep, meaningful connections with the people around me", a:'lover'},
+      {t:"Being the reliable, steady presence the team can count on",    a:'realist'},
+      {t:"Inspiring others to believe in what's possible",               a:'magician'}
+    ]},
+    { q:"I feel most fulfilled when:", opts:[
+      {t:"I overcome a tough challenge and demonstrate my capability",    a:'hero'},
+      {t:"I help someone else grow or succeed",                           a:'caregiver'},
+      {t:"I'm running things effectively and with clear authority",       a:'ruler'},
+      {t:"I bring a new idea to life",                                    a:'creator'}
+    ]},
+    { q:"When I see something that isn't working, I:", opts:[
+      {t:"Push to disrupt it, even if it makes others uncomfortable",    a:'revolutionary'},
+      {t:"Venture out to find fresh approaches from unexpected places",   a:'explorer'},
+      {t:"Gather information until I fully understand what's broken",     a:'sage'},
+      {t:"Look for what's still working while we fix what's not",        a:'idealist'}
+    ]},
+    { q:"Others would most likely describe me as:", opts:[
+      {t:"Fun — the one who can lighten any room",                        a:'jester'},
+      {t:"Passionate and deeply committed to what I care about",         a:'lover'},
+      {t:"Grounded, reliable, and easy to work with",                    a:'realist'},
+      {t:"Visionary — someone who makes the impossible feel possible",   a:'magician'}
+    ]},
+    { q:"When I take on a new initiative, I:", opts:[
+      {t:"Push hard — I want to win and outperform",                      a:'hero'},
+      {t:"Challenge existing norms to find a better way",                a:'revolutionary'},
+      {t:"Design something original that expresses my perspective",      a:'creator'},
+      {t:"Set clear expectations and take full ownership of outcomes",   a:'ruler'}
+    ]},
+    { q:"My deepest fear in a growth challenge is:", opts:[
+      {t:"Not having enough information to make the right call",         a:'sage'},
+      {t:"Letting people down or being seen as selfish",                 a:'caregiver'},
+      {t:"Being rejected or standing out too much from the group",       a:'realist'},
+      {t:"Missing out on a life that feels full and meaningful",         a:'idealist'}
+    ]},
+    { q:"I am at my very best when:", opts:[
+      {t:"I'm blazing a new trail and discovering what's next",          a:'explorer'},
+      {t:"I can turn a vision into something real and tangible",         a:'magician'},
+      {t:"The energy is light and people are genuinely laughing",        a:'jester'},
+      {t:"I'm deeply engaged with people and work I love",              a:'lover'}
+    ]},
+    { q:"My biggest growth edge tends to be:", opts:[
+      {t:"Needing to win — which can tip into arrogance",               a:'hero'},
+      {t:"Pursuing perfection to the point of being impractical",       a:'creator'},
+      {t:"Taking on too much control of situations and people",         a:'ruler'},
+      {t:"Needing certainty before I can commit to action",             a:'sage'}
+    ]},
+    { q:"When navigating major change, I:", opts:[
+      {t:"Rally against what should no longer exist — I want it dismantled", a:'revolutionary'},
+      {t:"Follow my own path, even when it's unconventional",           a:'explorer'},
+      {t:"Look for the deeper meaning and try to do what's right",      a:'idealist'},
+      {t:"Stay grounded and trust the group to get through it together", a:'realist'}
+    ]},
+    { q:"The gift I most naturally bring to a team is:", opts:[
+      {t:"Genuine care — I notice what others need and respond to it",  a:'caregiver'},
+      {t:"Levity — I shift the energy when things get heavy",           a:'jester'},
+      {t:"Warmth — I help people feel seen and connected",              a:'lover'},
+      {t:"The ability to make the impossible feel achievable",          a:'magician'}
+    ]}
+  ];
+
+  let qCurrent = 0;
+  let qAnswers = [];
+  let qScores = {};
+  Object.keys(archetypes).forEach(k => qScores[k] = 0);
+
+  function showScreen(id) {
+    document.querySelectorAll('#page-quiz .screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function startQuiz() {
+    qCurrent = 0; qAnswers = [];
+    Object.keys(archetypes).forEach(k => qScores[k] = 0);
+    showScreen('s-question');
+    renderQ();
+  }
+
+  function renderQ() {
+    const q = questions[qCurrent];
+    const pct = Math.round((qCurrent / 12) * 100);
+    document.getElementById('prog-text').textContent = `Question ${qCurrent + 1} of 12`;
+    document.getElementById('prog-pct').textContent = pct + '%';
+    document.getElementById('prog-fill').style.width = pct + '%';
+    document.getElementById('q-label').textContent = `Question ${qCurrent + 1}`;
+    document.getElementById('q-text').textContent = q.q;
+    document.getElementById('q-hint').textContent = 'Select an answer to continue';
+    document.getElementById('btn-next').style.display = 'none';
+    const grid = document.getElementById('opts');
+    grid.innerHTML = '';
+    q.opts.forEach((o, i) => {
+      const btn = document.createElement('button');
+      btn.className = 'opt' + (qAnswers[qCurrent] === i ? ' selected' : '');
+      btn.textContent = o.t;
+      btn.onclick = () => selectOpt(i, o.a);
+      grid.appendChild(btn);
+    });
+  }
+
+  function selectOpt(idx, archetype) {
+    const prev = qAnswers[qCurrent];
+    if (prev !== undefined) {
+      const prevA = questions[qCurrent].opts[prev].a;
+      qScores[prevA] = Math.max(0, qScores[prevA] - 1);
+    }
+    qAnswers[qCurrent] = idx;
+    qScores[archetype] = (qScores[archetype] || 0) + 1;
+    document.querySelectorAll('#page-quiz .opt').forEach((b, i) => b.classList.toggle('selected', i === idx));
+    document.getElementById('q-hint').textContent = '';
+    const nxt = document.getElementById('btn-next');
+    nxt.style.display = 'inline-block';
+    nxt.textContent = qCurrent < 11 ? 'Next →' : 'Continue →';
+  }
+
+  function nextQ() {
+    if (qAnswers[qCurrent] === undefined) return;
+    if (qCurrent < 11) { qCurrent++; renderQ(); }
+    else { showScreen('s-gate'); }
+  }
+
+  async function submitGate() {
+    const email = document.getElementById('f-email').value.trim();
+    const name  = document.getElementById('f-name').value.trim();
+    const err   = document.getElementById('gate-error');
+    const btn   = document.getElementById('btn-gate');
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      err.style.display = 'block'; return;
+    }
+    err.style.display = 'none';
+    btn.textContent = 'Loading...';
+    btn.disabled = true;
+    const sorted = Object.entries(qScores).sort((a, b) => b[1] - a[1]);
+    const primary   = archetypes[sorted[0][0]].name;
+    const secondary = archetypes[sorted[1][0]].name;
+    if (FORMSPREE_ENDPOINT !== 'YOUR_FORMSPREE_ENDPOINT') {
+      try {
+        await fetch(FORMSPREE_ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify({ name, email, primary_archetype: primary, secondary_archetype: secondary,
+            all_scores: Object.fromEntries(Object.entries(qScores).map(([k,v]) => [archetypes[k].name, v])) })
+        });
+      } catch(e) { /* fail silently */ }
+    }
+    btn.textContent = 'See my results →';
+    btn.disabled = false;
+    showResults();
+  }
+
+  function showResults() {
+    const sorted = Object.entries(qScores).sort((a, b) => b[1] - a[1]);
+    const [pk] = sorted[0];
+    const [sk] = sorted[1];
+    document.getElementById('res-primary').innerHTML   = buildArchetypeCard(pk, 'Your primary archetype');
+    document.getElementById('res-secondary').innerHTML = buildArchetypeCard(sk, 'Your secondary archetype');
+    buildScoreBars(sorted);
+    showScreen('s-results');
+  }
+
+  function buildArchetypeCard(key, label) {
+    const a = archetypes[key];
+    const pills = a.traits.map(t => `<span class="trait-pill" style="background:${a.color}">${t}</span>`).join('');
+    return `<div style="border-top:3px solid ${a.color};padding-top:1rem;margin-bottom:1.5rem">
+      <div class="res-eyebrow">${label}</div>
+      <div class="res-archetype-name" style="color:${a.color}">${a.name}</div>
+      <div class="res-traits">${pills}</div>
+      <div class="res-desc">${a.desc}</div>
+      <div class="res-grid">
+        <div class="res-cell"><div class="res-cell-label">Core desire</div><div class="res-cell-val">${a.desire}</div></div>
+        <div class="res-cell"><div class="res-cell-label">Your gift</div><div class="res-cell-val">${a.gift}</div></div>
+        <div class="res-cell" style="grid-column:1/-1"><div class="res-cell-label">Goal</div><div class="res-cell-val">${a.goal}</div></div>
+      </div>
+    </div>`;
+  }
+
+  function buildScoreBars(sorted) {
+    const wrap = document.getElementById('score-bars');
+    wrap.innerHTML = sorted.map(([k, v]) => {
+      const a = archetypes[k];
+      const w = Math.round((v / 2) * 100);
+      return `<div class="score-row">
+        <span class="score-name">${a.name.replace('The ', '')}</span>
+        <div class="score-track"><div class="score-fill" style="width:${w}%;background:${a.color}"></div></div>
+        <span class="score-val">${v}</span>
+      </div>`;
+    }).join('');
+  }
+
+  function retake() {
+    qCurrent = 0; qAnswers = [];
+    Object.keys(archetypes).forEach(k => qScores[k] = 0);
+    document.getElementById('f-name').value = '';
+    document.getElementById('f-email').value = '';
+    showScreen('s-intro');
+  }
+
+  // ============================================================
+  // INNOVATION MATURITY ASSESSMENT
+  // ============================================================
+  const maturityQuestions = [
+    { category: "Skills", text: "How does your organization currently use human-centered innovation (HCI) tools and approaches?", options: [
+      { label: "Teams are unfamiliar with new approaches and are not willing to try.", phase: 1 },
+      { label: "Teams are aware of HCI tools and experimenting with a few in select projects.", phase: 2 },
+      { label: "HCI tools have shown results and interest is growing across the company.", phase: 3 },
+      { label: "Many groups consistently use HCI tools and are seeing measurable outcomes.", phase: 4 },
+      { label: "The entire company uses HCI tools as a standard way of driving growth.", phase: 5 }
+    ]},
+    { category: "Leader support", text: "How would you describe the level of leadership support for innovation in your organization?", options: [
+      { label: "Leaders are skeptical that new approaches will improve existing processes.", phase: 1 },
+      { label: "Support exists in small pockets with little impact on the core business.", phase: 2 },
+      { label: "One major area of the company has strong, visible support at all levels.", phase: 3 },
+      { label: "Leaders across multiple areas champion innovation and collaborate with peers.", phase: 4 },
+      { label: "Support for innovation flows from both the top and bottom of the organization.", phase: 5 }
+    ]},
+    { category: "Organization", text: "How well is innovation shared and coordinated across your organization's teams and business units?", options: [
+      { label: "Teams are siloed — very little information or learning is shared across groups.", phase: 1 },
+      { label: "Innovation happens in a few unconnected pockets, mostly independently.", phase: 2 },
+      { label: "One or two business units are practicing innovation well, but it doesn't spread.", phase: 3 },
+      { label: "Innovation is being integrated and coordinated across multiple business units.", phase: 4 },
+      { label: "Goals are fully integrated enterprise-wide with coordinated efforts on major programs.", phase: 5 }
+    ]},
+    { category: "Strategy", text: "How does strategy for innovation work in your organization?", options: [
+      { label: "Reactive planning based on leadership priorities — no real strategic direction.", phase: 1 },
+      { label: "Individual leaders develop strategies, but they rarely cascade through the org.", phase: 2 },
+      { label: "Strategies exist but are not shared or aligned across business units.", phase: 3 },
+      { label: "Strategic goals drive work across multiple business units in a coordinated way.", phase: 4 },
+      { label: "Strategies at every level align to the company's overall purpose.", phase: 5 }
+    ]},
+    { category: "Culture", text: "How would you best describe the culture around collaboration and failure in your organization?", options: [
+      { label: "Fear of failure and distrust are widespread — infighting is common.", phase: 1 },
+      { label: "Small teams collaborate well, but there is little alignment with leadership.", phase: 2 },
+      { label: "Leadership and project teams are aligned and work well within their own units.", phase: 3 },
+      { label: "Teams across different business units regularly collaborate on shared projects.", phase: 4 },
+      { label: "Trust, collaboration, and mutual respect drive the entire enterprise forward.", phase: 5 }
+    ]}
+  ];
+
+  const maturityPhaseInfo = [
+    { name: "Phase 1 — Introduction", title: "Starting the journey",      desc: "Your organization is in the early stages of innovation. Teams are siloed, leadership is skeptical, and innovation tools are largely unfamiliar. The opportunity here is significant — awareness is the first and most important step, and there is enormous room to grow." },
+    { name: "Phase 2 — Novice",       title: "Building awareness",        desc: "Your organization is beginning to explore innovation in small, scattered ways. A few teams are experimenting and early strategies are forming. The key now is connecting these pockets and creating momentum that can spread to other parts of the business." },
+    { name: "Phase 3 — Intermediate", title: "Gaining traction",          desc: "Innovation is taking hold in meaningful areas of your organization. There is visible success to point to and growing interest. The challenge is breaking down silos so that progress can spread and be sustained across the full enterprise." },
+    { name: "Phase 4 — Advanced",     title: "Scaling innovation",        desc: "Your organization has strong leaders championing innovation, cross-functional collaboration, and strategic alignment across multiple business units. The focus now is on making this the norm rather than the exception — and building the infrastructure to sustain it." },
+    { name: "Phase 5 — Expert",       title: "Innovation as a way of life", desc: "Congratulations — innovation is embedded into the DNA of your organization. Strategy, culture, skills, and leadership are all aligned enterprise-wide. Your work now is sustaining and continuously expanding this competitive advantage." }
+  ];
+
+  let mCurrent = 0;
+  let mAnswers = new Array(5).fill(null);
+
+  function startMaturity() {
+    document.getElementById('mat-intro').style.display = 'none';
+    document.getElementById('mat-quiz').style.display = 'block';
+    renderMaturityQ();
+  }
+
+  function renderMaturityQ() {
+    const q = maturityQuestions[mCurrent];
+    document.getElementById('mat-cat-label').textContent = q.category;
+    document.getElementById('mat-q-text').textContent = q.text;
+    document.getElementById('mat-step-count').textContent = (mCurrent + 1) + ' of ' + maturityQuestions.length;
+    document.getElementById('mat-back-btn').disabled = mCurrent === 0;
+
+    const bar = document.getElementById('mat-phase-bar');
+    bar.innerHTML = maturityQuestions.map(function(_, i) {
+      let cls = 'phase-dot';
+      if (i < mCurrent) cls += ' done';
+      else if (i === mCurrent) cls += ' active';
+      return '<div class="' + cls + '"></div>';
+    }).join('');
+
+    const list = document.getElementById('mat-options');
+    list.innerHTML = q.options.map(function(opt, i) {
+      const sel = mAnswers[mCurrent] === i ? ' selected' : '';
+      return '<button class="option-btn' + sel + '" onclick="selectMaturityOpt(' + i + ')">' + opt.label + '</button>';
+    }).join('');
+
+    const nextBtn = document.getElementById('mat-next-btn');
+    nextBtn.disabled = mAnswers[mCurrent] === null;
+    nextBtn.textContent = mCurrent === maturityQuestions.length - 1 ? 'See my results' : 'Next';
+  }
+
+  function selectMaturityOpt(i) {
+    mAnswers[mCurrent] = i;
+    document.querySelectorAll('#mat-options .option-btn').forEach(function(b, idx) {
+      b.classList.toggle('selected', idx === i);
+    });
+    document.getElementById('mat-next-btn').disabled = false;
+  }
+
+  function maturityGoNext() {
+    if (mAnswers[mCurrent] === null) return;
+    if (mCurrent === maturityQuestions.length - 1) {
+      showMaturityResults();
+    } else {
+      mCurrent++;
+      renderMaturityQ();
+    }
+  }
+
+  function maturityGoBack() {
+    if (mCurrent > 0) { mCurrent--; renderMaturityQ(); }
+  }
+
+  function showMaturityResults() {
+    document.getElementById('mat-quiz').style.display = 'none';
+    document.getElementById('mat-result').style.display = 'block';
+    const scores = mAnswers.map(function(a, i) { return maturityQuestions[i].options[a].phase; });
+    const avg = scores.reduce(function(a, b) { return a + b; }, 0) / scores.length;
+    const info = maturityPhaseInfo[Math.round(avg) - 1];
+    document.getElementById('mat-res-phase').textContent = info.name;
+    document.getElementById('mat-res-title').textContent = info.title;
+    document.getElementById('mat-res-desc').textContent  = info.desc;
+    const bd = document.getElementById('mat-breakdown');
+    bd.innerHTML = scores.map(function(s, i) {
+      const pct = Math.round((s / 5) * 100);
+      return '<div class="breakdown-row">' +
+        '<span class="bd-label">' + ['Skills','Leader support','Organization','Strategy','Culture'][i] + '</span>' +
+        '<div class="bd-track"><div class="bd-fill" style="width:' + pct + '%"></div></div>' +
+        '<span class="bd-val">Phase ' + s + ' of 5</span>' +
+      '</div>';
+    }).join('');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function restartMaturity() {
+    mCurrent = 0;
+    mAnswers = new Array(5).fill(null);
+    document.getElementById('mat-result').style.display = 'none';
+    document.getElementById('mat-intro').style.display  = 'block';
+  }
+</script>
+
+</body>
+</html>
