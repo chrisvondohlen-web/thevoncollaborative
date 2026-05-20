@@ -132,7 +132,9 @@
   .anim-h1      { animation: fadeUp 0.6s 0.08s ease both; }
   .anim-sub     { animation: fadeUp 0.6s 0.18s ease both; }
   .anim-actions { animation: fadeUp 0.6s 0.28s ease both; }
-  #hero-headline { transition: opacity 0.7s ease; overflow: hidden; }
+  #hero-headline { overflow: hidden; }
+  .hero-cursor { color: var(--cyan); font-style: normal; animation: cursorBlink 0.75s step-end infinite; }
+  @keyframes cursorBlink { 0%,100%{opacity:1} 50%{opacity:0} }
 
   /* RESPONSIVE */
   /* QUIZ PAGE */
@@ -325,7 +327,7 @@
     <div class="grid-lines"></div>
     <div class="hero-content">
       <div class="hero-tag anim-tag">The Complete Growth System</div>
-      <h1 class="hero-h1 anim-h1" id="hero-headline">Innovation <em>exposes barriers</em> to your growth.</h1>
+      <h1 class="hero-h1 anim-h1" id="hero-headline">Innovation<span id="hero-typed"></span><span class="hero-cursor">|</span></h1>
       <p class="hero-sub anim-sub">We build the engine that makes it consistent, repeatable, and human — at every level of the organization.</p>
       <div class="hero-actions anim-actions">
         <a class="btn-primary" onclick="navigate('org')">Explore the System</a>
@@ -404,6 +406,7 @@
       <p class="hero-sub anim-sub">Most organizations know they need to innovate. What they lack is a model that makes innovation consistent, measurable, and connected to how the business actually runs. That's what the Innovation Operating Model builds.</p>
       <div class="hero-actions anim-actions">
         <a class="btn-primary" href="https://calendly.com/thevoncollab" target="_blank">Book a Strategy Session</a>
+        <a class="btn-outline" onclick="navigate('maturity')">Assess your maturity &rarr;</a>
         <a class="btn-outline" onclick="navigate('home')">Back to the System</a>
       </div>
     </div>
@@ -453,9 +456,6 @@
       <div class="process-step"><div class="step-num">02</div><div class="step-body"><h4>Define</h4><p>Together, we define the right innovation model for your organization: which types of innovation to pursue, how to structure the team, and what processes will make it sustainable.</p></div></div>
       <div class="process-step"><div class="step-num">03</div><div class="step-body"><h4>Design</h4><p>We design the operating model — the tools, workflows, governance structures, and culture shifts — that will make innovation a repeatable capability, not a one-time push.</p></div></div>
       <div class="process-step"><div class="step-num">04</div><div class="step-body"><h4>Deploy</h4><p>We help you activate the model with your team: onboarding leaders, facilitating workshops, and building the habits and structures that ensure innovation takes hold.</p></div></div>
-    </div>
-    <div style="margin-top:2.5rem">
-      <a class="btn-primary" onclick="navigate('maturity')">Assess your innovation maturity &rarr;</a>
     </div>
   </section>
 
@@ -546,6 +546,7 @@
       <p class="hero-sub anim-sub">The Story of Growth Toolkit helps individuals understand their natural strengths, navigate personal and professional transitions, and show up at their best — for themselves and for their teams.</p>
       <div class="hero-actions anim-actions">
         <a class="btn-primary" href="mailto:info@thevoncollaborative.com">Get the Toolkit</a>
+        <a class="btn-outline" onclick="navigate('quiz')">Discover your archetype &rarr;</a>
         <a class="btn-outline" onclick="navigate('home')">Back to the System</a>
       </div>
     </div>
@@ -587,9 +588,6 @@
       <div class="col-card"><h4>The Jester</h4><p>Uses humor, play, and lightness to unlock creativity and connection. Brings energy, fun, and the ability to help teams break free from rigid thinking.</p></div>
       <div class="col-card"><h4>The Lover</h4><p>Motivated by connection, beauty, and meaning. Brings passion, enthusiasm, and the ability to make people feel seen, valued, and inspired.</p></div>
       <div class="col-card"><h4>The Magician</h4><p>Driven to transform reality by understanding what lies beneath the surface. Brings intuition, synthesis, and the ability to make the seemingly impossible possible.</p></div>
-    </div>
-    <div style="margin-top:2.5rem">
-      <a class="btn-primary" onclick="navigate('quiz')">Discover your archetype &rarr;</a>
     </div>
   </section>
 
@@ -1074,57 +1072,90 @@
   if (hash && PAGES.includes(hash)) navigate(hash);
 
   // ============================================================
-  // HERO HEADLINE ROTATION
+  // HERO HEADLINE TYPEWRITER
   // ============================================================
-  const heroHeadlines = [
-    'Innovation <em>exposes barriers</em> to your growth.',
-    'Innovation <em>breaks the status quo</em> to become the company you\'re meant to be.',
-    'Innovation challenges <em>the way things have always been done.</em>'
+  const heroSuffixes = [
+    ' <em>exposes barriers</em> to your growth.',
+    ' <em>breaks the status quo</em> to become the company you\'re meant to be.',
+    ' challenges <em>the way things have always been done.</em>'
   ];
   let headlineIndex = 0;
+  let headlineTimer = null;
 
-  function cycleHeadline() {
-    const el = document.getElementById('hero-headline');
-    if (!el) return;
-
-    // Fade out
-    el.style.opacity = '0';
-
-    setTimeout(() => {
-      headlineIndex = (headlineIndex + 1) % heroHeadlines.length;
-      el.innerHTML = heroHeadlines[headlineIndex];
-
-      // Fade in
-      el.style.opacity = '1';
-    }, 700);
+  function parseHTML(html) {
+    const chars = [];
+    let inEm = false, i = 0;
+    while (i < html.length) {
+      if (html.slice(i, i+4) === '<em>')  { inEm = true;  i += 4; }
+      else if (html.slice(i, i+5) === '</em>') { inEm = false; i += 5; }
+      else { chars.push({ ch: html[i], em: inEm }); i++; }
+    }
+    return chars;
   }
 
-  setInterval(cycleHeadline, 5000);
+  function buildTyped(chars, count) {
+    let out = '', emOpen = false;
+    for (let i = 0; i < Math.min(count, chars.length); i++) {
+      const { ch, em } = chars[i];
+      if (em && !emOpen)  { out += '<em>'; emOpen = true; }
+      if (!em && emOpen)  { out += '</em>'; emOpen = false; }
+      out += ch;
+    }
+    if (emOpen) out += '</em>';
+    return out;
+  }
+
+  function typeIn(chars, onDone) {
+    const el = document.getElementById('hero-typed');
+    if (!el) return;
+    let count = 0;
+    function tick() {
+      el.innerHTML = buildTyped(chars, count);
+      if (count < chars.length) { count++; headlineTimer = setTimeout(tick, 44); }
+      else onDone();
+    }
+    tick();
+  }
+
+  function typeOut(chars, onDone) {
+    const el = document.getElementById('hero-typed');
+    if (!el) return;
+    let count = chars.length;
+    function tick() {
+      el.innerHTML = buildTyped(chars, count);
+      if (count > 0) { count--; headlineTimer = setTimeout(tick, 22); }
+      else onDone();
+    }
+    tick();
+  }
+
+  function runHeadlineCycle() {
+    const chars = parseHTML(heroSuffixes[headlineIndex]);
+    typeIn(chars, () => {
+      headlineTimer = setTimeout(() => {
+        typeOut(chars, () => {
+          headlineIndex = (headlineIndex + 1) % heroSuffixes.length;
+          runHeadlineCycle();
+        });
+      }, 3200);
+    });
+  }
 
   function lockHeadlineHeight() {
-    const el = document.getElementById('hero-headline');
-    if (!el) return;
-    // Suspend transitions and reset position so measurement is clean
-    el.style.transition = 'none';
-    el.style.opacity   = '1';
-    el.style.transform = 'translateY(0)';
-    el.style.height    = 'auto';
-    // Measure every phrase, keep the tallest
+    const el  = document.getElementById('hero-headline');
+    const typed = document.getElementById('hero-typed');
+    if (!el || !typed) return;
+    el.style.height = 'auto';
     let maxH = 0;
-    heroHeadlines.forEach(phrase => {
-      el.innerHTML = phrase;
+    heroSuffixes.forEach(suffix => {
+      typed.innerHTML = suffix;
       maxH = Math.max(maxH, el.offsetHeight);
     });
-    // Restore current phrase and lock height
-    el.innerHTML = heroHeadlines[headlineIndex];
+    typed.innerHTML = '';
     el.style.height = maxH + 'px';
-    // Re-enable transitions on the next frame
-    requestAnimationFrame(() => {
-      el.style.transition = 'opacity 0.7s ease';
-    });
   }
 
-  window.addEventListener('load',   lockHeadlineHeight);
+  window.addEventListener('load', () => { lockHeadlineHeight(); runHeadlineCycle(); });
   window.addEventListener('resize', lockHeadlineHeight);
 
   // ============================================================
