@@ -132,7 +132,7 @@
   .anim-h1      { animation: fadeUp 0.6s 0.08s ease both; }
   .anim-sub     { animation: fadeUp 0.6s 0.18s ease both; }
   .anim-actions { animation: fadeUp 0.6s 0.28s ease both; }
-  #hero-headline { transition: opacity 0.5s ease, transform 0.5s ease; overflow: hidden; }
+  #hero-headline { transition: opacity 0.7s ease; overflow: hidden; }
 
   /* RESPONSIVE */
   /* QUIZ PAGE */
@@ -1087,24 +1087,16 @@
     const el = document.getElementById('hero-headline');
     if (!el) return;
 
-    // Fade out + slide up
+    // Fade out
     el.style.opacity = '0';
-    el.style.transform = 'translateY(-14px)';
 
     setTimeout(() => {
       headlineIndex = (headlineIndex + 1) % heroHeadlines.length;
       el.innerHTML = heroHeadlines[headlineIndex];
 
-      // Snap to bottom (no transition) then slide up into place
-      el.style.transition = 'none';
-      el.style.transform = 'translateY(14px)';
-      el.style.opacity = '0';
-      el.offsetHeight; // force reflow
-
-      el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+      // Fade in
       el.style.opacity = '1';
-      el.style.transform = 'translateY(0)';
-    }, 520);
+    }, 700);
   }
 
   setInterval(cycleHeadline, 5000);
@@ -1128,7 +1120,7 @@
     el.style.height = maxH + 'px';
     // Re-enable transitions on the next frame
     requestAnimationFrame(() => {
-      el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+      el.style.transition = 'opacity 0.7s ease';
     });
   }
 
