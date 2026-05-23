@@ -239,6 +239,18 @@
     .maturity-page .bd-label { width: 90px; }
     .maturity-page .bd-val { width: 60px; }
   }
+  .maturity-page .mat-meta { font-size: 0.76rem; color: var(--muted); margin-bottom: 2rem; }
+  .maturity-page .mat-gate-form { display: flex; flex-direction: column; gap: 10px; margin-bottom: 1.5rem; }
+  .maturity-page .mat-gate-input { padding: .65rem .85rem; border: 1px solid var(--border); font-family: 'Jost', sans-serif; font-size: 0.875rem; color: var(--text); background: var(--dark); transition: border-color .15s; outline: none; width: 100%; }
+  .maturity-page .mat-gate-input:focus { border-color: var(--cyan); }
+  .maturity-page .mat-gate-input.error { border-color: #ff6b6b; }
+  .maturity-page .mat-gate-input::placeholder { color: var(--muted); }
+  .maturity-page .mat-section-head { font-size: 0.72rem; font-weight: 500; color: var(--muted); margin-bottom: 0.5rem; letter-spacing: 0.1em; text-transform: uppercase; }
+  .maturity-page .mat-service-item { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 8px; }
+  .maturity-page .mat-service-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--cyan); margin-top: 7px; flex-shrink: 0; }
+  .maturity-page .mat-service-name { font-size: 0.875rem; color: var(--muted); font-weight: 300; }
+  .maturity-page .mat-cta-block { padding: 1.25rem; background: var(--dark3); border: 1px solid var(--border); border-top: 2px solid var(--cyan); display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap; }
+  .maturity-page .mat-cta-text { font-size: 0.875rem; color: var(--text); font-weight: 500; line-height: 1.5; }
 
   /* SHOP */
   #page-shop { --accent: #15E0FB; --accent-border: rgba(21,224,251,0.22); }
@@ -865,8 +877,9 @@
     <!-- Intro screen -->
     <div id="mat-intro">
       <p class="brand">The Von Collaborative</p>
-      <h2 class="intro-title">Innovation maturity assessment</h2>
-      <p class="intro-sub">Answer 5 short questions to discover where your organization stands across the five dimensions of innovation maturity — from Introduction to Expert.</p>
+      <h2 class="intro-title">How innovative is your organization — really?</h2>
+      <p class="intro-sub">Take this 10-question assessment to find out where you are on the innovation maturity journey and what it takes to level up. Most organizations want to innovate. Few know how mature their innovation capabilities actually are. This quiz assesses five dimensions that separate truly innovative organizations from those that are still finding their footing — and gives you a personalized roadmap for what to do next.</p>
+      <p class="mat-meta">Takes about 3 minutes.</p>
       <div class="pill-row">
         <span class="pill">Skills</span>
         <span class="pill">Leader support</span>
@@ -874,7 +887,7 @@
         <span class="pill">Strategy</span>
         <span class="pill">Culture</span>
       </div>
-      <button class="nav-btn primary" onclick="startMaturity()">Start assessment</button>
+      <button class="nav-btn primary" onclick="startMaturity()">Start the Assessment &rarr;</button>
     </div>
 
     <!-- Quiz screen -->
@@ -890,13 +903,39 @@
       </div>
     </div>
 
+    <!-- Email gate screen -->
+    <div id="mat-gate" style="display:none">
+      <p class="brand">The Von Collaborative</p>
+      <h2 class="intro-title">Your results are ready.</h2>
+      <p class="intro-sub" style="margin-bottom:1.5rem">Enter your details to see where your organization lands on the Innovation Maturity Model — and get your personalized next steps.</p>
+      <div class="mat-gate-form">
+        <input type="text" id="mat-gate-name" class="mat-gate-input" placeholder="First name" />
+        <input type="email" id="mat-gate-email" class="mat-gate-input" placeholder="Work email address" oninput="this.classList.remove('error')" />
+      </div>
+      <button class="nav-btn primary" onclick="submitMaturityGate()" style="width:100%;padding:14px 28px;margin-bottom:0.75rem">Show My Results &rarr;</button>
+      <p style="font-size:0.72rem;color:var(--muted)">We respect your inbox. No spam, ever.</p>
+    </div>
+
     <!-- Result screen -->
     <div id="mat-result" style="display:none">
       <p class="brand">The Von Collaborative</p>
       <p class="result-phase" id="mat-res-phase"></p>
       <h2 class="result-title" id="mat-res-title"></h2>
-      <p class="result-desc" id="mat-res-desc"></p>
+      <p class="result-desc" id="mat-res-summary"></p>
+
+      <p class="mat-section-head">What this means for you</p>
+      <p class="result-desc" id="mat-res-meaning" style="margin-bottom:1.75rem"></p>
+
+      <p class="mat-section-head">How The Von Collaborative can help</p>
+      <div id="mat-res-services" style="margin-bottom:1.75rem"></div>
+
+      <div class="mat-cta-block">
+        <p class="mat-cta-text" id="mat-res-cta-text"></p>
+        <a href="https://calendly.com/thevoncollab" target="_blank" class="nav-btn primary" style="margin-top:0;white-space:nowrap;text-decoration:none">Let&rsquo;s talk &rarr;</a>
+      </div>
+
       <hr class="mat-divider" />
+
       <p class="cat-label" style="margin-bottom:1.25rem">Your breakdown by dimension</p>
       <div class="breakdown-section" id="mat-breakdown"></div>
       <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:2rem">
@@ -1392,56 +1431,173 @@
   }
 
   // ============================================================
-  // INNOVATION MATURITY ASSESSMENT
+  // INNOVATION MATURITY ASSESSMENT (10 questions, 2 per dimension)
   // ============================================================
-  const maturityQuestions = [
-    { category: "Skills", text: "How does your organization currently use human-centered innovation (HCI) tools and approaches?", options: [
-      { label: "Teams are unfamiliar with new approaches and are not willing to try.", phase: 1 },
-      { label: "Teams are aware of HCI tools and experimenting with a few in select projects.", phase: 2 },
-      { label: "HCI tools have shown results and interest is growing across the company.", phase: 3 },
-      { label: "Many groups consistently use HCI tools and are seeing measurable outcomes.", phase: 4 },
-      { label: "The entire company uses HCI tools as a standard way of driving growth.", phase: 5 }
-    ]},
-    { category: "Leader support", text: "How would you describe the level of leadership support for innovation in your organization?", options: [
-      { label: "Leaders are skeptical that new approaches will improve existing processes.", phase: 1 },
-      { label: "Support exists in small pockets with little impact on the core business.", phase: 2 },
-      { label: "One major area of the company has strong, visible support at all levels.", phase: 3 },
-      { label: "Leaders across multiple areas champion innovation and collaborate with peers.", phase: 4 },
-      { label: "Support for innovation flows from both the top and bottom of the organization.", phase: 5 }
-    ]},
-    { category: "Organization", text: "How well is innovation shared and coordinated across your organization's teams and business units?", options: [
-      { label: "Teams are siloed — very little information or learning is shared across groups.", phase: 1 },
-      { label: "Innovation happens in a few unconnected pockets, mostly independently.", phase: 2 },
-      { label: "One or two business units are practicing innovation well, but it doesn't spread.", phase: 3 },
-      { label: "Innovation is being integrated and coordinated across multiple business units.", phase: 4 },
-      { label: "Goals are fully integrated enterprise-wide with coordinated efforts on major programs.", phase: 5 }
-    ]},
-    { category: "Strategy", text: "How does strategy for innovation work in your organization?", options: [
-      { label: "Reactive planning based on leadership priorities — no real strategic direction.", phase: 1 },
-      { label: "Individual leaders develop strategies, but they rarely cascade through the org.", phase: 2 },
-      { label: "Strategies exist but are not shared or aligned across business units.", phase: 3 },
-      { label: "Strategic goals drive work across multiple business units in a coordinated way.", phase: 4 },
-      { label: "Strategies at every level align to the company's overall purpose.", phase: 5 }
-    ]},
-    { category: "Culture", text: "How would you best describe the culture around collaboration and failure in your organization?", options: [
-      { label: "Fear of failure and distrust are widespread — infighting is common.", phase: 1 },
-      { label: "Small teams collaborate well, but there is little alignment with leadership.", phase: 2 },
-      { label: "Leadership and project teams are aligned and work well within their own units.", phase: 3 },
-      { label: "Teams across different business units regularly collaborate on shared projects.", phase: 4 },
-      { label: "Trust, collaboration, and mutual respect drive the entire enterprise forward.", phase: 5 }
-    ]}
+  const matQuestions = [
+    {
+      category: "Skills",
+      text: "When your team faces a new challenge, what's the typical first step?",
+      options: [
+        "We rely on experience and gut instinct — research feels like extra overhead",
+        "A few individuals suggest new approaches, but it rarely changes how we work",
+        "Some teams use structured methods, but it varies widely across the organization",
+        "Most teams start by exploring customer needs before jumping to solutions",
+        "Deeply understanding the customer before acting is simply how we always work"
+      ]
+    },
+    {
+      category: "Skills",
+      text: "How familiar is your organization with human-centered innovation tools (e.g., customer interviews, journey mapping, rapid prototyping)?",
+      options: [
+        "Most people have never heard of these tools",
+        "A few people are aware and experimenting on their own",
+        "Some teams have tried them successfully and interest is starting to grow",
+        "Many teams consistently use these tools and get real results from them",
+        "These tools are standard practice — used enterprise-wide to drive growth"
+      ]
+    },
+    {
+      category: "Leader support",
+      text: "How would you characterize leadership's attitude toward innovation?",
+      options: [
+        "Leaders are skeptical — they see new approaches as risky or unnecessary",
+        "A few leaders are supportive, but it doesn't change how most work gets done",
+        "Leadership in one major area actively champions innovation",
+        "Leaders across multiple areas champion innovation and push each other to do more",
+        "Support for innovation flows top to bottom — and bottom to top — throughout the org"
+      ]
+    },
+    {
+      category: "Leader support",
+      text: "How does your organization handle failure when trying something new?",
+      options: [
+        "Failure is unacceptable — it damages careers and discourages people from trying",
+        "Failure is tolerated in limited, low-stakes situations but not openly discussed",
+        "In some teams, failure is accepted as part of learning",
+        "Leaders openly share lessons from failure and encourage smart experimentation",
+        "Failure is built into our process — we test fast, learn faster, and move forward"
+      ]
+    },
+    {
+      category: "Organization",
+      text: "How well does innovation connect across different parts of your organization?",
+      options: [
+        "Teams work in silos — little information or progress is shared across departments",
+        "Innovation happens in isolated pockets with no real coordination",
+        "One or two business units are doing it well, but it doesn't spread to others",
+        "Innovation is actively being integrated across multiple areas of the business",
+        "Innovation goals are fully aligned and coordinated enterprise-wide"
+      ]
+    },
+    {
+      category: "Organization",
+      text: "How do different departments collaborate on new ideas?",
+      options: [
+        "They rarely do — teams stay in their lane and guard their work",
+        "Collaboration happens within small teams but rarely crosses departmental lines",
+        "Leadership and project teams work well together within business units",
+        "Cross-functional teams regularly collaborate on initiatives across the business",
+        "Cross-functional collaboration is the default — teams actively seek out diverse perspectives"
+      ]
+    },
+    {
+      category: "Strategy",
+      text: "How does innovation connect to your organization's overall strategy?",
+      options: [
+        "It doesn't — we react to whatever leadership asks for in the moment",
+        "Some leaders have innovation strategies, but they don't cascade through the org",
+        "Strategies exist but aren't shared or aligned across business units",
+        "Strategic goals drive innovation work across multiple business units",
+        "Every team's strategy connects to a shared company Purpose — top to bottom"
+      ]
+    },
+    {
+      category: "Strategy",
+      text: "How does your organization approach understanding customers?",
+      options: [
+        "We assume we know what customers need — formal research rarely happens",
+        "Customer feedback is gathered occasionally but rarely drives key decisions",
+        "Some teams conduct customer research and factor it into their work",
+        "Customer insights regularly inform strategy, product decisions, and priorities",
+        "Deep customer understanding is embedded in how every team works every day"
+      ]
+    },
+    {
+      category: "Culture",
+      text: "How would you describe the overall culture when it comes to new ideas?",
+      options: [
+        "Fear of failure and distrust are widespread — new ideas are often dismissed or punished",
+        "People collaborate within small teams but feel unsupported by leadership",
+        "Leadership and teams are well-aligned and work effectively within their departments",
+        "Teams across departments collaborate, bringing diverse perspectives to challenges",
+        "Trust, collaboration, and mutual respect fuel progress across the entire enterprise"
+      ]
+    },
+    {
+      category: "Culture",
+      text: "When someone brings a genuinely new idea forward, what typically happens?",
+      options: [
+        "It's met with skepticism, ignored, or assigned to a committee that goes nowhere",
+        "A small group might explore it, but it rarely gets real resources or attention",
+        "In some teams, new ideas get genuine attention and occasional investment",
+        "There's a process to evaluate and advance promising ideas across the organization",
+        "New ideas are actively sought, quickly evaluated, and resourced when they show promise"
+      ]
+    }
   ];
 
-  const maturityPhaseInfo = [
-    { name: "Phase 1 — Introduction", title: "Starting the journey",      desc: "Your organization is in the early stages of innovation. Teams are siloed, leadership is skeptical, and innovation tools are largely unfamiliar. The opportunity here is significant — awareness is the first and most important step, and there is enormous room to grow." },
-    { name: "Phase 2 — Novice",       title: "Building awareness",        desc: "Your organization is beginning to explore innovation in small, scattered ways. A few teams are experimenting and early strategies are forming. The key now is connecting these pockets and creating momentum that can spread to other parts of the business." },
-    { name: "Phase 3 — Intermediate", title: "Gaining traction",          desc: "Innovation is taking hold in meaningful areas of your organization. There is visible success to point to and growing interest. The challenge is breaking down silos so that progress can spread and be sustained across the full enterprise." },
-    { name: "Phase 4 — Advanced",     title: "Scaling innovation",        desc: "Your organization has strong leaders championing innovation, cross-functional collaboration, and strategic alignment across multiple business units. The focus now is on making this the norm rather than the exception — and building the infrastructure to sustain it." },
-    { name: "Phase 5 — Expert",       title: "Innovation as a way of life", desc: "Congratulations — innovation is embedded into the DNA of your organization. Strategy, culture, skills, and leadership are all aligned enterprise-wide. Your work now is sustaining and continuously expanding this competitive advantage." }
+  const matPhaseResults = [
+    {
+      range: [10, 18],
+      name: "Phase 1 of 5 — Introduction",
+      title: "You're at the Starting Line",
+      summary: "Your organization is in the earliest stage of the innovation journey. Innovation isn't yet part of how work gets done — it's seen as risky, unfamiliar, or someone else's job. Teams are working in silos, leadership is skeptical of new approaches, and there's little shared language or process for driving new ideas forward. The good news? Every innovative organization started here. The path forward is clearer than it might seem.",
+      meaning: "The most important thing right now is building a foundation — shared language, basic skills, and early wins that create belief that innovation is possible here.",
+      services: ["Innovation Training & Coaching", "Workshop Facilitation", "Team Building"],
+      cta: "Let's talk about where to start."
+    },
+    {
+      range: [19, 26],
+      name: "Phase 2 of 5 — Novice",
+      title: "You're Building Momentum",
+      summary: "Your organization has taken some early steps — a few leaders are curious, some teams are experimenting, and there's growing awareness that a new approach could make a real difference. But progress is scattered and hasn't yet reached the core of how the business operates. The opportunity is to turn those isolated sparks into something the whole organization can feel.",
+      meaning: "You need visible early wins that demonstrate the value of innovation and start building a broader coalition of believers — especially in leadership.",
+      services: ["Innovation Training & Coaching", "Workshop Facilitation", "Customer Research & Needfinding"],
+      cta: "Ready to build momentum? Let's connect."
+    },
+    {
+      range: [27, 34],
+      name: "Phase 3 of 5 — Intermediate",
+      title: "You've Got Real Traction",
+      summary: "Innovation is genuinely happening in your organization — and it's working in places. One or two business units are leading the way, leadership in key areas is supportive, and teams are beginning to use human-centered tools with real results. The challenge now is that it's still uneven. Other parts of the organization haven't caught up, and strategy and culture aren't yet fully aligned behind the effort.",
+      meaning: "The work now is about expanding what's working, creating cross-functional bridges, and ensuring innovation is connected to your broader business strategy — not just sitting alongside it.",
+      services: ["Strategy Development", "Customer Research & Needfinding", "Workshop Facilitation"],
+      cta: "Let's scale what's working."
+    },
+    {
+      range: [35, 42],
+      name: "Phase 4 of 5 — Advanced",
+      title: "You're Leading the Way",
+      summary: "Your organization has built something real. Innovation is integrated across multiple business units, leaders champion it, cross-functional teams collaborate well, and strategic goals drive the work forward. You're clearly ahead of most organizations. The gap between where you are and full enterprise-level innovation maturity is real but closeable — and closing it creates significant competitive advantage.",
+      meaning: "The focus now is on enterprise alignment — getting fully coordinated goals, making customer understanding universal rather than departmental, and ensuring innovation is embedded in your culture at every level.",
+      services: ["Strategy Development", "Customer Experience Design", "Prototype Testing"],
+      cta: "Let's close the gap to Expert."
+    },
+    {
+      range: [43, 50],
+      name: "Phase 5 of 5 — Expert",
+      title: "You're an Innovation Leader",
+      summary: "Congratulations — your organization has achieved something rare. Innovation is embedded in your culture, your strategy, and your day-to-day operations. Teams at every level are aligned, leadership drives innovation from the top and the bottom, and customers are at the center of how you work. Even at this level, the best organizations stay curious, continue to pressure-test their assumptions, and look for the next frontier of growth.",
+      meaning: "The work now is about staying sharp — continuing to push into new spaces, anticipating customer needs before they're expressed, and setting the pace for your industry.",
+      services: ["Customer Experience Design", "Prototype Testing", "Strategy Development"],
+      cta: "Let's keep your edge sharp."
+    }
   ];
+
+  const matDimensionLabels = ["Skills", "Leader support", "Organization", "Strategy", "Culture"];
 
   let mCurrent = 0;
-  let mAnswers = new Array(5).fill(null);
+  let mAnswers = new Array(10).fill(null);
 
   function startMaturity() {
     document.getElementById('mat-intro').style.display = 'none';
@@ -1450,14 +1606,14 @@
   }
 
   function renderMaturityQ() {
-    const q = maturityQuestions[mCurrent];
+    const q = matQuestions[mCurrent];
     document.getElementById('mat-cat-label').textContent = q.category;
     document.getElementById('mat-q-text').textContent = q.text;
-    document.getElementById('mat-step-count').textContent = (mCurrent + 1) + ' of ' + maturityQuestions.length;
+    document.getElementById('mat-step-count').textContent = (mCurrent + 1) + ' of ' + matQuestions.length;
     document.getElementById('mat-back-btn').disabled = mCurrent === 0;
 
     const bar = document.getElementById('mat-phase-bar');
-    bar.innerHTML = maturityQuestions.map(function(_, i) {
+    bar.innerHTML = matQuestions.map(function(_, i) {
       let cls = 'phase-dot';
       if (i < mCurrent) cls += ' done';
       else if (i === mCurrent) cls += ' active';
@@ -1467,12 +1623,12 @@
     const list = document.getElementById('mat-options');
     list.innerHTML = q.options.map(function(opt, i) {
       const sel = mAnswers[mCurrent] === i ? ' selected' : '';
-      return '<button class="option-btn' + sel + '" onclick="selectMaturityOpt(' + i + ')">' + opt.label + '</button>';
+      return '<button class="option-btn' + sel + '" onclick="selectMaturityOpt(' + i + ')">' + opt + '</button>';
     }).join('');
 
     const nextBtn = document.getElementById('mat-next-btn');
     nextBtn.disabled = mAnswers[mCurrent] === null;
-    nextBtn.textContent = mCurrent === maturityQuestions.length - 1 ? 'See my results' : 'Next';
+    nextBtn.textContent = mCurrent === matQuestions.length - 1 ? 'See my results' : 'Next';
   }
 
   function selectMaturityOpt(i) {
@@ -1485,8 +1641,9 @@
 
   function maturityGoNext() {
     if (mAnswers[mCurrent] === null) return;
-    if (mCurrent === maturityQuestions.length - 1) {
-      showMaturityResults();
+    if (mCurrent === matQuestions.length - 1) {
+      document.getElementById('mat-quiz').style.display = 'none';
+      document.getElementById('mat-gate').style.display = 'block';
     } else {
       mCurrent++;
       renderMaturityQ();
@@ -1497,22 +1654,49 @@
     if (mCurrent > 0) { mCurrent--; renderMaturityQ(); }
   }
 
+  function submitMaturityGate() {
+    const emailEl = document.getElementById('mat-gate-email');
+    const email = emailEl.value.trim();
+    if (!email || !email.includes('@') || !email.includes('.')) {
+      emailEl.classList.add('error');
+      emailEl.focus();
+      return;
+    }
+    document.getElementById('mat-gate').style.display = 'none';
+    showMaturityResults();
+  }
+
+  function getMatPhaseResult(score) {
+    for (var i = 0; i < matPhaseResults.length; i++) {
+      if (score >= matPhaseResults[i].range[0] && score <= matPhaseResults[i].range[1]) {
+        return matPhaseResults[i];
+      }
+    }
+    return matPhaseResults[matPhaseResults.length - 1];
+  }
+
   function showMaturityResults() {
-    document.getElementById('mat-quiz').style.display = 'none';
     document.getElementById('mat-result').style.display = 'block';
-    const scores = mAnswers.map(function(a, i) { return maturityQuestions[i].options[a].phase; });
-    const avg = scores.reduce(function(a, b) { return a + b; }, 0) / scores.length;
-    const info = maturityPhaseInfo[Math.round(avg) - 1];
-    document.getElementById('mat-res-phase').textContent = info.name;
-    document.getElementById('mat-res-title').textContent = info.title;
-    document.getElementById('mat-res-desc').textContent  = info.desc;
-    const bd = document.getElementById('mat-breakdown');
-    bd.innerHTML = scores.map(function(s, i) {
-      const pct = Math.round((s / 5) * 100);
+    var scores = mAnswers.map(function(a) { return a + 1; });
+    var total = scores.reduce(function(a, b) { return a + b; }, 0);
+    var result = getMatPhaseResult(total);
+    document.getElementById('mat-res-phase').textContent = result.name;
+    document.getElementById('mat-res-title').textContent = result.title;
+    document.getElementById('mat-res-summary').textContent = result.summary;
+    document.getElementById('mat-res-meaning').textContent = result.meaning;
+    document.getElementById('mat-res-cta-text').textContent = result.cta;
+    document.getElementById('mat-res-services').innerHTML = result.services.map(function(s) {
+      return '<div class="mat-service-item"><div class="mat-service-dot"></div><span class="mat-service-name">' + s + '</span></div>';
+    }).join('');
+    document.getElementById('mat-breakdown').innerHTML = matDimensionLabels.map(function(label, i) {
+      var q1 = scores[i * 2];
+      var q2 = scores[i * 2 + 1];
+      var avg = (q1 + q2) / 2;
+      var pct = Math.round((avg / 5) * 100);
       return '<div class="breakdown-row">' +
-        '<span class="bd-label">' + ['Skills','Leader support','Organization','Strategy','Culture'][i] + '</span>' +
+        '<span class="bd-label">' + label + '</span>' +
         '<div class="bd-track"><div class="bd-fill" style="width:' + pct + '%"></div></div>' +
-        '<span class="bd-val">Phase ' + s + ' of 5</span>' +
+        '<span class="bd-val">' + avg.toFixed(1) + ' / 5</span>' +
       '</div>';
     }).join('');
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -1520,9 +1704,10 @@
 
   function restartMaturity() {
     mCurrent = 0;
-    mAnswers = new Array(5).fill(null);
+    mAnswers = new Array(10).fill(null);
     document.getElementById('mat-result').style.display = 'none';
-    document.getElementById('mat-intro').style.display  = 'block';
+    document.getElementById('mat-gate').style.display = 'none';
+    document.getElementById('mat-intro').style.display = 'block';
   }
 </script>
 
