@@ -1988,8 +1988,9 @@ function navigate(page) {
     const home = document.getElementById('page-home');
     home.classList.remove('hero-in');
     requestAnimationFrame(() => {
-      void home.offsetWidth;
-      home.classList.add('hero-in');
+      requestAnimationFrame(() => {
+        home.classList.add('hero-in');
+      });
     });
   }
 }
