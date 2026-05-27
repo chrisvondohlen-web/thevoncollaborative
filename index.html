@@ -470,6 +470,7 @@ footer {
   <ul class="nav-links">
     <li><a id="nav-work"          onclick="navigate('work')">Work</a></li>
     <li><a id="nav-about"         onclick="navigate('about')">About</a></li>
+    <li><a id="nav-growth-tools"  onclick="navigate('growth-tools')">Growth Tools</a></li>
     <li><a id="nav-innovation-os" onclick="navigate('innovation-os')">Innovation OS</a></li>
     <li><a id="nav-shop"          onclick="navigate('shop')">Shop</a></li>
   </ul>
@@ -1792,6 +1793,82 @@ footer {
     </div>
   </div>
 </div>
+<div id="page-growth-tools" class="page">
+  <section class="hero">
+    <div class="eyebrow hero-eyebrow">Growth Tools</div>
+    <h2 class="hero-title">The tools that make growth tangible.</h2>
+    <p class="hero-sub">Three tools built to turn the Innovation OS into something your team can actually use — in workshops, in the field, and in the conversations that matter most.</p>
+  </section>
+
+  <div style="border-top:1px solid var(--border)">
+    <section class="section">
+      <div style="display:grid;gap:1.5rem">
+
+        <!-- Innovation Breaks -->
+        <div style="background:var(--dark2);border:1px solid var(--border);padding:2.5rem;display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center;cursor:pointer" onclick="navigate('ib-method')">
+          <div>
+            <div class="eyebrow" style="color:var(--coral);margin-bottom:0.75rem">For teams &amp; workshops</div>
+            <h3 style="font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:600;margin:0 0 1rem">Innovation Breaks</h3>
+            <p style="color:var(--muted);line-height:1.75;margin:0 0 1.25rem">37 methods for creating new-to-the-world ideas — drawing from business strategy, design thinking, change management, and product management. Built for teams facing VUCA challenges that need real solutions, fast.</p>
+            <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1.5rem">
+              <span class="tag">Workshop cards</span><span class="tag">37 methods</span><span class="tag">VUCA</span>
+            </div>
+            <a class="btn-primary" onclick="navigate('ib-method');event.stopPropagation()" style="cursor:pointer">Explore the method &rarr;</a>
+          </div>
+          <div style="aspect-ratio:4/3;overflow:hidden;border-radius:2px">
+            <video src="cards slow-motion - Large 540p.mov" autoplay muted loop playsinline style="width:100%;height:100%;object-fit:cover"></video>
+          </div>
+        </div>
+
+        <!-- Story of Growth -->
+        <div style="background:var(--dark2);border:1px solid var(--border);padding:2.5rem;display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center;cursor:pointer" onclick="navigate('story-of-growth')">
+          <div>
+            <div class="eyebrow" style="color:var(--teal-mid);margin-bottom:0.75rem">For teams &amp; leaders</div>
+            <h3 style="font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:600;margin:0 0 1rem">The Story of Growth</h3>
+            <p style="color:var(--muted);line-height:1.75;margin:0 0 1.25rem">A practical system combining the Hero's Journey and the Twelve Archetypes into a shared framework for understanding and accelerating growth. Teams use it to locate themselves on their growth journey and identify who they need to become to reach the next level.</p>
+            <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1.5rem">
+              <span class="tag">Leadership</span><span class="tag">Archetypes</span><span class="tag">Growth curve</span>
+            </div>
+            <div style="display:flex;gap:0.75rem;flex-wrap:wrap">
+              <a class="btn-primary" onclick="navigate('story-of-growth');event.stopPropagation()" style="cursor:pointer">Explore the framework &rarr;</a>
+              <a class="btn-secondary" onclick="navigate('archetype');event.stopPropagation()" style="cursor:pointer">Discover your archetype &rarr;</a>
+            </div>
+          </div>
+          <div style="aspect-ratio:4/3;overflow:hidden;border-radius:2px">
+            <img src="growth curve black background.jpg" alt="Story of Growth curve" style="width:100%;height:100%;object-fit:cover" />
+          </div>
+        </div>
+
+        <!-- Converci -->
+        <div style="background:var(--dark2);border:1px solid var(--border);padding:2.5rem;display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center;cursor:pointer" onclick="navigate('cs-evp')">
+          <div>
+            <div class="eyebrow" style="color:var(--purple-mid);margin-bottom:0.75rem">Customer insight platform</div>
+            <h3 style="font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:600;margin:0 0 1rem">Converci</h3>
+            <p style="color:var(--muted);line-height:1.75;margin:0 0 1.25rem">An AI-powered insights engine that makes customer conversations faster, more structured, and more accessible. Built to bridge the gap between innovation practice and real customer insight — so teams spend less time on logistics and more time on learning.</p>
+            <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1.5rem">
+              <span class="tag">AI-powered</span><span class="tag">Customer insight</span><span class="tag">Research</span>
+            </div>
+            <a class="btn-primary" onclick="navigate('cs-evp');event.stopPropagation()" style="cursor:pointer">See the project &rarr;</a>
+          </div>
+          <div style="aspect-ratio:4/3;overflow:hidden;border-radius:2px">
+            <img src="converci.png" alt="Converci platform" style="width:100%;height:100%;object-fit:cover" />
+          </div>
+        </div>
+
+      </div>
+    </section>
+  </div>
+
+  <div class="bg-off" style="border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
+    <div class="cta-band">
+      <div class="cta-band-inner">
+        <h2>Want to bring these tools into your team?</h2>
+        <a class="btn-primary" href="mailto:info@thevoncollaborative.com">Start a conversation &rarr;</a>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div id="page-shop" class="page">
   <section class="hero">
     <div class="eyebrow hero-eyebrow">Shop</div>
@@ -1883,8 +1960,8 @@ footer {
 
 <script>
 // ── ROUTING ──
-const ALL_PAGES = ['home','work','cs-brand','cs-purpose','cs-evp','cs-retail','cs-consumer','cs-medical','cs-startup','cs-comfort-curve','about','innovation-os','ios-strategy','ios-practice','ios-management','ios-culture','quiz','ib-method','story-of-growth','shop','archetype'];
-const NAV_MAP   = { work:'nav-work', about:'nav-about', 'innovation-os':'nav-innovation-os', shop:'nav-shop' };
+const ALL_PAGES = ['home','work','cs-brand','cs-purpose','cs-evp','cs-retail','cs-consumer','cs-medical','cs-startup','cs-comfort-curve','about','growth-tools','innovation-os','ios-strategy','ios-practice','ios-management','ios-culture','quiz','ib-method','story-of-growth','shop','archetype'];
+const NAV_MAP   = { work:'nav-work', about:'nav-about', 'growth-tools':'nav-growth-tools', 'innovation-os':'nav-innovation-os', shop:'nav-shop' };
 
 function navigate(page) {
   if (!ALL_PAGES.includes(page)) page = 'home';
@@ -1899,6 +1976,10 @@ function navigate(page) {
   if (NAV_MAP['innovation-os']) {
     const el = document.getElementById('nav-innovation-os');
     if (el) el.classList.toggle('active', page === 'innovation-os' || page.startsWith('ios-') || page === 'quiz');
+  }
+  if (NAV_MAP['growth-tools']) {
+    const el = document.getElementById('nav-growth-tools');
+    if (el) el.classList.toggle('active', page === 'growth-tools' || page === 'ib-method' || page === 'story-of-growth');
   }
   window.scrollTo({ top: 0, behavior: 'instant' });
   history.replaceState(null, '', page === 'home' ? location.pathname : '#' + page);
