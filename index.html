@@ -2155,9 +2155,18 @@ function qzNext() {
   } else { qzCurrent++; qzRender(); }
 }
 function qzBack() { if (qzCurrent > 0) { qzCurrent--; qzRender(); } }
-function qzSubmitGate() {
+async function qzSubmitGate() {
   const el = document.getElementById('qz-email');
   if (!el.value.trim() || !el.value.includes('@') || !el.value.includes('.')) { el.classList.add('error'); el.focus(); return; }
+  const name  = document.getElementById('qz-name').value.trim();
+  const email = el.value.trim();
+  const scores = qzAnswers.map(a => a + 1);
+  const total  = scores.reduce((a, b) => a + b, 0);
+  const result = qzPhaseResults.find(r => total >= r.range[0] && total <= r.range[1]) || qzPhaseResults[qzPhaseResults.length - 1];
+  const breakdown = qzDimLabels.map((label, i) => `${label}: ${((scores[i*2] + scores[i*2+1]) / 2).toFixed(1)} / 5`).join(' | ');
+  try {
+    await fetch(QZ_FORMSPREE, { method:'POST', headers:{'Content-Type':'application/json','Accept':'application/json'}, body: JSON.stringify({ name, email, result_phase: result.name, result_title: result.title, total_score: total + ' / 50', breakdown }) });
+  } catch(e) {}
   document.getElementById('qz-gate').style.display = 'none';
   qzShowResults();
 }
@@ -2185,7 +2194,8 @@ function qzRestart() {
 }
 
 // ── ARCHETYPE QUIZ ──
-const AT_FORMSPREE = 'YOUR_FORMSPREE_ENDPOINT';
+const AT_FORMSPREE = 'https://formspree.io/f/mvzydqaa';
+const QZ_FORMSPREE = 'https://formspree.io/f/mnjrlzdg';
 
 const atArchetypes = {
   hero:          { name:'The Hero',          color:'#D95A30', traits:['Brave','Ambitious','Disciplined','Strength'],           goal:'Exert mastery to improve the world',              gift:'Competence and courage',             desire:'Prove worth through courageous action',            desc:'Heroes are most fulfilled when they can rise up and overcome a challenge. Naturally determined and achievement-oriented, they enjoy demonstrating a winning attitude and motivating others to achieve their goals.' },
