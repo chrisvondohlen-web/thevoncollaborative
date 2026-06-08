@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "tvc-site",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["serve", "-l", "8877", "."],
+      "port": 8877
+    }
+  ]
+}

@@ -157,10 +157,14 @@ nav {
 
 /* ── CASE STUDY CARDS ── */
 .cs-card {
-  border: 1px solid var(--border); padding: 2rem; cursor: pointer;
+  border: 1px solid var(--border); cursor: pointer;
   transition: border-color 0.2s, background 0.2s; background: var(--dark2);
-  display: flex; flex-direction: column; gap: 1rem;
+  display: flex; flex-direction: column; gap: 0; overflow: hidden;
 }
+.cs-card-thumb { width: 100%; height: 200px; overflow: hidden; }
+.cs-card-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s ease; }
+.cs-card:hover .cs-card-thumb img { transform: scale(1.04); }
+.cs-card-body { padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem; flex: 1; }
 .cs-card:hover { background: var(--dark3); border-color: rgba(21,224,251,0.4); }
 .cs-card-cluster { display: flex; align-items: center; gap: 0.5rem; }
 .cs-card-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
@@ -702,100 +706,124 @@ footer {
 
         <!-- Strategy & Identity -->
         <div class="cs-card" data-cluster="strategy-identity" onclick="navigate('cs-purpose')">
-          <div class="cs-card-cluster">
-            <div class="cs-card-dot" style="background:var(--purple-mid)"></div>
-            <span class="cs-card-label" style="color:var(--purple)">Strategy &amp; Identity</span>
-          </div>
-          <h3>Purpose &amp; Positioning</h3>
-          <p class="cs-card-desc">Helping a major retailer realign its strategy — facilitating workshops from c-suite to SVP level to build a shared foundation for growth.</p>
-          <div class="cs-card-tags">
-            <span class="tag">Purpose</span><span class="tag">Strategy</span><span class="tag">Leadership</span>
+          <div class="cs-card-thumb"><img src="target purpose.jpg" alt="Purpose and Positioning" /></div>
+          <div class="cs-card-body">
+            <div class="cs-card-cluster">
+              <div class="cs-card-dot" style="background:var(--purple-mid)"></div>
+              <span class="cs-card-label" style="color:var(--purple)">Strategy &amp; Identity</span>
+            </div>
+            <h3>Purpose &amp; Positioning</h3>
+            <p class="cs-card-desc">Helping a major retailer realign its strategy — facilitating workshops from c-suite to SVP level to build a shared foundation for growth.</p>
+            <div class="cs-card-tags">
+              <span class="tag">Purpose</span><span class="tag">Strategy</span><span class="tag">Leadership</span>
+            </div>
           </div>
         </div>
 
         <div class="cs-card" data-cluster="venture" onclick="navigate('cs-evp')">
-          <div class="cs-card-cluster">
-            <div class="cs-card-dot" style="background:var(--teal-mid)"></div>
-            <span class="cs-card-label" style="color:var(--teal)">Venture Building</span>
-          </div>
-          <h3>Converci</h3>
-          <p class="cs-card-desc">Building an insights engine that makes customer conversations faster and more accessible — from idea to launch in 4 months.</p>
-          <div class="cs-card-tags">
-            <span class="tag">Venture</span><span class="tag">Product</span><span class="tag">AI</span>
+          <div class="cs-card-thumb"><img src="converci.png" alt="Converci insights platform" /></div>
+          <div class="cs-card-body">
+            <div class="cs-card-cluster">
+              <div class="cs-card-dot" style="background:var(--teal-mid)"></div>
+              <span class="cs-card-label" style="color:var(--teal)">Venture Building</span>
+            </div>
+            <h3>Converci</h3>
+            <p class="cs-card-desc">Building an insights engine that makes customer conversations faster and more accessible — from idea to launch in 4 months.</p>
+            <div class="cs-card-tags">
+              <span class="tag">Venture</span><span class="tag">Product</span><span class="tag">AI</span>
+            </div>
           </div>
         </div>
 
         <!-- Future Building -->
         <div class="cs-card" data-cluster="innovation" onclick="navigate('cs-retail')">
-          <div class="cs-card-cluster">
-            <div class="cs-card-dot" style="background:var(--coral-mid)"></div>
-            <span class="cs-card-label" style="color:var(--coral)">Future Building</span>
-          </div>
-          <h3>Groundbreaking Produce</h3>
-          <p class="cs-card-desc">Transforming unused retail space into innovative new experiences — validated by live prototypes and 90% positive customer feedback.</p>
-          <div class="cs-card-tags">
-            <span class="tag">Retail</span><span class="tag">Concept development</span><span class="tag">Prototyping</span>
+          <div class="cs-card-thumb"><img src="groundbreaking produce.png" alt="Groundbreaking Produce concept" /></div>
+          <div class="cs-card-body">
+            <div class="cs-card-cluster">
+              <div class="cs-card-dot" style="background:var(--coral-mid)"></div>
+              <span class="cs-card-label" style="color:var(--coral)">Future Building</span>
+            </div>
+            <h3>Groundbreaking Produce</h3>
+            <p class="cs-card-desc">Transforming unused retail space into innovative new experiences — validated by live prototypes and 90% positive customer feedback.</p>
+            <div class="cs-card-tags">
+              <span class="tag">Retail</span><span class="tag">Concept development</span><span class="tag">Prototyping</span>
+            </div>
           </div>
         </div>
 
         <div class="cs-card" data-cluster="innovation" onclick="navigate('cs-consumer')">
-          <div class="cs-card-cluster">
-            <div class="cs-card-dot" style="background:var(--coral-mid)"></div>
-            <span class="cs-card-label" style="color:var(--coral)">Future Building</span>
-          </div>
-          <h3>Gerber Sippy Cup</h3>
-          <p class="cs-card-desc">A science-grounded redesign partnering with the Ohio State Childhood Development Lab — resulting in an IDEA Gold design award.</p>
-          <div class="cs-card-tags">
-            <span class="tag">Product design</span><span class="tag">Consumer goods</span><span class="tag">Award-winning</span>
+          <div class="cs-card-thumb"><img src="050814_nina_ella_sippy.jpg" alt="Gerber Sippy Cup" /></div>
+          <div class="cs-card-body">
+            <div class="cs-card-cluster">
+              <div class="cs-card-dot" style="background:var(--coral-mid)"></div>
+              <span class="cs-card-label" style="color:var(--coral)">Future Building</span>
+            </div>
+            <h3>Gerber Sippy Cup</h3>
+            <p class="cs-card-desc">A science-grounded redesign partnering with the Ohio State Childhood Development Lab — resulting in an IDEA Gold design award.</p>
+            <div class="cs-card-tags">
+              <span class="tag">Product design</span><span class="tag">Consumer goods</span><span class="tag">Award-winning</span>
+            </div>
           </div>
         </div>
 
         <div class="cs-card" data-cluster="innovation" onclick="navigate('cs-medical')">
-          <div class="cs-card-cluster">
-            <div class="cs-card-dot" style="background:var(--coral-mid)"></div>
-            <span class="cs-card-label" style="color:var(--coral)">Future Building</span>
-          </div>
-          <h3>Clear Rx</h3>
-          <p class="cs-card-desc">Updating an iconic pharmacy bottle design to fix usability challenges for elderly users and automated filling — without losing what made it great.</p>
-          <div class="cs-card-tags">
-            <span class="tag">Product design</span><span class="tag">Healthcare</span><span class="tag">Usability</span>
+          <div class="cs-card-thumb"><img src="490449_clearRx_2bottles_shot6 copy.jpg" alt="Clear Rx bottles" /></div>
+          <div class="cs-card-body">
+            <div class="cs-card-cluster">
+              <div class="cs-card-dot" style="background:var(--coral-mid)"></div>
+              <span class="cs-card-label" style="color:var(--coral)">Future Building</span>
+            </div>
+            <h3>Clear Rx</h3>
+            <p class="cs-card-desc">Updating an iconic pharmacy bottle design to fix usability challenges for elderly users and automated filling — without losing what made it great.</p>
+            <div class="cs-card-tags">
+              <span class="tag">Product design</span><span class="tag">Healthcare</span><span class="tag">Usability</span>
+            </div>
           </div>
         </div>
 
         <div class="cs-card" data-cluster="innovation" onclick="navigate('cs-comfort-curve')">
-          <div class="cs-card-cluster">
-            <div class="cs-card-dot" style="background:var(--coral-mid)"></div>
-            <span class="cs-card-label" style="color:var(--coral)">Future Building</span>
-          </div>
-          <h3>Comfort Curve</h3>
-          <p class="cs-card-desc">Designing the smallest sleep apnea mask on the market for Philips Respironics — drawing inspiration from running shoes to redefine how a mask fits.</p>
-          <div class="cs-card-tags">
-            <span class="tag">Product design</span><span class="tag">Healthcare</span><span class="tag">Medical devices</span>
+          <div class="cs-card-thumb"><img src="comfort curve.JPG" alt="Comfort Curve sleep apnea mask" /></div>
+          <div class="cs-card-body">
+            <div class="cs-card-cluster">
+              <div class="cs-card-dot" style="background:var(--coral-mid)"></div>
+              <span class="cs-card-label" style="color:var(--coral)">Future Building</span>
+            </div>
+            <h3>Comfort Curve</h3>
+            <p class="cs-card-desc">Designing the smallest sleep apnea mask on the market for Philips Respironics — drawing inspiration from running shoes to redefine how a mask fits.</p>
+            <div class="cs-card-tags">
+              <span class="tag">Product design</span><span class="tag">Healthcare</span><span class="tag">Medical devices</span>
+            </div>
           </div>
         </div>
 
         <!-- Venture Building -->
         <div class="cs-card" data-cluster="venture" onclick="navigate('cs-startup')">
-          <div class="cs-card-cluster">
-            <div class="cs-card-dot" style="background:var(--teal-mid)"></div>
-            <span class="cs-card-label" style="color:var(--teal)">Venture Building</span>
-          </div>
-          <h3>Rituil</h3>
-          <p class="cs-card-desc">Building a yoga and meditation accessories brand from idea to launched in 9 months — brand, product development, and manufacturing in Portugal.</p>
-          <div class="cs-card-tags">
-            <span class="tag">Venture</span><span class="tag">Brand</span><span class="tag">Product development</span>
+          <div class="cs-card-thumb"><img src="rituil homepage.png" alt="Rituil brand" /></div>
+          <div class="cs-card-body">
+            <div class="cs-card-cluster">
+              <div class="cs-card-dot" style="background:var(--teal-mid)"></div>
+              <span class="cs-card-label" style="color:var(--teal)">Venture Building</span>
+            </div>
+            <h3>Rituil</h3>
+            <p class="cs-card-desc">Building a yoga and meditation accessories brand from idea to launched in 9 months — brand, product development, and manufacturing in Portugal.</p>
+            <div class="cs-card-tags">
+              <span class="tag">Venture</span><span class="tag">Brand</span><span class="tag">Product development</span>
+            </div>
           </div>
         </div>
 
         <div class="cs-card" data-cluster="strategy-identity" onclick="navigate('cs-brand')">
-          <div class="cs-card-cluster">
-            <div class="cs-card-dot" style="background:var(--purple-mid)"></div>
-            <span class="cs-card-label" style="color:var(--purple)">Strategy &amp; Identity</span>
-          </div>
-          <h3>Embark</h3>
-          <p class="cs-card-desc">Reimagining a private label outdoor brand for a national retailer — building an identity that drove 15% first-year growth and challenged the nationals.</p>
-          <div class="cs-card-tags">
-            <span class="tag">Brand</span><span class="tag">Strategy</span><span class="tag">Retail</span>
+          <div class="cs-card-thumb"><img src="embark sleeping bags.jpg" alt="Embark sleeping bags" /></div>
+          <div class="cs-card-body">
+            <div class="cs-card-cluster">
+              <div class="cs-card-dot" style="background:var(--purple-mid)"></div>
+              <span class="cs-card-label" style="color:var(--purple)">Strategy &amp; Identity</span>
+            </div>
+            <h3>Embark</h3>
+            <p class="cs-card-desc">Reimagining a private label outdoor brand for a national retailer — building an identity that drove 15% first-year growth and challenged the nationals.</p>
+            <div class="cs-card-tags">
+              <span class="tag">Brand</span><span class="tag">Strategy</span><span class="tag">Retail</span>
+            </div>
           </div>
         </div>
 
