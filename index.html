@@ -2073,10 +2073,27 @@ footer {
     <div style="max-width:960px;margin:0 auto;padding:3rem 2rem">
       <div style="font-family:'Jost',sans-serif;font-size:0.65rem;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:var(--cyan);margin-bottom:1rem">In the room</div>
       <video
+        id="berlin-workshop-video"
         src="facilitating-workshop-berlin.mp4"
+        autoplay
+        loop
+        muted
+        playsinline
         controls
         style="width:100%;display:block;border-radius:2px;background:#000"
       ></video>
+      <script>
+        (function() {
+          var v = document.getElementById('berlin-workshop-video');
+          function setSlowMo() { v.playbackRate = 0.35; }
+          v.addEventListener('loadedmetadata', setSlowMo);
+          v.addEventListener('play', setSlowMo);
+          v.addEventListener('ratechange', function() {
+            if (v.playbackRate !== 0.35) v.playbackRate = 0.35;
+          });
+          setSlowMo();
+        })();
+      </script>
     </div>
   </div>
 
