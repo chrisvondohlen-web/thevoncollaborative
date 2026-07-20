@@ -517,6 +517,49 @@ footer {
 .at-btn-plain:hover { border-color: var(--text); color: var(--text); }
 .at-source { font-size: 0.7rem; color: var(--mid-gray); margin-top: 1.25rem; line-height: 1.5; }
 @media (max-width: 480px) { .at-res-grid { grid-template-columns: 1fr; } .at-card { padding: 1.75rem 1.25rem; } }
+
+/* ── BOOKLET VIEWER ── */
+.bk-overlay {
+  display: none; position: fixed; inset: 0; z-index: 1000;
+  background: rgba(7,10,16,0.94); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+  align-items: center; justify-content: center; padding: 5rem 1.25rem 1.5rem;
+}
+.bk-overlay.active { display: flex; }
+.bk-close {
+  position: absolute; top: 1.25rem; right: 1.5rem;
+  width: 42px; height: 42px; display: flex; align-items: center; justify-content: center;
+  background: transparent; border: 1px solid var(--border); color: var(--text);
+  font-size: 1.4rem; line-height: 1; cursor: pointer; border-radius: 50%;
+  transition: border-color 0.2s, color 0.2s;
+}
+.bk-close:hover { border-color: var(--coral); color: var(--coral); }
+.bk-stage { display: flex; flex-direction: column; align-items: center; gap: 1.5rem; width: 100%; max-width: 1000px; }
+.bk-flip-wrap { position: relative; width: 100%; display: flex; align-items: center; justify-content: center; min-height: 200px; }
+#bk-flip { box-shadow: 0 30px 80px rgba(0,0,0,0.55); }
+#bk-flip .page { background: var(--dark2); }
+#bk-flip canvas, #bk-flip img { width: 100%; height: 100%; display: block; }
+.bk-loading {
+  display: flex; flex-direction: column; align-items: center; gap: 1rem;
+  color: var(--muted); font-family: 'Jost', sans-serif; font-size: 0.85rem; letter-spacing: 0.03em;
+  padding: 3rem 0;
+}
+.bk-spinner {
+  width: 34px; height: 34px; border-radius: 50%;
+  border: 2px solid rgba(240,122,90,0.2); border-top-color: var(--coral);
+  animation: bk-spin 0.85s linear infinite;
+}
+@keyframes bk-spin { to { transform: rotate(360deg); } }
+.bk-controls { display: flex; align-items: center; gap: 1.25rem; }
+.bk-nav {
+  width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  background: transparent; border: 1px solid var(--border); color: var(--text); cursor: pointer;
+  font-size: 1.1rem; transition: border-color 0.2s, color 0.2s, opacity 0.2s;
+}
+.bk-nav:hover { border-color: var(--coral); color: var(--coral); }
+.bk-nav:disabled { opacity: 0.3; cursor: default; border-color: var(--border); color: var(--text); }
+.bk-page-count { font-family: 'Jost', sans-serif; font-size: 0.78rem; color: var(--mid-gray); letter-spacing: 0.04em; min-width: 70px; text-align: center; }
+.bk-hint { font-family: 'Jost', sans-serif; font-size: 0.7rem; color: var(--mid-gray); letter-spacing: 0.03em; text-align: center; }
+@media (max-width: 640px) { .bk-overlay { padding: 4rem 0.5rem 1rem; } .bk-controls { gap: 0.75rem; } }
 </style>
 </head>
 <body>
@@ -1667,6 +1710,7 @@ footer {
         <p>The Innovation Breaks Method brings together 37 tools drawn from business strategy, design thinking, change management, and product management. Each tool is designed to work within a specific phase of the innovation process — so teams always know what to do next and why.</p>
         <p>The method responds to VUCA challenges with its own VUCA answer: Vision, Understanding, Clarity, and Agility. Every tool in the system serves one of these four responses — helping teams move from the fog of a complex problem to a clear, testable solution.</p>
         <p>The toolkit includes a guide booklet that explains the approach and how to use each method, plus ready-to-use templates that let teams get started immediately — no facilitation training required.</p>
+        <p><a onclick="openBooklet()" style="cursor:pointer;color:var(--coral);text-decoration:underline;text-underline-offset:3px">Flip through the intro booklet &rarr;</a></p>
         <img src="innovation breaks components.JPG" alt="Innovation Breaks toolkit components" style="width:100%;display:block;object-fit:cover;border-radius:2px;margin-top:2rem" />
       </div>
     </div>
@@ -1700,6 +1744,7 @@ footer {
             <div style="margin-top:2rem;display:flex;gap:1rem;flex-wrap:wrap">
               <a class="btn-primary" href="https://calendly.com/thevoncollab" target="_blank">Book a workshop &rarr;</a>
               <a class="btn-secondary" onclick="navigate('shop')" style="cursor:pointer">Get the toolkit</a>
+              <a class="btn-secondary" onclick="openBooklet()" style="cursor:pointer">Read the intro booklet</a>
             </div>
           </div>
           <div class="detail-stack">
@@ -2027,7 +2072,10 @@ footer {
           <div class="shop-card-tags">
             <span class="tag">Team</span><span class="tag">Workshop</span><span class="tag">Cards</span>
           </div>
-          <a class="btn-primary" href="mailto:info@thevoncollaborative.com">Learn more &rarr;</a>
+          <div style="display:flex;gap:0.75rem;flex-wrap:wrap;align-items:center">
+            <a class="btn-primary" href="mailto:info@thevoncollaborative.com">Learn more &rarr;</a>
+            <a class="btn-secondary" onclick="openBooklet()" style="cursor:pointer">Read the intro booklet</a>
+          </div>
         </div>
         <div class="shop-card">
           <span class="eyebrow">For teams</span>
@@ -2395,6 +2443,26 @@ footer {
   </div>
 </footer>
 
+<!-- ══════════════════ BOOKLET VIEWER ══════════════════ -->
+<div id="bk-overlay" class="bk-overlay" role="dialog" aria-modal="true" aria-label="Innovation Breaks toolkit booklet viewer" onclick="if(event.target===this) closeBooklet()">
+  <button class="bk-close" onclick="closeBooklet()" aria-label="Close booklet">&times;</button>
+  <div class="bk-stage">
+    <div class="bk-flip-wrap">
+      <div class="bk-loading" id="bk-loading">
+        <div class="bk-spinner"></div>
+        <div id="bk-loading-text">Loading booklet…</div>
+      </div>
+      <div id="bk-flip" style="display:none"></div>
+    </div>
+    <div class="bk-controls" id="bk-controls" style="display:none">
+      <button class="bk-nav" id="bk-prev" onclick="bookletPrev()" aria-label="Previous page">&larr;</button>
+      <span class="bk-page-count" id="bk-page-count"></span>
+      <button class="bk-nav" id="bk-next" onclick="bookletNext()" aria-label="Next page">&rarr;</button>
+    </div>
+    <p class="bk-hint" id="bk-hint" style="display:none">Drag a corner, click the edges, or use the arrow keys to turn the page. <a href="innovation-breaks-toolkit-booklet.pdf" download style="color:var(--coral)">Download the PDF</a></p>
+  </div>
+</div>
+
 <script>
 // ── ROUTING ──
 const ALL_PAGES = ['home','work','cs-brand','cs-purpose','cs-evp','cs-retail','cs-consumer','cs-medical','cs-startup','cs-comfort-curve','about','growth-tools','innovation-os','ios-strategy','ios-practice','ios-management','ios-culture','quiz','ib-method','story-of-growth','shop','archetype','speaker'];
@@ -2734,6 +2802,113 @@ function atRetake() {
   document.getElementById('at-btn-gate').textContent = 'See my results →';
   document.getElementById('at-btn-gate').disabled = false;
   atShowScreen('at-s-intro');
+}
+
+// ── BOOKLET VIEWER (Innovation Breaks toolkit intro) ──
+// Pages are pre-rendered to JPEGs (booklet-pages/) rather than rendered from
+// the PDF in-browser — the source PDF's photos are JPEG2000-encoded, and
+// pdf.js's JPX decoder hangs indefinitely on several of them client-side.
+const BOOKLET_PAGE_COUNT = 32;
+const BOOKLET_PAGE_ASPECT = 360 / 504;
+function bkPageUrl(n) { return 'booklet-pages/page-' + String(n).padStart(2, '0') + '.jpg'; }
+
+let bkPageFlip = null, bkLoaded = false, bkLoading = false;
+
+function bkLoadScript(src) {
+  return new Promise((resolve, reject) => {
+    const s = document.createElement('script');
+    s.src = src; s.onload = resolve; s.onerror = () => reject(new Error('Failed to load ' + src));
+    document.head.appendChild(s);
+  });
+}
+
+function bkPreloadImage(src) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => resolve(src);
+    img.onerror = () => reject(new Error('Failed to load ' + src));
+    img.src = src;
+  });
+}
+
+async function openBooklet() {
+  document.getElementById('bk-overlay').classList.add('active');
+  document.body.style.overflow = 'hidden';
+  document.addEventListener('keydown', bkKeyHandler);
+  if (bkLoaded || bkLoading) return;
+  bkLoading = true;
+  const loadingText = document.getElementById('bk-loading-text');
+  try {
+    await bkLoadScript('page-flip.custom.js');
+
+    const images = [];
+    let loadedCount = 0;
+    await Promise.all(Array.from({ length: BOOKLET_PAGE_COUNT }, (_, idx) => {
+      const n = idx + 1;
+      const url = bkPageUrl(n);
+      images[idx] = url;
+      return bkPreloadImage(url).then(() => {
+        loadedCount++;
+        loadingText.textContent = 'Loading page ' + loadedCount + ' of ' + BOOKLET_PAGE_COUNT + '…';
+      });
+    }));
+
+    // Fixed display size, computed once from the current viewport so the
+    // flip container never resizes itself mid-flip (StPageFlip's own
+    // 'stretch' mode fights a fluid flex layout and resets the book).
+    const maxSpreadW = Math.min(window.innerWidth - 48, 1000);
+    const maxSpreadH = Math.min(window.innerHeight - 260, 800);
+    let singleW = maxSpreadW / 2;
+    let singleH = singleW / BOOKLET_PAGE_ASPECT;
+    if (singleH > maxSpreadH) { singleH = maxSpreadH; singleW = singleH * BOOKLET_PAGE_ASPECT; }
+    const pageWidth = Math.round(singleW);
+    const pageHeight = Math.round(singleH);
+
+    const flipEl = document.getElementById('bk-flip');
+    bkPageFlip = new St.PageFlip(flipEl, {
+      width: pageWidth, height: pageHeight, size: 'fixed',
+      minWidth: pageWidth, maxWidth: pageWidth, minHeight: pageHeight, maxHeight: pageHeight,
+      maxShadowOpacity: 0.5, showCover: true, mobileScrollSupport: false, usePortrait: true
+    });
+    bkPageFlip.loadFromImages(images);
+    bkPageFlip.on('flip', bkUpdateControls);
+    bkPageFlip.on('init', bkUpdateControls);
+
+    document.getElementById('bk-loading').style.display = 'none';
+    flipEl.style.display = '';
+    document.getElementById('bk-controls').style.display = 'flex';
+    document.getElementById('bk-hint').style.display = 'block';
+    bkLoaded = true;
+  } catch (err) {
+    loadingText.textContent = 'Unable to load the booklet right now. Please try again in a moment.';
+    console.error(err);
+  } finally {
+    bkLoading = false;
+  }
+}
+
+function bkUpdateControls() {
+  if (!bkPageFlip) return;
+  const idx = bkPageFlip.getCurrentPageIndex();
+  const total = bkPageFlip.getPageCount();
+  document.getElementById('bk-page-count').textContent = (idx + 1) + ' of ' + total;
+  document.getElementById('bk-prev').disabled = idx <= 0;
+  document.getElementById('bk-next').disabled = idx >= total - 1;
+}
+
+function bookletNext() { if (bkPageFlip) bkPageFlip.flipNext(); }
+function bookletPrev() { if (bkPageFlip) bkPageFlip.flipPrev(); }
+
+function bkKeyHandler(e) {
+  if (e.key === 'Escape') closeBooklet();
+  else if (e.key === 'ArrowRight') bookletNext();
+  else if (e.key === 'ArrowLeft') bookletPrev();
+}
+
+function closeBooklet() {
+  document.getElementById('bk-overlay').classList.remove('active');
+  document.body.style.overflow = '';
+  document.removeEventListener('keydown', bkKeyHandler);
 }
 </script>
 </body>
