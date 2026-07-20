@@ -534,6 +534,8 @@ footer {
 }
 .bk-close:hover { border-color: var(--coral); color: var(--coral); }
 .bk-stage { display: flex; flex-direction: column; align-items: center; gap: 1.5rem; width: 100%; max-width: 1000px; }
+.bk-gate { width: 100%; max-width: 440px; background: var(--dark2); border: 1px solid var(--border); padding: 2.5rem; }
+@media (max-width: 480px) { .bk-gate { padding: 1.75rem 1.25rem; } }
 .bk-flip-wrap { position: relative; width: 100%; display: flex; align-items: center; justify-content: center; min-height: 200px; }
 #bk-flip { box-shadow: 0 30px 80px rgba(0,0,0,0.55); }
 #bk-flip .page { background: var(--dark2); }
@@ -2447,7 +2449,22 @@ footer {
 <div id="bk-overlay" class="bk-overlay" role="dialog" aria-modal="true" aria-label="Innovation Breaks toolkit booklet viewer" onclick="if(event.target===this) closeBooklet()">
   <button class="bk-close" onclick="closeBooklet()" aria-label="Close booklet">&times;</button>
   <div class="bk-stage">
-    <div class="bk-flip-wrap">
+    <div class="bk-gate" id="bk-gate">
+      <div class="qz-gate-title" style="font-family:'Playfair Display',serif;font-size:clamp(1.3rem,2.8vw,1.85rem);color:var(--text);margin-bottom:1rem">Get the intro booklet</div>
+      <p class="at-gate-desc">Enter your email and we'll open the Innovation Breaks toolkit booklet right here — no download required.</p>
+      <div class="at-field">
+        <label for="bk-f-name">First name <span style="text-transform:none;color:var(--mid-gray);font-weight:300">(optional)</span></label>
+        <input type="text" id="bk-f-name" class="qz-input" placeholder="Your first name" autocomplete="given-name" />
+      </div>
+      <div class="at-field">
+        <label for="bk-f-email">Email address</label>
+        <input type="email" id="bk-f-email" class="qz-input" placeholder="you@example.com" autocomplete="email" />
+      </div>
+      <button class="btn-primary" id="bk-btn-gate" onclick="bkSubmitGate()" style="width:100%;padding:0.875rem">View the booklet &rarr;</button>
+      <div class="at-error" id="bk-gate-error">Please enter a valid email address to continue.</div>
+      <div class="at-privacy">We respect your privacy. Your email will only be used to send toolkit resources and occasional workshop-related updates from The Von Collaborative.</div>
+    </div>
+    <div class="bk-flip-wrap" id="bk-flip-wrap" style="display:none">
       <div class="bk-loading" id="bk-loading">
         <div class="bk-spinner"></div>
         <div id="bk-loading-text">Loading booklet…</div>
@@ -2810,9 +2827,10 @@ function atRetake() {
 // pdf.js's JPX decoder hangs indefinitely on several of them client-side.
 const BOOKLET_PAGE_COUNT = 32;
 const BOOKLET_PAGE_ASPECT = 360 / 504;
+const BK_FORMSPREE = 'https://formspree.io/f/maqrjzdd';
 function bkPageUrl(n) { return 'booklet-pages/page-' + String(n).padStart(2, '0') + '.jpg'; }
 
-let bkPageFlip = null, bkLoaded = false, bkLoading = false;
+let bkPageFlip = null, bkLoaded = false, bkLoading = false, bkGatePassed = false;
 
 function bkLoadScript(src) {
   return new Promise((resolve, reject) => {
@@ -2831,10 +2849,43 @@ function bkPreloadImage(src) {
   });
 }
 
-async function openBooklet() {
+function openBooklet() {
   document.getElementById('bk-overlay').classList.add('active');
   document.body.style.overflow = 'hidden';
   document.addEventListener('keydown', bkKeyHandler);
+  if (bkGatePassed) {
+    document.getElementById('bk-gate').style.display = 'none';
+    document.getElementById('bk-flip-wrap').style.display = 'flex';
+    bkStartLoad();
+  } else {
+    document.getElementById('bk-gate').style.display = 'block';
+    document.getElementById('bk-flip-wrap').style.display = 'none';
+  }
+}
+
+async function bkSubmitGate() {
+  const emailEl = document.getElementById('bk-f-email');
+  const email = emailEl.value.trim();
+  const err = document.getElementById('bk-gate-error');
+  const btn = document.getElementById('bk-btn-gate');
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { err.style.display = 'block'; return; }
+  err.style.display = 'none';
+  btn.textContent = 'Loading...'; btn.disabled = true;
+  try {
+    await fetch(BK_FORMSPREE, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({ name: document.getElementById('bk-f-name').value.trim(), email, source: 'Innovation Breaks booklet' })
+    });
+  } catch (e) {}
+  bkGatePassed = true;
+  btn.textContent = 'View the booklet →'; btn.disabled = false;
+  document.getElementById('bk-gate').style.display = 'none';
+  document.getElementById('bk-flip-wrap').style.display = 'flex';
+  bkStartLoad();
+}
+
+async function bkStartLoad() {
   if (bkLoaded || bkLoading) return;
   bkLoading = true;
   const loadingText = document.getElementById('bk-loading-text');
