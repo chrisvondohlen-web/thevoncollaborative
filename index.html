@@ -562,6 +562,26 @@ footer {
 .bk-page-count { font-family: 'Jost', sans-serif; font-size: 0.78rem; color: var(--mid-gray); letter-spacing: 0.04em; min-width: 70px; text-align: center; }
 .bk-hint { font-family: 'Jost', sans-serif; font-size: 0.7rem; color: var(--mid-gray); letter-spacing: 0.03em; text-align: center; }
 @media (max-width: 640px) { .bk-overlay { padding: 4rem 0.5rem 1rem; } .bk-controls { gap: 0.75rem; } }
+
+/* ── PROJECT INTAKE (unlisted — reached only via #project-intake) ── */
+.in-wrap { display: flex; justify-content: center; padding: 8rem 1.5rem 5rem; min-height: 100vh; }
+.in-card { background: var(--dark2); border: 1px solid var(--border); padding: 3rem; max-width: 760px; width: 100%; }
+.in-section { border-top: 1px solid var(--border); padding-top: 2rem; margin-top: 2.25rem; }
+.in-num { font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--cyan); margin-bottom: 0.35rem; font-family: 'Jost', sans-serif; font-weight: 500; }
+.in-section h2 { font-size: 1.35rem; margin-bottom: 1.25rem; }
+.in-field { margin-bottom: 1.35rem; }
+.in-label { display: block; font-size: 0.9rem; color: var(--text); line-height: 1.55; margin-bottom: 0.5rem; font-weight: 400; }
+.in-label .in-opt { color: var(--mid-gray); font-size: 0.75rem; }
+textarea.qz-input { min-height: 96px; resize: vertical; line-height: 1.6; }
+.in-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+.in-radio { display: flex; align-items: flex-start; gap: 0.75rem; padding: 0.8rem 1.1rem; margin-bottom: 0.45rem; border: 1px solid var(--border); color: var(--muted); font-size: 0.875rem; line-height: 1.55; cursor: pointer; transition: border-color 0.15s, background 0.15s, color 0.15s; }
+.in-radio:hover { border-color: var(--cyan); color: var(--text); }
+.in-radio input { accent-color: var(--cyan); margin-top: 0.3rem; flex-shrink: 0; }
+.in-radio:has(input:checked) { border-color: var(--cyan); background: rgba(21,224,251,0.07); color: var(--text); }
+.in-submit { margin-top: 2.5rem; border-top: 1px solid var(--border); padding-top: 2rem; }
+.in-error { display: none; font-size: 0.82rem; color: #F07A5A; margin-top: 0.9rem; }
+.in-done { text-align: left; }
+@media (max-width: 640px) { .in-card { padding: 1.75rem 1.25rem; } .in-row { grid-template-columns: 1fr; } }
 </style>
 </head>
 <body>
@@ -2402,6 +2422,169 @@ footer {
 
 </div>
 
+<!-- ══════════════════ PROJECT INTAKE (unlisted) ══════════════════ -->
+<div id="page-project-intake" class="page">
+  <div class="in-wrap">
+    <div class="in-card">
+
+      <form id="in-form" onsubmit="inSubmit(event)" novalidate>
+        <p class="qz-brand">The Von Collaborative</p>
+        <h1 class="qz-intro-title">Research Project Intake</h1>
+        <p class="qz-sub">This form helps us understand the decision your research needs to serve, what you need to learn, what's already known, and who's involved. With it, we can scope the right engagement — or tell you honestly if research isn't the answer.</p>
+        <p class="qz-meta">Takes about 15–20 minutes. Short answers are fine — we'll go deeper together.</p>
+
+        <div class="in-section">
+          <p class="in-num">01</p>
+          <h2>Project basics</h2>
+          <div class="in-field">
+            <label class="in-label" for="in-title">Working title for this project</label>
+            <input class="qz-input" id="in-title" name="Working title" type="text">
+          </div>
+          <div class="in-field">
+            <span class="in-label">Submitted by</span>
+            <div class="in-row">
+              <input class="qz-input" id="in-name" name="name" type="text" placeholder="Name *" required>
+              <input class="qz-input" id="in-email" name="email" type="email" placeholder="Email *" required>
+              <input class="qz-input" name="Role" type="text" placeholder="Role">
+              <input class="qz-input" name="Organization" type="text" placeholder="Organization">
+            </div>
+          </div>
+        </div>
+
+        <div class="in-section">
+          <p class="in-num">02</p>
+          <h2>The decision this research will inform</h2>
+          <div class="in-field">
+            <label class="in-label" for="in-q2a">What decision will be made using this research, and who owns that decision?</label>
+            <textarea class="qz-input" id="in-q2a" name="Decision and owner"></textarea>
+          </div>
+          <div class="in-field">
+            <label class="in-label" for="in-q2b">What would you do differently depending on what we find?</label>
+            <textarea class="qz-input" id="in-q2b" name="What changes depending on findings"></textarea>
+          </div>
+        </div>
+
+        <div class="in-section">
+          <p class="in-num">03</p>
+          <h2>The question to be resolved</h2>
+          <div class="in-field">
+            <label class="in-label" for="in-q3a">State the question this work must resolve. Make it specific and time-bound.</label>
+            <textarea class="qz-input" id="in-q3a" name="Question to resolve"></textarea>
+          </div>
+          <div class="in-field">
+            <label class="in-label" for="in-q3b">What changed, or what is in the way, that makes this urgent now?</label>
+            <textarea class="qz-input" id="in-q3b" name="Why urgent now"></textarea>
+          </div>
+        </div>
+
+        <div class="in-section">
+          <p class="in-num">04</p>
+          <h2>Learning goals</h2>
+          <div class="in-field">
+            <label class="in-label" for="in-q4a">What are the two or three things you must learn to make the decision?</label>
+            <textarea class="qz-input" id="in-q4a" name="Must-learn goals"></textarea>
+          </div>
+          <div class="in-field">
+            <label class="in-label" for="in-q4b">What do you already believe to be true that we would be testing?</label>
+            <textarea class="qz-input" id="in-q4b" name="Beliefs to test"></textarea>
+          </div>
+        </div>
+
+        <div class="in-section">
+          <p class="in-num">05</p>
+          <h2>Category and product context</h2>
+          <div class="in-field">
+            <label class="in-label" for="in-q5a">What category are we in, and which brands or products are in scope?</label>
+            <textarea class="qz-input" id="in-q5a" name="Category and products in scope"></textarea>
+          </div>
+          <div class="in-field">
+            <label class="in-label" for="in-q5b">Who do you consider the competition, including from outside the category?</label>
+            <textarea class="qz-input" id="in-q5b" name="Competition"></textarea>
+          </div>
+          <div class="in-field">
+            <span class="in-label">Is this new or existing? Choose the one that fits best.</span>
+            <label class="in-radio"><input type="radio" name="New or existing" value="New to the world, or new to us"> New to the world, or new to us</label>
+            <label class="in-radio"><input type="radio" name="New or existing" value="Line extension — new variant, format or size"> Line extension — new variant, format or size</label>
+            <label class="in-radio"><input type="radio" name="New or existing" value="Renovation or repositioning of something we already sell"> Renovation or repositioning of something we already sell</label>
+            <label class="in-radio"><input type="radio" name="New or existing" value="Portfolio decision — what to keep, cut or add"> Portfolio decision — what to keep, cut or add</label>
+            <label class="in-radio"><input type="radio" name="New or existing" value="Not yet decided — part of what we need to learn"> Not yet decided — part of what we need to learn</label>
+          </div>
+        </div>
+
+        <div class="in-section">
+          <p class="in-num">06</p>
+          <h2>What is already known</h2>
+          <div class="in-field">
+            <label class="in-label" for="in-q6a">What research or internal data already exists on this, and can we see it?</label>
+            <textarea class="qz-input" id="in-q6a" name="Existing research and data"></textarea>
+          </div>
+          <div class="in-field">
+            <label class="in-label" for="in-q6b">What have you tried before that did not work?</label>
+            <textarea class="qz-input" id="in-q6b" name="Tried before, did not work"></textarea>
+          </div>
+        </div>
+
+        <div class="in-section">
+          <p class="in-num">07</p>
+          <h2>Intended outcomes</h2>
+          <div class="in-field">
+            <label class="in-label" for="in-q7a">What should exist at the end of this work, and who acts on it?</label>
+            <textarea class="qz-input" id="in-q7a" name="End deliverable and who acts on it"></textarea>
+          </div>
+          <div class="in-field">
+            <label class="in-label" for="in-q7b">How will you know the project succeeded?</label>
+            <textarea class="qz-input" id="in-q7b" name="Success criteria"></textarea>
+          </div>
+          <div class="in-field">
+            <label class="in-label" for="in-q7c">What should this work explicitly not try to answer?</label>
+            <textarea class="qz-input" id="in-q7c" name="Out of scope"></textarea>
+          </div>
+        </div>
+
+        <div class="in-section">
+          <p class="in-num">08</p>
+          <h2>Timing and constraints</h2>
+          <div class="in-field">
+            <label class="in-label" for="in-q8a">When do findings need to be in hand, and what is driving that date?</label>
+            <textarea class="qz-input" id="in-q8a" name="Timing and date driver"></textarea>
+          </div>
+          <div class="in-field">
+            <label class="in-label" for="in-q8b">What budget range and hard constraints apply — brand, legal, regulatory, cost, access to respondents?</label>
+            <textarea class="qz-input" id="in-q8b" name="Budget and constraints"></textarea>
+          </div>
+        </div>
+
+        <div class="in-section">
+          <p class="in-num">09</p>
+          <h2>People</h2>
+          <div class="in-field">
+            <label class="in-label" for="in-q9a">Who is the sponsor, the decision maker, and our day-to-day contact?</label>
+            <textarea class="qz-input" id="in-q9a" name="Sponsor, decision maker, day-to-day contact"></textarea>
+          </div>
+          <div class="in-field">
+            <label class="in-label" for="in-q9b">Whose buy-in is needed, or who could block this?</label>
+            <textarea class="qz-input" id="in-q9b" name="Buy-in needed and potential blockers"></textarea>
+          </div>
+        </div>
+
+        <div class="in-submit">
+          <button type="submit" class="btn-primary" id="in-btn" style="width:100%;padding:0.875rem">Submit intake form &rarr;</button>
+          <p class="in-error" id="in-error"></p>
+          <p class="qz-privacy">Your answers go directly to Chris von Dohlen and are kept confidential.</p>
+        </div>
+      </form>
+
+      <div id="in-done" class="in-done" style="display:none">
+        <p class="qz-brand">The Von Collaborative</p>
+        <h2 class="qz-gate-title">Thank you — your intake is in.</h2>
+        <p class="qz-sub">I'll review your answers and follow up within two business days to talk through next steps.</p>
+        <a href="https://calendly.com/thevoncollab" target="_blank" class="btn-primary">Book a scoping call &rarr;</a>
+      </div>
+
+    </div>
+  </div>
+</div>
+
 <!-- ── FOOTER ── -->
 <footer>
   <div class="footer-inner">
@@ -2482,7 +2665,7 @@ footer {
 
 <script>
 // ── ROUTING ──
-const ALL_PAGES = ['home','work','cs-brand','cs-purpose','cs-evp','cs-retail','cs-consumer','cs-medical','cs-startup','cs-comfort-curve','about','growth-tools','innovation-os','ios-strategy','ios-practice','ios-management','ios-culture','quiz','ib-method','story-of-growth','shop','archetype','speaker'];
+const ALL_PAGES = ['home','work','cs-brand','cs-purpose','cs-evp','cs-retail','cs-consumer','cs-medical','cs-startup','cs-comfort-curve','about','growth-tools','innovation-os','ios-strategy','ios-practice','ios-management','ios-culture','quiz','ib-method','story-of-growth','shop','archetype','speaker','project-intake'];
 const NAV_MAP   = { work:'nav-work', about:'nav-about', 'growth-tools':'nav-growth-tools', 'innovation-os':'nav-innovation-os', shop:'nav-shop', speaker:'nav-speaker' };
 
 function navigate(page) {
@@ -2584,6 +2767,50 @@ function filterWork(btn, filter) {
 
 const initHash = location.hash.replace('#', '');
 navigate(ALL_PAGES.includes(initHash) ? initHash : 'home');
+
+// ── PROJECT INTAKE (unlisted) ──
+const IN_FORMSPREE = 'https://formspree.io/f/REPLACE_ME';
+
+async function inSubmit(e) {
+  e.preventDefault();
+  const form = document.getElementById('in-form');
+  const err = document.getElementById('in-error');
+  const btn = document.getElementById('in-btn');
+  const nameEl = document.getElementById('in-name');
+  const emailEl = document.getElementById('in-email');
+  [nameEl, emailEl].forEach(el => el.classList.remove('error'));
+  err.style.display = 'none';
+
+  const bad = [];
+  if (!nameEl.value.trim()) bad.push(nameEl);
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailEl.value.trim())) bad.push(emailEl);
+  if (bad.length) {
+    bad.forEach(el => el.classList.add('error'));
+    bad[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+    bad[0].focus({ preventScroll: true });
+    err.textContent = 'Please add your name and a valid email so we can follow up.';
+    err.style.display = 'block';
+    return;
+  }
+
+  const data = new FormData(form);
+  const title = data.get('Working title') || 'Untitled project';
+  data.append('_subject', 'New research intake: ' + title + ' — ' + data.get('name'));
+  data.append('Submitted on', new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }));
+
+  btn.textContent = 'Sending...'; btn.disabled = true;
+  try {
+    const res = await fetch(IN_FORMSPREE, { method: 'POST', headers: { 'Accept': 'application/json' }, body: data });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    form.style.display = 'none';
+    document.getElementById('in-done').style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  } catch (ex) {
+    btn.textContent = 'Submit intake form →'; btn.disabled = false;
+    err.textContent = 'Something went wrong sending your answers. Nothing was lost — please try again, or email info@thevoncollaborative.com.';
+    err.style.display = 'block';
+  }
+}
 
 // ── GROWTH READINESS ASSESSMENT ──
 const QZ_FORMSPREE = 'https://formspree.io/f/xykvqqvq';
